@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ndialog/ndialog.dart';
+import 'package:provider/provider.dart';
+import 'package:sneaker_store/provider/user_provider.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
@@ -8,6 +11,7 @@ import 'package:sneaker_store/widgets/custom_text_popins.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/custom_textfield_chekout.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
+import 'package:sneaker_store/widgets/textUpdate_dialog.dart';
 import 'package:styled_divider/styled_divider.dart';
 
 class Checkout extends StatefulWidget {
@@ -45,83 +49,90 @@ class _CheckoutState extends State<Checkout> {
                 height: 26,
               ),
               Container(
-                padding: const EdgeInsets.all(16),
-                height: SizeConfig.h(context) * 0.78,
-                width: SizeConfig.w(context),
-                decoration: BoxDecoration(
-                    color: AppColors.kWhite,
-                    borderRadius: BorderRadius.circular(16)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const CustomTextRaleway(
-                      text: 'Contact Information',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    CustomTextfieldCheckout(
-                      icon: AssetConstants.email,
-                      bottomText: 'Email',
-                      controller: TextEditingController(
-                          text: 'emmanueloyboke@gamil.com'),
-                    ),
-                    CustomTextfieldCheckout(
-                      icon: AssetConstants.call,
-                      bottomText: 'Phone',
-                      controller:
-                          TextEditingController(text: '+234-811-732-5298'),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    const CustomTextRaleway(
-                      text: 'Address',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    DropdownButton<String>(
-                      isDense: false,
-                      isExpanded: true,
-                      value: dropdownValue,
-                      style: GoogleFonts.poppins(
-                          fontSize: 12, color: AppColors.kLiteBlack),
-                      onChanged: (String? value) {
-                        // This is called when the user selects an item.
-                        setState(() {
-                          dropdownValue = value!;
-                        });
-                      },
-                      items: AssetConstants.addressList
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 101,
-                      decoration: BoxDecoration(
-                          color: AppColors.kLiteBlue,
-                          borderRadius: BorderRadius.circular(16),
-                          image: const DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(AssetConstants.mapImage))),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    const CustomTextRaleway(
-                      text: 'Payment Method',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ],
-                ),
-              )
+                  padding: const EdgeInsets.all(16),
+                  height: SizeConfig.h(context) * 0.78,
+                  width: SizeConfig.w(context),
+                  decoration: BoxDecoration(
+                      color: AppColors.kWhite,
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Consumer<UserProvider>(
+                    builder: (context, value, child) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const CustomTextRaleway(
+                            text: 'Contact Information',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          CustomTextfieldCheckout(
+                            icon: AssetConstants.email,
+                            bottomText: 'Email',
+                            controller: TextEditingController(
+                                text: value.userModel!.email),
+                          ),
+                          CustomTextfieldCheckout(
+                            icon: AssetConstants.call,
+                            bottomText: 'Phone',
+                            controller: TextEditingController(
+                                text: value.userModel!.mobileNo),
+                            textOnTap: () {
+                              TextUpadateDialog(context).show(context);
+                            },
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          const CustomTextRaleway(
+                            text: 'Address',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          DropdownButton<String>(
+                            isDense: false,
+                            isExpanded: true,
+                            value: dropdownValue,
+                            style: GoogleFonts.poppins(
+                                fontSize: 12, color: AppColors.kLiteBlack),
+                            onChanged: (String? value) {
+                              // This is called when the user selects an item.
+                              setState(() {
+                                dropdownValue = value!;
+                              });
+                            },
+                            items: AssetConstants.addressList
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            height: 101,
+                            decoration: BoxDecoration(
+                                color: AppColors.kLiteBlue,
+                                borderRadius: BorderRadius.circular(16),
+                                image: const DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image:
+                                        AssetImage(AssetConstants.mapImage))),
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          const CustomTextRaleway(
+                            text: 'Payment Method',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
+                      );
+                    },
+                  ))
             ],
           )),
         ),

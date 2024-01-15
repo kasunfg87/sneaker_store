@@ -62,6 +62,7 @@ dependencies:
   firebase_storage: ^11.4.1
   flutter_zoom_drawer: ^3.1.1
   shimmer: ^3.0.0
+  ndialog: ^4.3.1
  
 
  

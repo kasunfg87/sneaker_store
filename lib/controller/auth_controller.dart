@@ -158,7 +158,7 @@ class AuthController {
         .then((value) {
       //--show a dialog when the email is sent
 
-      AlertHelper.showAlert(context, DialogType.SUCCES, "Email Sent !",
+      AlertHelper.showAlert(context, DialogType.success, "Email Sent !",
           "Please check your inbox !");
     });
   }
