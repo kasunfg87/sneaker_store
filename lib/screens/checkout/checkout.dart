@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ndialog/ndialog.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_store/provider/user_provider.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
@@ -11,7 +10,6 @@ import 'package:sneaker_store/widgets/custom_text_popins.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/custom_textfield_chekout.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
-import 'package:sneaker_store/widgets/textUpdate_dialog.dart';
 import 'package:styled_divider/styled_divider.dart';
 
 class Checkout extends StatefulWidget {
@@ -76,9 +74,7 @@ class _CheckoutState extends State<Checkout> {
                             bottomText: 'Phone',
                             controller: TextEditingController(
                                 text: value.userModel!.mobileNo),
-                            textOnTap: () {
-                              TextUpadateDialog(context).show(context);
-                            },
+                            textOnTap: () {},
                           ),
                           const SizedBox(
                             height: 12,
