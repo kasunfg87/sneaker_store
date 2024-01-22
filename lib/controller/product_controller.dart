@@ -53,10 +53,10 @@ class ProductController {
 
       List<ProductModel> list = [];
 
-      // ----- Mapping fetched data to CourseModel and storing them in the courses list
+      // ----- Mapping fetched data to ProductModel and storing them in the courses list
 
       for (var element in snapshot.docs) {
-        // ----- Mapping to a single CourseModel
+        // ----- Mapping to a single ProductModel
 
         ProductModel model =
             ProductModel.fromJson(element.data() as Map<String, dynamic>);
@@ -92,10 +92,10 @@ class ProductController {
 
       List<SizeModel> list = [];
 
-      // ----- Mapping fetched data to CourseModel and storing them in the courses list
+      // ----- Mapping fetched data to ProductModel and storing them in the courses list
 
       for (var element in snapshot.docs) {
-        // ----- Mapping to a single CourseModel
+        // ----- Mapping to a single ProductModel
 
         SizeModel model =
             SizeModel.fromJson(element.data() as Map<String, dynamic>);

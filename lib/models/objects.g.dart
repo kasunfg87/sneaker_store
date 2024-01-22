@@ -49,24 +49,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'token': instance.token,
     };
 
-EnrolledModel _$EnrolledModelFromJson(Map<String, dynamic> json) =>
-    EnrolledModel(
-      json['course_id'] as int,
-      json['status'] as String,
-      json['user'] == null
-          ? null
-          : UserModel.fromJson(json['user'] as Map<String, dynamic>),
-      json['last_update'] as String,
-    );
-
-Map<String, dynamic> _$EnrolledModelToJson(EnrolledModel instance) =>
-    <String, dynamic>{
-      'course_id': instance.course_id,
-      'status': instance.status,
-      'user': instance.user?.toJson(),
-      'last_update': instance.last_update,
-    };
-
 FavouriteModel _$FavouriteModelFromJson(Map<String, dynamic> json) =>
     FavouriteModel(
       category: json['category'] as String,
@@ -91,25 +73,6 @@ Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
     <String, dynamic>{
       'categoryId': instance.categoryId,
       'categoryName': instance.categoryName,
-    };
-
-MessageModel _$MessageModelFromJson(Map<String, dynamic> json) => MessageModel(
-      json['conId'] as String,
-      json['senderName'] as String,
-      json['senderId'] as String,
-      json['receiverId'] as String,
-      json['message'] as String,
-      json['messageTime'] as String,
-    );
-
-Map<String, dynamic> _$MessageModelToJson(MessageModel instance) =>
-    <String, dynamic>{
-      'conId': instance.conId,
-      'senderName': instance.senderName,
-      'senderId': instance.senderId,
-      'receiverId': instance.receiverId,
-      'message': instance.message,
-      'messageTime': instance.messageTime,
     };
 
 ConversationModel _$ConversationModelFromJson(Map<String, dynamic> json) =>
@@ -162,4 +125,22 @@ Map<String, dynamic> _$SizeModelToJson(SizeModel instance) => <String, dynamic>{
       'productId': instance.productId,
       'colors': instance.colors,
       'size': instance.size,
+    };
+
+OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
+      orderId: json['orderId'] as int,
+      cartTotal: (json['cartTotal'] as num).toDouble(),
+      discount: (json['discount'] as num).toDouble(),
+      grandTotal: (json['grandTotal'] as num).toDouble(),
+      cartItemModel:
+          CartItemModel.fromJson(json['cartItemModel'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
+    <String, dynamic>{
+      'orderId': instance.orderId,
+      'cartTotal': instance.cartTotal,
+      'discount': instance.discount,
+      'grandTotal': instance.grandTotal,
+      'cartItemModel': instance.cartItemModel.toJson(),
     };

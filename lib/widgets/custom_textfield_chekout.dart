@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:flutter_svg/svg.dart';
-
 
 import 'package:google_fonts/google_fonts.dart';
 
-
-import 'package:sneaker_store/utilities/assets_constants.dart';
-
-
 import 'package:sneaker_store/widgets/custom_text_popins.dart';
-
 
 import '../utilities/app_colors.dart';
 

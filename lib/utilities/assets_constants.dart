@@ -42,6 +42,7 @@ class AssetConstants {
   static const googleLogo = '${imagePath}google_logo.png';
   static const mapImage = '${imagePath}Map.png';
   static const avatar = '${imagePath}avatar.png';
+  static const celebrationImage = '${imagePath}celebration.gif';
 
   //-------- Shoes
 
@@ -80,5 +81,11 @@ class AssetConstants {
   static List<String> addressList = [
     '21/115B , Anagarika Dharmapala Rd',
     'Mohotti Watta Akmeemana,Galle.'
+  ];
+
+  //------ Payment List
+
+  static List<String> paymentList = [
+    'Visa - xxxx xxxx 1270 1795',
   ];
 }

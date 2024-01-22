@@ -152,7 +152,15 @@ class _MyCartState extends State<MyCart> {
                 CustomButton(
                   buttonText: 'Checkout',
                   onTap: () => NavigationFunction.navigateTo(
-                      BuildContext, context, Widget, const Checkout()),
+                      BuildContext,
+                      context,
+                      Widget,
+                      Checkout(
+                        subTotal: value.getCartTotal.toString(),
+                        delivery: "${value.getCartTotal * 0.05}",
+                        total:
+                            '${value.getCartTotal + (value.getCartTotal * 0.05)}',
+                      )),
                 )
               ],
             );
