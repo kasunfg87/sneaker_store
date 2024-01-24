@@ -31,7 +31,7 @@ class CartProvider extends ChangeNotifier {
 
   List<CartItemModel> get cartItems => _cartItems;
 
-  void addToCart(ProductModel productModel, BuildContext context) {
+  void addToCart(ProductModel productModel, BuildContext context, String size) {
     // ignore: unrelated_type_equality_checks
     if (_cartItems.any((element) => element.id == productModel.productId)) {
       increaseCartItemQty(productModel);
@@ -42,11 +42,11 @@ class CartProvider extends ChangeNotifier {
           context, 'Increased product amount!', AnimatedSnackBarType.success);
     } else {
       _cartItems.add(CartItemModel(
-        id: productModel.productId,
-        amount: _counter,
-        subTotal: _counter * double.parse(productModel.price.toString()),
-        productModel: productModel,
-      ));
+          id: productModel.productId,
+          amount: _counter,
+          subTotal: _counter * double.parse(productModel.price.toString()),
+          productModel: productModel,
+          size: size));
 
       AlertHelper.showSanckBar(
           context, 'Added to the cart', AnimatedSnackBarType.success);

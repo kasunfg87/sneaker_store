@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/provider/cart_provider.dart';
 import 'package:sneaker_store/screens/checkout/checkout.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
@@ -156,10 +157,14 @@ class _MyCartState extends State<MyCart> {
                       context,
                       Widget,
                       Checkout(
-                        subTotal: value.getCartTotal.toString(),
-                        delivery: "${value.getCartTotal * 0.05}",
-                        total:
-                            '${value.getCartTotal + (value.getCartTotal * 0.05)}',
+                        orderModel: OrderModel(
+                          orderId: 001,
+                          cartTotal: value.getCartTotal,
+                          delivery: value.getCartTotal * 0.5,
+                          grandTotal:
+                              value.getCartTotal + value.getCartTotal * 0.5,
+                          cartItems: value.cartItems,
+                        ),
                       )),
                 )
               ],

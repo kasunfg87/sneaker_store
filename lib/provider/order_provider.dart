@@ -21,23 +21,15 @@ class OrderPrvider extends ChangeNotifier {
 
   // ---- Order Saving to firestore db
 
-  Future<void> saveOrderData(CartItemModel cartItemModel, double cartTotal,
-      double discount, double grandTotal, int orderId) async {
+  Future<void> saveOrderData(OrderModel model) async {
     try {
       //--start the loader
       setLoading(true);
 
       //--- start uploading order data
 
-      OrderController().saveOrderData(
-        OrderModel(
-          orderId: orderId,
-          cartTotal: cartTotal,
-          discount: discount,
-          grandTotal: grandTotal,
-          cartItemModel: cartItemModel,
-        ),
-      );
+      OrderController().saveOrderData(model);
+
       //--stop the loader
       setLoading(true);
     } catch (e) {

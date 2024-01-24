@@ -167,8 +167,10 @@ class _DetailsState extends State<Details> {
                 buttonText: 'Add To Cart',
                 buttonIcon: AssetConstants.bag,
                 onTap: () {
-                  Provider.of<CartProvider>(context, listen: false)
-                      .addToCart(value.productModel, context);
+                  Provider.of<CartProvider>(context, listen: false).addToCart(
+                      value.productModel,
+                      context,
+                      value.shoeSizeOnly[value.sizeIndex]);
                   Logger().f(value.productModel.title);
                 },
               ),

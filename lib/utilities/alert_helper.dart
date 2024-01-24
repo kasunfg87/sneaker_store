@@ -3,6 +3,8 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sneaker_store/models/objects.dart';
+import 'package:sneaker_store/provider/cart_provider.dart';
 import 'package:sneaker_store/provider/order_provider.dart';
 import 'package:sneaker_store/screens/home/home.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
@@ -35,7 +37,8 @@ class AlertHelper {
     ).show(context);
   }
 
-  static Future openDialog(BuildContext context) => showDialog(
+  static Future openDialog(BuildContext context, OrderModel orderModel) =>
+      showDialog(
         context: context,
         builder: (context) => ZoomIn(
           child: AlertDialog(
@@ -67,6 +70,11 @@ class AlertHelper {
               CustomButton(
                   buttonText: 'Back To Shopping',
                   onTap: () {
+                    Provider.of<OrderPrvider>(context, listen: false)
+                        .saveOrderData(orderModel);
+                    Provider.of<CartProvider>(context, listen: false)
+                        .cartItems
+                        .clear();
                     // Navigator.of(context).pop();
                     NavigationFunction.navigateTo(
                         BuildContext, context, Widget, const Home());

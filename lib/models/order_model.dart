@@ -4,16 +4,16 @@ part of 'objects.dart';
 class OrderModel {
   final int orderId;
   double cartTotal;
-  double discount;
+  double delivery;
   double grandTotal;
-  final CartItemModel cartItemModel;
+  final List<CartItemModel> cartItems;
 
   OrderModel({
     required this.orderId,
     required this.cartTotal,
-    required this.discount,
+    required this.delivery,
     required this.grandTotal,
-    required this.cartItemModel,
+    required this.cartItems,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) =>

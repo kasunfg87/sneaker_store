@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/provider/user_provider.dart';
 import 'package:sneaker_store/utilities/alert_helper.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
@@ -15,15 +16,11 @@ import 'package:styled_divider/styled_divider.dart';
 
 class Checkout extends StatefulWidget {
   const Checkout({
-    required this.subTotal,
-    required this.delivery,
-    required this.total,
+    required this.orderModel,
     super.key,
   });
 
-  final String subTotal;
-  final String delivery;
-  final String total;
+  final OrderModel orderModel;
 
   @override
   State<Checkout> createState() => _CheckoutState();
@@ -196,7 +193,7 @@ class _CheckoutState extends State<Checkout> {
                     fontWeight: FontWeight.w600,
                   ),
                   CustomTextPopins(
-                    text: '\$${widget.subTotal}',
+                    text: '\$${widget.orderModel.cartTotal}',
                     fontSize: 16,
                     fontColor: AppColors.kBlack,
                   )
@@ -215,7 +212,7 @@ class _CheckoutState extends State<Checkout> {
                     fontWeight: FontWeight.w600,
                   ),
                   CustomTextPopins(
-                    text: '\$${widget.delivery}',
+                    text: '\$${widget.orderModel.delivery}',
                     fontSize: 16,
                     fontColor: AppColors.kBlack,
                   )
@@ -239,7 +236,7 @@ class _CheckoutState extends State<Checkout> {
                     fontWeight: FontWeight.w600,
                   ),
                   CustomTextPopins(
-                    text: '\$${widget.total}',
+                    text: '\$${widget.orderModel.grandTotal}',
                     fontSize: 16,
                     fontColor: AppColors.kBlack,
                   )
@@ -251,7 +248,7 @@ class _CheckoutState extends State<Checkout> {
               CustomButton(
                   buttonText: 'Checkout',
                   onTap: () {
-                    AlertHelper.openDialog(context);
+                    AlertHelper.openDialog(context, widget.orderModel);
                   })
             ],
           ),

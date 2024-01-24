@@ -6,6 +6,7 @@ import 'package:responsive_framework/responsive_breakpoints.dart';
 import 'package:sneaker_store/firebase_options.dart';
 import 'package:sneaker_store/provider/cart_provider.dart';
 import 'package:sneaker_store/provider/favourite_provider.dart';
+import 'package:sneaker_store/provider/order_provider.dart';
 import 'package:sneaker_store/provider/product_provider.dart';
 import 'package:sneaker_store/provider/user_provider.dart';
 import 'package:sneaker_store/screens/splash/splash_screen.dart';
@@ -22,6 +23,7 @@ void main() async {
         ChangeNotifierProvider(create: ((context) => ProductProvider())),
         ChangeNotifierProvider(create: ((context) => FavouriteProvider())),
         ChangeNotifierProvider(create: ((context) => CartProvider())),
+        ChangeNotifierProvider(create: ((context) => OrderPrvider())),
       ],
       child: const MyApp(),
     ),

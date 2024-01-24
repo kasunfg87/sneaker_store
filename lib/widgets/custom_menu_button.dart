@@ -11,14 +11,17 @@ class CustomMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final zoomDrawer = ZoomDrawer.of(context);
     return InkWell(
       borderRadius: BorderRadius.circular(15),
       splashFactory: InkRipple.splashFactory,
       onTap: () {
-        if (ZoomDrawer.of(context)!.isOpen()) {
-          ZoomDrawer.of(context)!.close();
-        } else {
-          ZoomDrawer.of(context)!.open();
+        if (zoomDrawer != null) {
+          if (zoomDrawer.isOpen()) {
+            zoomDrawer.close();
+          } else {
+            zoomDrawer.open();
+          }
         }
       },
       child: Material(

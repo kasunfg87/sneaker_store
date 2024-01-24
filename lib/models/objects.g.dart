@@ -104,6 +104,7 @@ CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
       subTotal: (json['subTotal'] as num).toDouble(),
       productModel:
           ProductModel.fromJson(json['productModel'] as Map<String, dynamic>),
+      size: json['size'] as String,
     );
 
 Map<String, dynamic> _$CartItemModelToJson(CartItemModel instance) =>
@@ -112,6 +113,7 @@ Map<String, dynamic> _$CartItemModelToJson(CartItemModel instance) =>
       'amount': instance.amount,
       'subTotal': instance.subTotal,
       'productModel': instance.productModel.toJson(),
+      'size': instance.size,
     };
 
 SizeModel _$SizeModelFromJson(Map<String, dynamic> json) => SizeModel(
@@ -130,17 +132,18 @@ Map<String, dynamic> _$SizeModelToJson(SizeModel instance) => <String, dynamic>{
 OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
       orderId: json['orderId'] as int,
       cartTotal: (json['cartTotal'] as num).toDouble(),
-      discount: (json['discount'] as num).toDouble(),
+      delivery: (json['delivery'] as num).toDouble(),
       grandTotal: (json['grandTotal'] as num).toDouble(),
-      cartItemModel:
-          CartItemModel.fromJson(json['cartItemModel'] as Map<String, dynamic>),
+      cartItems: (json['cartItems'] as List<dynamic>)
+          .map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
     <String, dynamic>{
       'orderId': instance.orderId,
       'cartTotal': instance.cartTotal,
-      'discount': instance.discount,
+      'delivery': instance.delivery,
       'grandTotal': instance.grandTotal,
-      'cartItemModel': instance.cartItemModel.toJson(),
+      'cartItems': instance.cartItems.map((e) => e.toJson()).toList(),
     };
