@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_store/models/objects.dart';
@@ -70,11 +71,18 @@ class AlertHelper {
               CustomButton(
                   buttonText: 'Back To Shopping',
                   onTap: () {
+                    //---- Save orders to firestore DB
                     Provider.of<OrderPrvider>(context, listen: false)
                         .saveOrderData(orderModel);
+
+                    //---- Clear cart after save orders
                     Provider.of<CartProvider>(context, listen: false)
                         .cartItems
                         .clear();
+                    //---- Fetch orders
+                    Provider.of<OrderPrvider>(context, listen: false)
+                        .fetchOrders(FirebaseAuth.instance.currentUser!.uid);
+
                     // Navigator.of(context).pop();
                     NavigationFunction.navigateTo(
                         BuildContext, context, Widget, const Home());

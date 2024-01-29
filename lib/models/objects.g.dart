@@ -137,6 +137,7 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
       cartItems: (json['cartItems'] as List<dynamic>)
           .map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      createdBy: json['createdBy'] as String,
     );
 
 Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
@@ -146,4 +147,5 @@ Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
       'delivery': instance.delivery,
       'grandTotal': instance.grandTotal,
       'cartItems': instance.cartItems.map((e) => e.toJson()).toList(),
+      'createdBy': instance.createdBy,
     };

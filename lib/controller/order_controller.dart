@@ -18,4 +18,36 @@ class OrderController {
         .then((value) => Logger().i("Order data saved"))
         .catchError((error) => Logger().e('Failed to save Order data'));
   }
+
+  //--- Fetch all Orders
+
+  Future<List<OrderModel>> getOrders(String uid) async {
+    try {
+      // ----- Query for fetching all the orders list
+      QuerySnapshot snapshot = await orders.where(uid).get();
+
+      // ----- List to store the orders
+      List<OrderModel> list = [];
+
+      // ----- Mapping fetched data to OrderModel and storing them in the orders list
+
+      for (var element in snapshot.docs) {
+        // ----- Mapping to a single OrderModel
+
+        OrderModel model =
+            OrderModel.fromJson(element.data() as Map<String, dynamic>);
+
+        // ----- Adding to the list
+
+        list.add(model);
+      }
+
+      // ----- Return the orders list
+      Logger().i(list.length);
+      return list;
+    } catch (e) {
+      Logger().e(e);
+      return [];
+    }
+  }
 }

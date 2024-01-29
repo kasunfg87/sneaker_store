@@ -193,20 +193,20 @@ class ProductController {
 
   Future<List<FavouriteModel>> getFavoriteProducts() async {
     try {
-      // ----- Query for fetching bookmarks that belong to the current user
+      // ----- Query for fetching favourite that belong to the current user
 
       QuerySnapshot snapshot = await favourite
-          .where('uid', isEqualTo: FirebaseHelper.auth.currentUser!.uid)
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get();
 
-      // ----- List to store the bookmarks
+      // ----- List to store the favourite
 
       List<FavouriteModel> list = [];
 
-      // ----- Mapping fetched data to BookmarkModel and storing them in the bookmarks list
+      // ----- Mapping fetched data to FavouriteModel and storing them in the favourite list
 
       for (var element in snapshot.docs) {
-        // ----- Mapping to a single BookmarkModel
+        // ----- Mapping to a single FavouriteModel
 
         FavouriteModel model =
             FavouriteModel.fromJson(element.data() as Map<String, dynamic>);
@@ -216,7 +216,7 @@ class ProductController {
         list.add(model);
       }
 
-      // ----- Return the bookmarks list
+      // ----- Return the favourite list
 
       return list;
     } catch (e) {

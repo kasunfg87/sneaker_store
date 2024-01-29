@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_store/models/objects.dart';
@@ -164,6 +165,7 @@ class _MyCartState extends State<MyCart> {
                           grandTotal:
                               value.getCartTotal + value.getCartTotal * 0.5,
                           cartItems: value.cartItems,
+                          createdBy: FirebaseAuth.instance.currentUser!.uid,
                         ),
                       )),
                 )

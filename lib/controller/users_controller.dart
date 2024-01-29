@@ -1,15 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sneaker_store/models/objects.dart';
 
-// -----> This class represents the UsersController, which is responsible for interacting with the Firestore database and fetching data related to users and enrolled products.
-
 class UsersController {
   // -----> Reference to the 'users' collection in Firestore.
   CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-  // -----> Reference to the 'enrolled' collection in Firestore.
-  CollectionReference enrolled =
-      FirebaseFirestore.instance.collection('enrolled');
 
   // -----> Fetches a list of UserModel objects representing all users.
   Future<List<UserModel>> getUsers() async {

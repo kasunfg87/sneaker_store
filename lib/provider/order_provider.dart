@@ -4,6 +4,13 @@ import 'package:sneaker_store/controller/order_controller.dart';
 import 'package:sneaker_store/models/objects.dart';
 
 class OrderPrvider extends ChangeNotifier {
+// ----- a list to store the all orders list
+  List<OrderModel> _allOrders = [];
+
+  // ----- getter for porduct list
+
+  List<OrderModel> get allOrders => _allOrders;
+
   // ----- loading state
 
   bool _isLoading = false;
@@ -31,10 +38,30 @@ class OrderPrvider extends ChangeNotifier {
       OrderController().saveOrderData(model);
 
       //--stop the loader
-      setLoading(true);
+      setLoading(false);
     } catch (e) {
       //--stop the loader
+      setLoading(false);
+      Logger().e(e);
+    }
+  }
+
+  //---- fetch all orders from firestore db
+
+  Future<void> fetchOrders(String uid) async {
+    try {
+      //--start the loader
       setLoading(true);
+
+      //---- start fetching data
+
+      _allOrders = await OrderController().getOrders(uid);
+
+      //--stop the loader
+      setLoading(false);
+    } catch (e) {
+      //--stop the loader
+      setLoading(false);
       Logger().e(e);
     }
   }
