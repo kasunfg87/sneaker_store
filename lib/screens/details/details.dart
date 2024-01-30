@@ -167,7 +167,6 @@ class _DetailsState extends State<Details> {
                       value.productModel,
                       context,
                       value.shoeSizeOnly[value.sizeIndex]);
-                  Logger().f(value.productModel.title);
                 },
               ),
             ],

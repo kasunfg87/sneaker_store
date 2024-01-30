@@ -33,6 +33,7 @@ class CartProvider extends ChangeNotifier {
 
   void addToCart(ProductModel productModel, BuildContext context, String size) {
     // ignore: unrelated_type_equality_checks
+
     if (_cartItems.any((element) => element.id == productModel.productId)) {
       increaseCartItemQty(productModel);
 
