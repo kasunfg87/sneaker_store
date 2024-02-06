@@ -75,28 +75,6 @@ Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
       'categoryName': instance.categoryName,
     };
 
-ConversationModel _$ConversationModelFromJson(Map<String, dynamic> json) =>
-    ConversationModel(
-      json['id'] as String,
-      (json['users'] as List<dynamic>).map((e) => e as String).toList(),
-      (json['userArray'] as List<dynamic>)
-          .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      json['lastMassage'] as String,
-      json['lastMassageTime'] as String,
-      json['createdBy'] as String,
-    );
-
-Map<String, dynamic> _$ConversationModelToJson(ConversationModel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'users': instance.users,
-      'userArray': instance.userArray.map((e) => e.toJson()).toList(),
-      'lastMassage': instance.lastMassage,
-      'lastMassageTime': instance.lastMassageTime,
-      'createdBy': instance.createdBy,
-    };
-
 CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
     CartItemModel(
       id: json['id'] as int,
@@ -130,7 +108,7 @@ Map<String, dynamic> _$SizeModelToJson(SizeModel instance) => <String, dynamic>{
     };
 
 OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
-      orderId: json['orderId'] as int,
+      orderId: json['orderId'] as String,
       cartTotal: (json['cartTotal'] as num).toDouble(),
       delivery: (json['delivery'] as num).toDouble(),
       grandTotal: (json['grandTotal'] as num).toDouble(),

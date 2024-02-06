@@ -18,6 +18,14 @@ class Favourite extends StatefulWidget {
 
 class _FavouriteState extends State<Favourite> {
   @override
+  void initState() {
+    super.initState();
+
+    Provider.of<FavouriteProvider>(context, listen: false)
+        .fetchFavouriteProducts();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kButtonGray,

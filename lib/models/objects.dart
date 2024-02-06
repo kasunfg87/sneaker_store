@@ -7,7 +7,6 @@ part 'product_model.dart';
 part 'user_model.dart';
 part 'favourite_model.dart';
 part 'category_model.dart';
-part 'conversation_models.dart';
 part 'cartItem_model.dart';
 part 'sizes_model.dart';
 part 'order_model.dart';

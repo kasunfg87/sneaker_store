@@ -32,6 +32,7 @@ class AssetConstants {
   static const settingIcon = '${iconPath}setting.svg';
   static const signOutIcon = '${iconPath}exit.svg';
   static const pencilIcon = '${iconPath}pencil.svg';
+  static const orderIcon = '${iconPath}orders.svg';
 
   //------ Image
 

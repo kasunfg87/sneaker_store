@@ -2,7 +2,7 @@ part of 'objects.dart';
 
 @JsonSerializable(explicitToJson: true)
 class OrderModel {
-  final int orderId;
+  final String orderId;
   double cartTotal;
   double delivery;
   double grandTotal;

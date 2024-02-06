@@ -151,7 +151,7 @@ class ProductProvider extends ChangeNotifier {
 
   // ------- variable to store size index
 
-  int _sizeIndex = -1;
+  int _sizeIndex = 0;
 
   // ----- getter for selected index
 

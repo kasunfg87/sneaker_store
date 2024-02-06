@@ -13,6 +13,7 @@ import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 import 'package:sneaker_store/widgets/slidable_cart_tile.dart';
 import 'package:styled_divider/styled_divider.dart';
+import 'package:uuid/uuid.dart';
 import '../../widgets/custom_text_popins.dart';
 
 class MyCart extends StatefulWidget {
@@ -21,6 +22,8 @@ class MyCart extends StatefulWidget {
   @override
   State<MyCart> createState() => _MyCartState();
 }
+
+var uuid = const Uuid();
 
 class _MyCartState extends State<MyCart> {
   @override
@@ -159,11 +162,11 @@ class _MyCartState extends State<MyCart> {
                       Widget,
                       Checkout(
                         orderModel: OrderModel(
-                          orderId: 001,
+                          orderId: uuid.v1(),
                           cartTotal: value.getCartTotal,
-                          delivery: value.getCartTotal * 0.5,
+                          delivery: value.getCartTotal * 0.05,
                           grandTotal:
-                              value.getCartTotal + value.getCartTotal * 0.5,
+                              value.getCartTotal + value.getCartTotal * 0.05,
                           cartItems: value.cartItems,
                           createdBy: FirebaseAuth.instance.currentUser!.uid,
                         ),

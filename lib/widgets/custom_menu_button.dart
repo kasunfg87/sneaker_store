@@ -4,25 +4,23 @@ import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
 
-class CustomMenuButton extends StatelessWidget {
+class CustomMenuButton extends StatefulWidget {
   const CustomMenuButton({
     super.key,
   });
 
   @override
+  State<CustomMenuButton> createState() => _CustomMenuButtonState();
+}
+
+class _CustomMenuButtonState extends State<CustomMenuButton> {
+  @override
   Widget build(BuildContext context) {
-    final zoomDrawer = ZoomDrawer.of(context);
     return InkWell(
       borderRadius: BorderRadius.circular(15),
       splashFactory: InkRipple.splashFactory,
       onTap: () {
-        if (zoomDrawer != null) {
-          if (zoomDrawer.isOpen()) {
-            zoomDrawer.close();
-          } else {
-            zoomDrawer.open();
-          }
-        }
+        ZoomDrawer.of(context)?.toggle();
       },
       child: Material(
         borderRadius: BorderRadius.circular(25),
