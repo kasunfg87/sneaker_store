@@ -12,6 +12,8 @@ import 'package:sneaker_store/widgets/custom_textfield.dart';
 import 'package:sneaker_store/widgets/social_button.dart';
 
 class Register extends StatefulWidget {
+  static String routeName = "/register";
+
   const Register({super.key});
 
   @override

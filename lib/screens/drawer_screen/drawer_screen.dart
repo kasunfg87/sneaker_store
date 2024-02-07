@@ -5,6 +5,7 @@ import 'package:sneaker_store/screens/menu/menu.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 
 class DrawerScreen extends StatefulWidget {
+  static String routeName = "/drawerscreen";
   const DrawerScreen({super.key});
 
   @override

@@ -10,6 +10,8 @@ import 'package:sneaker_store/widgets/product_tile.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 
 class Favourite extends StatefulWidget {
+  static String routeName = "/favourite";
+
   const Favourite({super.key});
 
   @override

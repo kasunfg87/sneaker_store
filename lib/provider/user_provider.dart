@@ -301,8 +301,7 @@ class UserProvider extends ChangeNotifier {
 
           //
 
-          NavigationFunction.navigateTo(
-              BuildContext, context, Widget, const DrawerScreen());
+          Navigator.pushNamed(context, DrawerScreen.routeName);
         });
       }
     });

@@ -20,6 +20,8 @@ import 'package:sneaker_store/widgets/screen_header.dart';
 import 'package:sneaker_store/widgets/shoe_size_widget.dart';
 
 class Details extends StatefulWidget {
+  static String routeName = "/details";
+
   const Details({
     required this.productModel,
     super.key,

@@ -9,6 +9,8 @@ import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 
 class Orders extends StatefulWidget {
+  static String routeName = "/orders";
+
   const Orders({super.key});
 
   @override

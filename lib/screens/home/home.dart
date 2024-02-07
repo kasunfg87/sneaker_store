@@ -17,6 +17,7 @@ import 'package:sneaker_store/utilities/navigation_function.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 
 class Home extends StatefulWidget {
+  static String routeName = "/home";
   const Home({super.key});
 
   @override

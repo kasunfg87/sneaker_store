@@ -9,6 +9,7 @@ import 'package:sneaker_store/provider/favourite_provider.dart';
 import 'package:sneaker_store/provider/order_provider.dart';
 import 'package:sneaker_store/provider/product_provider.dart';
 import 'package:sneaker_store/provider/user_provider.dart';
+import 'package:sneaker_store/routes.dart';
 import 'package:sneaker_store/screens/splash/splash_screen.dart';
 
 void main() async {
@@ -51,7 +52,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      routes: routes,
+      initialRoute: SplashScreen.routeName,
     );
   }
 }

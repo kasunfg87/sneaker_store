@@ -17,6 +17,8 @@ import 'package:uuid/uuid.dart';
 import '../../widgets/custom_text_popins.dart';
 
 class MyCart extends StatefulWidget {
+  static String routeName = "/mycart";
+
   const MyCart({super.key});
 
   @override
