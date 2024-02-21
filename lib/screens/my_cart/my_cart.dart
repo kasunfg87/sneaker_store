@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:short_uuids/short_uuids.dart';
 import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/provider/cart_provider.dart';
 import 'package:sneaker_store/screens/checkout/checkout.dart';
@@ -13,7 +14,6 @@ import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 import 'package:sneaker_store/widgets/slidable_cart_tile.dart';
 import 'package:styled_divider/styled_divider.dart';
-import 'package:uuid/uuid.dart';
 import '../../widgets/custom_text_popins.dart';
 
 class MyCart extends StatefulWidget {
@@ -25,7 +25,7 @@ class MyCart extends StatefulWidget {
   State<MyCart> createState() => _MyCartState();
 }
 
-var uuid = const Uuid();
+const short = ShortUuid();
 
 class _MyCartState extends State<MyCart> {
   @override
@@ -49,7 +49,7 @@ class _MyCartState extends State<MyCart> {
                   iconImage: AssetConstants.bag,
                   onTapLeft: () => Navigator.pop(context),
                   onTapRight: () {},
-                  rightButton: false,
+                  rightIconButton: false,
                 ),
                 const SizedBox(
                   height: 16,
@@ -164,7 +164,7 @@ class _MyCartState extends State<MyCart> {
                       Widget,
                       Checkout(
                         orderModel: OrderModel(
-                          orderId: uuid.v1(),
+                          orderId: short.generate(),
                           cartTotal: value.getCartTotal,
                           delivery: value.getCartTotal * 0.05,
                           grandTotal:

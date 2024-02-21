@@ -48,7 +48,7 @@ class _CheckoutState extends State<Checkout> {
                   iconImage: AssetConstants.bag,
                   onTapRight: () {},
                   onTapLeft: () => Navigator.pop(context),
-                  rightButton: false,
+                  rightIconButton: false,
                 ),
                 Expanded(
                   child: SingleChildScrollView(

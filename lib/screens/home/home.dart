@@ -105,6 +105,7 @@ class _HomeState extends State<Home> {
                       ),
                       IconButton(
                           icon: SvgPicture.asset(
+                            height: 29,
                             AssetConstants.heartLarge,
                             // ignore: deprecated_member_use
                             color: currentIndex == 1
@@ -120,6 +121,7 @@ class _HomeState extends State<Home> {
                       IconButton(
                           icon: SvgPicture.asset(
                             AssetConstants.order,
+                            height: 27,
                             // ignore: deprecated_member_use
                             color: currentIndex == 2
                                 ? AppColors.kLiteBlue

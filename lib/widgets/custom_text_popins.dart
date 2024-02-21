@@ -28,6 +28,7 @@ class CustomTextPopins extends StatelessWidget {
         fontSize: fontSize,
         fontWeight: fontWeight,
       ),
+      overflow: TextOverflow.ellipsis,
       textAlign: textAlign,
     );
   }

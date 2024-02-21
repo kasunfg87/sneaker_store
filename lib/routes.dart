@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:sneaker_store/screens/dashboard/dashboard.dart';
-import 'package:sneaker_store/screens/details/details.dart';
 import 'package:sneaker_store/screens/drawer_screen/drawer_screen.dart';
 import 'package:sneaker_store/screens/favourite/favourite.dart';
 import 'package:sneaker_store/screens/home/home.dart';

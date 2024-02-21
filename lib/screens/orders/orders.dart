@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sneaker_store/provider/order_provider.dart';
-import 'package:sneaker_store/provider/product_provider.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
-import 'package:sneaker_store/utilities/assets_constants.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
+import 'package:sneaker_store/widgets/custom_text_popins.dart';
+import 'package:sneaker_store/widgets/order_tile.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 
 class Orders extends StatefulWidget {
@@ -39,51 +39,35 @@ class _OrdersState extends State<Orders> {
               ),
               ScreenHeader(
                 title: 'Orders',
-                iconImage: AssetConstants.heartEmpty,
+                iconImage: '',
                 onTapLeft: () {},
                 onTapRight: () {},
+                rightTextButton: true,
+                rightButtonText: Provider.of<OrderPrvider>(context)
+                    .allOrders
+                    .length
+                    .toString(),
               ),
               const SizedBox(
-                height: 40,
+                height: 20,
               ),
-              Consumer<OrderPrvider>(
-                builder: (context, value, child) {
-                  return SizedBox(
-                    height: SizeConfig.h(context) * 0.9,
-                    child: ListView.separated(
-                        itemBuilder: (context, index) {
-                          return Container(
-                            child: Column(
-                              children: [
-                                Text(value.allOrders[index].orderId),
-                                SizedBox(
-                                  height: 30,
-                                  child: ListView.separated(
-                                      itemBuilder: (context, index2) =>
-                                          Image.network(
-                                              height: 30,
-                                              value
-                                                  .allOrders[index]
-                                                  .cartItems[index2]
-                                                  .productModel
-                                                  .img),
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                      itemCount: value
-                                          .allOrders[index].cartItems.length),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        separatorBuilder: (context, index) => const SizedBox(
-                              height: 15,
-                            ),
-                        itemCount: value.allOrders.length),
-                  );
-                },
+              SizedBox(
+                height: SizeConfig.h(context) * 0.75,
+                width: SizeConfig.w(context),
+                child: Consumer<OrderPrvider>(
+                  builder: (context, value, child) {
+                    return value.allOrders.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: value.allOrders.length,
+                            itemBuilder: (context, index) {
+                              return OrderTile(
+                                  orderModel: value.allOrders[index]);
+                            },
+                          )
+                        : const Center(
+                            child: CustomTextPopins(text: 'No Orders yet'));
+                  },
+                ),
               )
             ],
           ),
