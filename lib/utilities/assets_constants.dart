@@ -44,6 +44,7 @@ class AssetConstants {
   static const mapImage = '${imagePath}Map.png';
   static const avatar = '${imagePath}avatar.png';
   static const celebrationImage = '${imagePath}celebration.gif';
+  static const shoePlaceHolder = '${imagePath}shoesplaceholder.png';
 
   //-------- Shoes
 

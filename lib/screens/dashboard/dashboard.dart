@@ -17,6 +17,7 @@ import 'package:sneaker_store/widgets/custom_text_popins.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/new_arrival_banner.dart';
 import 'package:sneaker_store/widgets/product_tile.dart';
+import 'package:sneaker_store/widgets/product_tile_placeholder.dart';
 
 class Dashboard extends StatefulWidget {
   static String routeName = "/dashboard";
@@ -163,31 +164,34 @@ class _DashboardState extends State<Dashboard> {
                           physics: const BouncingScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) {
-                            return InkWell(
-                              borderRadius: BorderRadius.circular(16),
-                              onTap: () {
-                                value.setSizeIndex(-1);
-                                value.setProductModel(
-                                  value.filteredProduct.isEmpty
-                                      ? value.allProduct[index]
-                                      : value.filteredProduct[index],
-                                );
-                                NavigationFunction.navigateTo(
-                                    BuildContext,
-                                    context,
-                                    Widget,
-                                    Details(
-                                        productModel: value
-                                                .filteredProduct.isEmpty
+                            return value.isLoading
+                                ? const ProductTilePlaceHolder()
+                                : InkWell(
+                                    borderRadius: BorderRadius.circular(16),
+                                    onTap: () {
+                                      value.setSizeIndex(-1);
+                                      value.setProductModel(
+                                        value.filteredProduct.isEmpty
                                             ? value.allProduct[index]
-                                            : value.filteredProduct[index]));
-                              },
-                              child: ProductTile(
-                                model: value.filteredProduct.isEmpty
-                                    ? value.allProduct[index]
-                                    : value.filteredProduct[index],
-                              ),
-                            );
+                                            : value.filteredProduct[index],
+                                      );
+                                      NavigationFunction.navigateTo(
+                                          BuildContext,
+                                          context,
+                                          Widget,
+                                          Details(
+                                              productModel: value
+                                                      .filteredProduct.isEmpty
+                                                  ? value.allProduct[index]
+                                                  : value
+                                                      .filteredProduct[index]));
+                                    },
+                                    child: ProductTile(
+                                      model: value.filteredProduct.isEmpty
+                                          ? value.allProduct[index]
+                                          : value.filteredProduct[index],
+                                    ),
+                                  );
                           },
                           separatorBuilder: (context, index) => const SizedBox(
                             width: 22,

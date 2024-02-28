@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/provider/product_provider.dart';
 import 'package:sneaker_store/screens/details/details.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
+import 'package:sneaker_store/utilities/assets_constants.dart';
 import 'package:sneaker_store/utilities/navigation_function.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/custom_text_popins.dart';
@@ -63,21 +65,26 @@ class _ProductTileState extends State<ProductTile> {
                       ),
                       Transform.rotate(
                         angle: 50.0,
-                        child: Image.network(widget.model.img),
-                        // child: Image.network(widget.model.img, frameBuilder:
-                        //     (context, child, frame, wasSynchronouslyLoaded) {
-                        //   return child;
-                        // }, loadingBuilder: (context, child, loadingProgress) {
-                        //   if (loadingProgress == null) {
-                        //     return child;
-                        //   } else {
-                        //     return const Center(
-                        //       child: CircularProgressIndicator(
-                        //         color: AppColors.kLiteBlue,
-                        //       ),
-                        //     );
-                        //   }
-                        // }),
+                        child: Image.network(widget.model.img, frameBuilder:
+                            (context, child, frame, wasSynchronouslyLoaded) {
+                          return child;
+                        }, loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return Transform.rotate(
+                              angle: 50.0,
+                              child: Shimmer.fromColors(
+                                baseColor:
+                                    const Color.fromARGB(192, 224, 223, 223),
+                                highlightColor:
+                                    AppColors.kWhite.withOpacity(0.5),
+                                child:
+                                    Image.asset(AssetConstants.shoePlaceHolder),
+                              ),
+                            );
+                          }
+                        }),
                       ),
                     ],
                   ),
