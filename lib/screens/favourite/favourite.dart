@@ -25,6 +25,8 @@ class _FavouriteState extends State<Favourite> {
 
     Provider.of<FavouriteProvider>(context, listen: false)
         .fetchFavouriteProducts();
+    
+    
   }
 
   @override
@@ -55,6 +57,11 @@ class _FavouriteState extends State<Favourite> {
               height: SizeConfig.h(context) * 0.76,
               child:
                   Consumer<ProductProvider>(builder: (context, value, child) {
+                    
+                    //---- filter favourite product 
+                    value.filterProdutsWithID(context);
+
+
                 if (value.isLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else {

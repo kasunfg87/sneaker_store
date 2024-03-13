@@ -1,8 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/breakpoint.dart';
-import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sneaker_store/firebase_options.dart';
 import 'package:sneaker_store/provider/cart_provider.dart';
 import 'package:sneaker_store/provider/favourite_provider.dart';
