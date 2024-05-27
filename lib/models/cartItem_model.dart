@@ -8,12 +8,14 @@ class CartItemModel {
   int amount;
   double subTotal;
   final ProductModel productModel;
+  final String size;
 
   CartItemModel({
     required this.id,
     required this.amount,
     required this.subTotal,
     required this.productModel,
+    required this.size,
   });
 
   factory CartItemModel.fromJson(Map<String, dynamic> json) =>

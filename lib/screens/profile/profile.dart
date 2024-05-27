@@ -11,6 +11,7 @@ import 'package:sneaker_store/widgets/custom_textfield.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 
 class Profile extends StatefulWidget {
+  static String routeName = "/profile";
   const Profile({super.key});
 
   @override
@@ -36,7 +37,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   ScreenHeader(
                       title: 'Profile',
-                      rightButton: false,
+                      rightIconButton: false,
                       iconImage: '',
                       onTapLeft: () => Navigator.pop(context),
                       onTapRight: () {}),

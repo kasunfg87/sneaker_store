@@ -49,24 +49,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'token': instance.token,
     };
 
-EnrolledModel _$EnrolledModelFromJson(Map<String, dynamic> json) =>
-    EnrolledModel(
-      json['course_id'] as int,
-      json['status'] as String,
-      json['user'] == null
-          ? null
-          : UserModel.fromJson(json['user'] as Map<String, dynamic>),
-      json['last_update'] as String,
-    );
-
-Map<String, dynamic> _$EnrolledModelToJson(EnrolledModel instance) =>
-    <String, dynamic>{
-      'course_id': instance.course_id,
-      'status': instance.status,
-      'user': instance.user?.toJson(),
-      'last_update': instance.last_update,
-    };
-
 FavouriteModel _$FavouriteModelFromJson(Map<String, dynamic> json) =>
     FavouriteModel(
       category: json['category'] as String,
@@ -93,47 +75,6 @@ Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
       'categoryName': instance.categoryName,
     };
 
-MessageModel _$MessageModelFromJson(Map<String, dynamic> json) => MessageModel(
-      json['conId'] as String,
-      json['senderName'] as String,
-      json['senderId'] as String,
-      json['receiverId'] as String,
-      json['message'] as String,
-      json['messageTime'] as String,
-    );
-
-Map<String, dynamic> _$MessageModelToJson(MessageModel instance) =>
-    <String, dynamic>{
-      'conId': instance.conId,
-      'senderName': instance.senderName,
-      'senderId': instance.senderId,
-      'receiverId': instance.receiverId,
-      'message': instance.message,
-      'messageTime': instance.messageTime,
-    };
-
-ConversationModel _$ConversationModelFromJson(Map<String, dynamic> json) =>
-    ConversationModel(
-      json['id'] as String,
-      (json['users'] as List<dynamic>).map((e) => e as String).toList(),
-      (json['userArray'] as List<dynamic>)
-          .map((e) => UserModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      json['lastMassage'] as String,
-      json['lastMassageTime'] as String,
-      json['createdBy'] as String,
-    );
-
-Map<String, dynamic> _$ConversationModelToJson(ConversationModel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'users': instance.users,
-      'userArray': instance.userArray.map((e) => e.toJson()).toList(),
-      'lastMassage': instance.lastMassage,
-      'lastMassageTime': instance.lastMassageTime,
-      'createdBy': instance.createdBy,
-    };
-
 CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
     CartItemModel(
       id: json['id'] as int,
@@ -141,6 +82,7 @@ CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
       subTotal: (json['subTotal'] as num).toDouble(),
       productModel:
           ProductModel.fromJson(json['productModel'] as Map<String, dynamic>),
+      size: json['size'] as String,
     );
 
 Map<String, dynamic> _$CartItemModelToJson(CartItemModel instance) =>
@@ -149,6 +91,7 @@ Map<String, dynamic> _$CartItemModelToJson(CartItemModel instance) =>
       'amount': instance.amount,
       'subTotal': instance.subTotal,
       'productModel': instance.productModel.toJson(),
+      'size': instance.size,
     };
 
 SizeModel _$SizeModelFromJson(Map<String, dynamic> json) => SizeModel(
@@ -162,4 +105,25 @@ Map<String, dynamic> _$SizeModelToJson(SizeModel instance) => <String, dynamic>{
       'productId': instance.productId,
       'colors': instance.colors,
       'size': instance.size,
+    };
+
+OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
+      orderId: json['orderId'] as String,
+      cartTotal: (json['cartTotal'] as num).toDouble(),
+      delivery: (json['delivery'] as num).toDouble(),
+      grandTotal: (json['grandTotal'] as num).toDouble(),
+      cartItems: (json['cartItems'] as List<dynamic>)
+          .map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      createdBy: json['createdBy'] as String,
+    );
+
+Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
+    <String, dynamic>{
+      'orderId': instance.orderId,
+      'cartTotal': instance.cartTotal,
+      'delivery': instance.delivery,
+      'grandTotal': instance.grandTotal,
+      'cartItems': instance.cartItems.map((e) => e.toJson()).toList(),
+      'createdBy': instance.createdBy,
     };

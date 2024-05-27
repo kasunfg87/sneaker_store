@@ -1,5 +1,4 @@
 // ignore_for_file: deprecated_member_use
-
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,10 +52,10 @@ class ProductController {
 
       List<ProductModel> list = [];
 
-      // ----- Mapping fetched data to CourseModel and storing them in the courses list
+      // ----- Mapping fetched data to ProductModel and storing them in the courses list
 
       for (var element in snapshot.docs) {
-        // ----- Mapping to a single CourseModel
+        // ----- Mapping to a single ProductModel
 
         ProductModel model =
             ProductModel.fromJson(element.data() as Map<String, dynamic>);
@@ -92,10 +91,10 @@ class ProductController {
 
       List<SizeModel> list = [];
 
-      // ----- Mapping fetched data to CourseModel and storing them in the courses list
+      // ----- Mapping fetched data to ProductModel and storing them in the courses list
 
       for (var element in snapshot.docs) {
-        // ----- Mapping to a single CourseModel
+        // ----- Mapping to a single ProductModel
 
         SizeModel model =
             SizeModel.fromJson(element.data() as Map<String, dynamic>);
@@ -193,20 +192,20 @@ class ProductController {
 
   Future<List<FavouriteModel>> getFavoriteProducts() async {
     try {
-      // ----- Query for fetching bookmarks that belong to the current user
+      // ----- Query for fetching favourite that belong to the current user
 
       QuerySnapshot snapshot = await favourite
-          .where('uid', isEqualTo: FirebaseHelper.auth.currentUser!.uid)
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get();
 
-      // ----- List to store the bookmarks
+      // ----- List to store the favourite
 
       List<FavouriteModel> list = [];
 
-      // ----- Mapping fetched data to BookmarkModel and storing them in the bookmarks list
+      // ----- Mapping fetched data to FavouriteModel and storing them in the favourite list
 
       for (var element in snapshot.docs) {
-        // ----- Mapping to a single BookmarkModel
+        // ----- Mapping to a single FavouriteModel
 
         FavouriteModel model =
             FavouriteModel.fromJson(element.data() as Map<String, dynamic>);
@@ -216,7 +215,7 @@ class ProductController {
         list.add(model);
       }
 
-      // ----- Return the bookmarks list
+      // ----- Return the favourite list
 
       return list;
     } catch (e) {

@@ -6,6 +6,8 @@ import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
 
 class SplashScreen extends StatefulWidget {
+  static String routeName = "/splash";
+
   const SplashScreen({super.key});
 
   @override
@@ -22,10 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // ------ to delay in splach screen and nevigate to walkthrough
 
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const WalkThrough()),
-      );
+      Navigator.pushNamed(context, WalkThrough.routeName);
     });
 
     super.initState();

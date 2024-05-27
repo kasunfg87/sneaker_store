@@ -32,6 +32,7 @@ class AssetConstants {
   static const settingIcon = '${iconPath}setting.svg';
   static const signOutIcon = '${iconPath}exit.svg';
   static const pencilIcon = '${iconPath}pencil.svg';
+  static const orderIcon = '${iconPath}orders.svg';
 
   //------ Image
 
@@ -42,6 +43,8 @@ class AssetConstants {
   static const googleLogo = '${imagePath}google_logo.png';
   static const mapImage = '${imagePath}Map.png';
   static const avatar = '${imagePath}avatar.png';
+  static const celebrationImage = '${imagePath}celebration.gif';
+  static const shoePlaceHolder = '${imagePath}shoesplaceholder.png';
 
   //-------- Shoes
 
@@ -80,5 +83,11 @@ class AssetConstants {
   static List<String> addressList = [
     '21/115B , Anagarika Dharmapala Rd',
     'Mohotti Watta Akmeemana,Galle.'
+  ];
+
+  //------ Payment List
+
+  static List<String> paymentList = [
+    'Visa - xxxx xxxx 1270 1795',
   ];
 }

@@ -33,7 +33,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     height: 40,
                   ),
                   ScreenHeader(
-                      rightButton: false,
+                      rightIconButton: false,
                       title: 'Search Products',
                       iconImage: AssetConstants.bag,
                       onTapLeft: () => Navigator.pop(context),

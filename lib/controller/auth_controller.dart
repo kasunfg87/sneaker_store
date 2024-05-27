@@ -26,15 +26,10 @@ class AuthController {
 
   //-------- Signup function
 
-  Future<void> registerUser(
-    BuildContext context,
-    String email,
-    String password,
-    String fullName,
-  ) async {
+  Future<void> registerUser(BuildContext context, String email, String password,
+      String fullName) async {
     try {
       //----send email and password to Firebase and create a user
-
       await auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) async {
@@ -43,17 +38,8 @@ class AuthController {
         if (value.user != null) {
           //---save other user data in Cloud Firestore
 
-          await saveUserData(UserModel(
-            value.user!.uid,
-            fullName,
-            email,
-            '',
-            '',
-            AssetConstants.avatar,
-            DateTime.now().toString(),
-            true,
-            '',
-          ));
+          await saveUserData(UserModel(value.user!.uid, fullName, email, '', '',
+              AssetConstants.avatar, DateTime.now().toString(), true, ''));
 
           // If user created successfully, show an alert
 
@@ -112,10 +98,7 @@ class AuthController {
   //------sign in user function
 
   Future<void> signInUser(
-    BuildContext context,
-    String email,
-    String password,
-  ) async {
+      BuildContext context, String email, String password) async {
     try {
       //----send email and password to Firebase and check if the user exists or not
 
@@ -158,7 +141,7 @@ class AuthController {
         .then((value) {
       //--show a dialog when the email is sent
 
-      AlertHelper.showAlert(context, DialogType.SUCCES, "Email Sent !",
+      AlertHelper.showAlert(context, DialogType.success, "Email Sent !",
           "Please check your inbox !");
     });
   }
@@ -192,8 +175,6 @@ class AuthController {
       Logger().e(e);
 
       return "";
-
-      // AlertHelper.showAlert(context, DialogType.ERROR, "ERROR", e.toString());
     }
   }
 

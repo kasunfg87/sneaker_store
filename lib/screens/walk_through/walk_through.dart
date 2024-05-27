@@ -4,12 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:sneaker_store/screens/sign_in/sign_in.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
-import 'package:sneaker_store/utilities/navigation_function.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/get_started_button.dart';
 
 class WalkThrough extends StatefulWidget {
+  static String routeName = "/walkthrough";
+
   const WalkThrough({super.key});
 
   @override
@@ -111,8 +112,8 @@ class _WalkThroughState extends State<WalkThrough> {
                             // ),
                             GetStartedButton(onTap: () {
                               index == 0
-                                  ? NavigationFunction.navigateTo(BuildContext,
-                                      context, Widget, const SignIn())
+                                  ? Navigator.pushNamed(
+                                      context, SignIn.routeName)
                                   : controller.animateToPage(index + 1,
                                       duration:
                                           const Duration(milliseconds: 300),

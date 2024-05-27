@@ -11,10 +11,12 @@ class ScreenHeader extends StatelessWidget {
     required this.iconImage,
     required this.onTapRight,
     required this.onTapLeft,
-    this.rightButton = true,
+    this.rightIconButton = true,
+    this.rightTextButton = false,
     this.showBadge = false,
     this.badgeText = '0',
     this.backButton = true,
+    this.rightButtonText = '0',
     super.key,
   });
 
@@ -22,10 +24,12 @@ class ScreenHeader extends StatelessWidget {
   final String iconImage;
   final Function() onTapRight;
   final Function() onTapLeft;
-  final bool rightButton;
+  final bool rightIconButton;
   final bool showBadge;
   final String badgeText;
   final bool backButton;
+  final bool rightTextButton;
+  final String rightButtonText;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +65,7 @@ class ScreenHeader extends StatelessWidget {
           fontColor: AppColors.kBlack,
           fontWeight: FontWeight.w600,
         ),
-        rightButton
+        rightIconButton
             ? Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: InkWell(
@@ -89,12 +93,20 @@ class ScreenHeader extends StatelessWidget {
                             color: AppColors.kWhite,
                             shape: BoxShape.circle,
                           ),
-                          child: SvgPicture.asset(iconImage)),
+                          child: rightTextButton
+                              ? Center(
+                                  child: CustomTextPopins(
+                                  text: rightButtonText,
+                                  fontColor: AppColors.kBlack,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ))
+                              : SvgPicture.asset(iconImage)),
                     ),
                   ),
                 ),
               )
-            : const SizedBox()
+            : const SizedBox(),
       ],
     );
   }

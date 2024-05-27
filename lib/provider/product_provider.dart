@@ -116,7 +116,7 @@ class ProductProvider extends ChangeNotifier {
 
   void setLoading(bool val) {
     _isLoading = val;
-    // notifyListeners();
+    notifyListeners();
   }
 
   // ----- product model for to store selected product data
@@ -151,7 +151,7 @@ class ProductProvider extends ChangeNotifier {
 
   // ------- variable to store size index
 
-  int _sizeIndex = -1;
+  int _sizeIndex = 0;
 
   // ----- getter for selected index
 
@@ -232,12 +232,15 @@ class ProductProvider extends ChangeNotifier {
 
   Future<void> fetchProducts() async {
     try {
-      // ----- start fetching products
-
+      setLoading(true);
+      // ----- start fetching product
       _allProduct = await ProductController().getProducts();
+
+      setLoading(false);
 
       notifyListeners();
     } catch (e) {
+      setLoading(false);
       Logger().e(e);
     }
   }

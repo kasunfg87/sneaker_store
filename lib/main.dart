@@ -1,13 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:responsive_framework/breakpoint.dart';
-import 'package:responsive_framework/responsive_breakpoints.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sneaker_store/firebase_options.dart';
 import 'package:sneaker_store/provider/cart_provider.dart';
 import 'package:sneaker_store/provider/favourite_provider.dart';
+import 'package:sneaker_store/provider/order_provider.dart';
 import 'package:sneaker_store/provider/product_provider.dart';
 import 'package:sneaker_store/provider/user_provider.dart';
+import 'package:sneaker_store/routes.dart';
 import 'package:sneaker_store/screens/splash/splash_screen.dart';
 
 void main() async {
@@ -22,6 +23,7 @@ void main() async {
         ChangeNotifierProvider(create: ((context) => ProductProvider())),
         ChangeNotifierProvider(create: ((context) => FavouriteProvider())),
         ChangeNotifierProvider(create: ((context) => CartProvider())),
+        ChangeNotifierProvider(create: ((context) => OrderPrvider())),
       ],
       child: const MyApp(),
     ),
@@ -49,7 +51,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      routes: routes,
+      initialRoute: SplashScreen.routeName,
     );
   }
 }

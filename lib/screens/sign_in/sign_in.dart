@@ -13,6 +13,7 @@ import 'package:sneaker_store/widgets/custom_textfield.dart';
 import 'package:sneaker_store/widgets/social_button.dart';
 
 class SignIn extends StatefulWidget {
+  static String routeName = "/signin";
   const SignIn({super.key});
 
   @override

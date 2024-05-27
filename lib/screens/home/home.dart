@@ -7,6 +7,7 @@ import 'package:sneaker_store/provider/cart_provider.dart';
 import 'package:sneaker_store/screens/dashboard/dashboard.dart';
 import 'package:sneaker_store/screens/favourite/favourite.dart';
 import 'package:sneaker_store/screens/my_cart/my_cart.dart';
+import 'package:sneaker_store/screens/orders/orders.dart';
 import 'package:sneaker_store/screens/profile/profile.dart';
 import 'package:sneaker_store/utilities/alert_helper.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
@@ -16,6 +17,7 @@ import 'package:sneaker_store/utilities/navigation_function.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 
 class Home extends StatefulWidget {
+  static String routeName = "/home";
   const Home({super.key});
 
   @override
@@ -41,7 +43,7 @@ class _HomeState extends State<Home> {
   List<Widget> screens = [
     const Dashboard(),
     const Favourite(),
-    const Dashboard(),
+    const Orders(),
     const Profile(),
   ];
 
@@ -103,6 +105,7 @@ class _HomeState extends State<Home> {
                       ),
                       IconButton(
                           icon: SvgPicture.asset(
+                            height: 29,
                             AssetConstants.heartLarge,
                             // ignore: deprecated_member_use
                             color: currentIndex == 1
@@ -117,7 +120,8 @@ class _HomeState extends State<Home> {
                       ),
                       IconButton(
                           icon: SvgPicture.asset(
-                            AssetConstants.bell,
+                            AssetConstants.order,
+                            height: 27,
                             // ignore: deprecated_member_use
                             color: currentIndex == 2
                                 ? AppColors.kLiteBlue
