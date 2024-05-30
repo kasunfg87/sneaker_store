@@ -1,9 +1,9 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
-import 'package:sneaker_store/provider/cart_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/dashboard/dashboard.dart';
 import 'package:sneaker_store/screens/favourite/favourite.dart';
 import 'package:sneaker_store/screens/my_cart/my_cart.dart';
@@ -16,15 +16,15 @@ import 'package:sneaker_store/utilities/bnb_custom_point.dart';
 import 'package:sneaker_store/utilities/navigation_function.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerStatefulWidget {
   static String routeName = "/home";
   const Home({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  ConsumerState<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends ConsumerState<Home> {
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -74,11 +74,9 @@ class _HomeState extends State<Home> {
                         elevation: 2,
                         child: SvgPicture.asset(AssetConstants.bagLarge),
                         onPressed: () {
-                          Provider.of<CartProvider>(context, listen: false)
-                                  .cartItems
-                                  .isNotEmpty
-                              ? NavigationFunction.navigateTo(
-                                  BuildContext, context, Widget, const MyCart())
+                          ref.read(cartRiverPod).cartItems.isNotEmpty
+                              ? CustomNavigator.navigateTo(
+                                  context, const MyCart())
                               : AlertHelper.showSanckBar(
                                   context,
                                   'Your Cart Is Currently Empty!',

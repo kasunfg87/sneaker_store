@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/cart_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/custom_text_popins.dart';
 
-class CartTile extends StatelessWidget {
+class CartTile extends ConsumerWidget {
   const CartTile({super.key, required this.model});
   final CartItemModel model;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
         margin: const EdgeInsets.symmetric(horizontal: 30),
         width: SizeConfig.w(context),
@@ -57,9 +56,8 @@ class CartTile extends StatelessWidget {
                       children: [
                         InkWell(
                             onTap: () {
-                              Provider.of<CartProvider>(context, listen: false)
-                                  .decreaseCartItemQty(
-                                      model.productModel, context);
+                              ref.read(cartRiverPod).decreaseCartItemQty(
+                                  model.productModel, context);
                             },
                             child: const Icon(Icons.remove)),
                         const SizedBox(
@@ -74,7 +72,8 @@ class CartTile extends StatelessWidget {
                         ),
                         InkWell(
                             onTap: () {
-                              Provider.of<CartProvider>(context, listen: false)
+                              ref
+                                  .read(cartRiverPod)
                                   .increaseCartItemQty(model.productModel);
                             },
                             child: const Icon(Icons.add))
@@ -89,7 +88,8 @@ class CartTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () => Provider.of<CartProvider>(context, listen: false)
+                  onTap: () => ref
+                      .read(cartRiverPod)
                       .removeCartItem(model.productModel.productId, context),
                   child: const Icon(
                     Icons.close,

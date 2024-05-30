@@ -9,20 +9,21 @@ class CartProvider extends ChangeNotifier {
 
   int get counter => _counter;
 
+  // Increase the counter value
   void increaseCounter() {
     _counter++;
-
     notifyListeners();
   }
 
+  // Decrease the counter value
   void decreaseCounter() {
     if (_counter != 1) {
       _counter--;
     }
-
     notifyListeners();
   }
 
+  // Reset the counter to 1
   void clearCounter() {
     _counter = 1;
   }
@@ -31,114 +32,107 @@ class CartProvider extends ChangeNotifier {
 
   List<CartItemModel> get cartItems => _cartItems;
 
+  // Add a product to the cart
   void addToCart(ProductModel productModel, BuildContext context, String size) {
-    // ignore: unrelated_type_equality_checks
-
+    // Check if the product is already in the cart
     if (_cartItems.any((element) => element.id == productModel.productId)) {
+      // Increase quantity if the product is already in the cart
       increaseCartItemQty(productModel);
-
       calculateSubTotal(productModel);
-
       AlertHelper.showSanckBar(
           context, 'Increased product amount!', AnimatedSnackBarType.success);
     } else {
+      // Add new product to the cart
       _cartItems.add(CartItemModel(
-          id: productModel.productId,
-          amount: _counter,
-          subTotal: _counter * double.parse(productModel.price.toString()),
-          productModel: productModel,
-          size: size));
-
+        id: productModel.productId,
+        amount: _counter,
+        subTotal: _counter * double.parse(productModel.price.toString()),
+        productModel: productModel,
+        size: size,
+      ));
       AlertHelper.showSanckBar(
           context, 'Added to the cart', AnimatedSnackBarType.success);
     }
 
     Logger().w(_cartItems.length);
 
+    // Clear the counter after adding to the cart
     clearCounter();
-
     notifyListeners();
   }
 
-  // -----calculate subtotal
-
+  // Calculate subtotal for a cart item
   void calculateSubTotal(ProductModel model) {
-    // -----calculate cart item subtotal with apdated amount
-    _cartItems
-        .singleWhere((element) => element.id == model.productId)
-        .subTotal = _cartItems
-            .singleWhere((element) => element.id == model.productId)
-            .amount *
-        model.price;
+    var item =
+        _cartItems.singleWhere((element) => element.id == model.productId);
+    item.subTotal = item.amount * model.price;
     notifyListeners();
   }
 
+  // Increase the quantity of a specific cart item
   void increaseCartItemQty(ProductModel model) {
     int productId = model.productId;
 
-    for (int i = 0; i < _cartItems.length; i++) {
-      if (_cartItems[i].id == productId) {
-        _cartItems[i].amount++;
+    for (var item in _cartItems) {
+      if (item.id == productId) {
+        item.amount++;
         calculateSubTotal(model);
-        break; // exit the loop after updating the item
+        break; // Exit the loop after updating the item
       }
     }
 
     Logger().d(cartItems.where((element) => element.id == productId).toList());
-
     notifyListeners();
   }
 
+  // Decrease the quantity of a specific cart item
   void decreaseCartItemQty(ProductModel model, BuildContext context) {
     int productId = model.productId;
 
-    for (int i = 0; i < _cartItems.length; i++) {
-      if (_cartItems[i].id == productId) {
-        if (_cartItems[i].amount == 1) {
+    for (var item in _cartItems) {
+      if (item.id == productId) {
+        if (item.amount == 1) {
           removeCartItem(productId, context);
         } else {
-          _cartItems[i].amount--;
+          item.amount--;
           calculateSubTotal(model);
         }
-        break; // exit the loop after processing the item
+        break; // Exit the loop after processing the item
       }
     }
 
     notifyListeners();
   }
 
+  // Remove a cart item by its ID
   void removeCartItem(int id, BuildContext context) {
     _cartItems.removeWhere((element) => element.id == id);
-
     AlertHelper.showSanckBar(
         context, 'Removed from the cart', AnimatedSnackBarType.error);
-
     notifyListeners();
   }
 
+  // Get the total cost of items in the cart
   double get getCartTotal {
-    double temp = 0;
-
+    double total = 0;
     for (var item in _cartItems) {
-      temp += item.subTotal;
+      total += item.subTotal;
     }
-
-    return temp;
+    return total;
   }
 
+  // Get the total count of items in the cart
   int get getCartTotalItemCount {
-    int temp = 0;
-
+    int totalCount = 0;
     for (var item in _cartItems) {
-      temp += item.amount;
+      totalCount += item.amount;
     }
-
-    return temp;
+    return totalCount;
   }
 
+  // Clear all items in the cart
   void clearCart() {
     _cartItems.clear();
-
     notifyListeners();
   }
 }

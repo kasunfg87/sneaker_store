@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/user_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/utilities/alert_helper.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
@@ -14,7 +14,7 @@ import 'package:sneaker_store/widgets/custom_textfield_chekout.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 import 'package:styled_divider/styled_divider.dart';
 
-class Checkout extends StatefulWidget {
+class Checkout extends ConsumerStatefulWidget {
   const Checkout({
     required this.orderModel,
     super.key,
@@ -23,10 +23,10 @@ class Checkout extends StatefulWidget {
   final OrderModel orderModel;
 
   @override
-  State<Checkout> createState() => _CheckoutState();
+  ConsumerState<Checkout> createState() => _CheckoutState();
 }
 
-class _CheckoutState extends State<Checkout> {
+class _CheckoutState extends ConsumerState<Checkout> {
   String dropdownValue = AssetConstants.addressList.first;
   String paymentDropdownValue = AssetConstants.paymentList.first;
   @override
@@ -65,107 +65,108 @@ class _CheckoutState extends State<Checkout> {
                             decoration: BoxDecoration(
                                 color: AppColors.kWhite,
                                 borderRadius: BorderRadius.circular(16)),
-                            child: Consumer<UserProvider>(
-                              builder: (context, value, child) {
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const CustomTextRaleway(
-                                      text: 'Contact Information',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    CustomTextfieldCheckout(
-                                      icon: AssetConstants.email,
-                                      bottomText: 'Email',
-                                      controller: TextEditingController(
-                                          text: value.userModel!.email),
-                                    ),
-                                    CustomTextfieldCheckout(
-                                      icon: AssetConstants.call,
-                                      bottomText: 'Phone',
-                                      controller: TextEditingController(
-                                          text: value.userModel!.mobileNo),
-                                      textOnTap: () {},
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                    const CustomTextRaleway(
-                                      text: 'Address',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    DropdownButton<String>(
-                                      isDense: false,
-                                      isExpanded: true,
-                                      value: dropdownValue,
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 12,
-                                          color: AppColors.kLiteBlack),
-                                      onChanged: (String? value) {
-                                        // This is called when the user selects an item.
-                                        setState(() {
-                                          dropdownValue = value!;
-                                        });
-                                      },
-                                      items: AssetConstants.addressList
-                                          .map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Container(
-                                      height: 101,
-                                      decoration: BoxDecoration(
-                                          color: AppColors.kLiteBlue,
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          image: const DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: AssetImage(
-                                                  AssetConstants.mapImage))),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    const CustomTextRaleway(
-                                      text: 'Payment Method',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    DropdownButton<String>(
-                                      isDense: false,
-                                      isExpanded: true,
-                                      value: paymentDropdownValue,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                        color: AppColors.kLiteBlack,
-                                      ),
-                                      onChanged: (String? value) {
-                                        // This is called when the user selects an item.
-                                        setState(() {
-                                          paymentDropdownValue = value!;
-                                        });
-                                      },
-                                      items: AssetConstants.paymentList
-                                          .map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(value),
-                                        );
-                                      }).toList(),
-                                    ),
-                                  ],
-                                );
-                              },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const CustomTextRaleway(
+                                  text: 'Contact Information',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                CustomTextfieldCheckout(
+                                  icon: AssetConstants.email,
+                                  bottomText: 'Email',
+                                  controller: TextEditingController(
+                                      text: ref
+                                          .read(userRiverPod)
+                                          .userModel!
+                                          .email),
+                                ),
+                                CustomTextfieldCheckout(
+                                  icon: AssetConstants.call,
+                                  bottomText: 'Phone',
+                                  controller: TextEditingController(
+                                      text: ref
+                                          .read(userRiverPod)
+                                          .userModel!
+                                          .mobileNo),
+                                  textOnTap: () {},
+                                ),
+                                const SizedBox(
+                                  height: 12,
+                                ),
+                                const CustomTextRaleway(
+                                  text: 'Address',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                DropdownButton<String>(
+                                  isDense: false,
+                                  isExpanded: true,
+                                  value: dropdownValue,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 12,
+                                      color: AppColors.kLiteBlack),
+                                  onChanged: (String? value) {
+                                    // This is called when the user selects an item.
+                                    setState(() {
+                                      dropdownValue = value!;
+                                    });
+                                  },
+                                  items: AssetConstants.addressList
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  height: 101,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.kLiteBlue,
+                                      borderRadius: BorderRadius.circular(16),
+                                      image: const DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage(
+                                              AssetConstants.mapImage))),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const CustomTextRaleway(
+                                  text: 'Payment Method',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                DropdownButton<String>(
+                                  isDense: false,
+                                  isExpanded: true,
+                                  value: paymentDropdownValue,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    color: AppColors.kLiteBlack,
+                                  ),
+                                  onChanged: (String? value) {
+                                    // This is called when the user selects an item.
+                                    setState(() {
+                                      paymentDropdownValue = value!;
+                                    });
+                                  },
+                                  items: AssetConstants.paymentList
+                                      .map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
                             ))
                       ],
                     ),
@@ -248,7 +249,7 @@ class _CheckoutState extends State<Checkout> {
               CustomButton(
                   buttonText: 'Checkout',
                   onTap: () {
-                    AlertHelper.openDialog(context, widget.orderModel);
+                    AlertHelper.openDialog(context, widget.orderModel, ref);
                   })
             ],
           ),

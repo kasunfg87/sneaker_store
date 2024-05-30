@@ -3,10 +3,9 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/cart_provider.dart';
-import 'package:sneaker_store/provider/order_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/home/home.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
@@ -38,7 +37,8 @@ class AlertHelper {
     ).show(context);
   }
 
-  static Future openDialog(BuildContext context, OrderModel orderModel) =>
+  static Future openDialog(
+          BuildContext context, OrderModel orderModel, WidgetRef ref) =>
       showDialog(
         context: context,
         builder: (context) => ZoomIn(
@@ -72,20 +72,17 @@ class AlertHelper {
                   buttonText: 'Back To Shopping',
                   onTap: () {
                     //---- Save orders to firestore DB
-                    Provider.of<OrderPrvider>(context, listen: false)
-                        .saveOrderData(orderModel);
+                    ref.read(orderRiverPod).saveOrderData(orderModel);
 
                     //---- Clear cart after save orders
-                    Provider.of<CartProvider>(context, listen: false)
-                        .cartItems
-                        .clear();
+                    ref.read(cartRiverPod).cartItems.clear();
                     //---- Fetch orders
-                    Provider.of<OrderPrvider>(context, listen: false)
+                    ref
+                        .read(orderRiverPod)
                         .fetchOrders(FirebaseAuth.instance.currentUser!.uid);
 
                     // Navigator.of(context).pop();
-                    NavigationFunction.navigateTo(
-                        BuildContext, context, Widget, const Home());
+                    CustomNavigator.navigateTo(context, const Home());
                   })
             ],
           ),

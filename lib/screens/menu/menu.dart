@@ -1,9 +1,8 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/controller/auth_controller.dart';
-import 'package:sneaker_store/provider/cart_provider.dart';
-import 'package:sneaker_store/provider/user_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/my_cart/my_cart.dart';
 import 'package:sneaker_store/screens/profile/profile.dart';
 import 'package:sneaker_store/screens/sign_in/sign_in.dart';
@@ -16,14 +15,14 @@ import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/menu_tabs.dart';
 import 'package:styled_divider/styled_divider.dart';
 
-class MenuScreen extends StatefulWidget {
+class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({super.key});
 
   @override
-  State<MenuScreen> createState() => _MenuScreenState();
+  ConsumerState<MenuScreen> createState() => _MenuScreenState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
+class _MenuScreenState extends ConsumerState<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,13 +43,13 @@ class _MenuScreenState extends State<MenuScreen> {
               backgroundColor: Colors.transparent,
               radius: 65,
               backgroundImage: NetworkImage(
-                  Provider.of<UserProvider>(context).userModel!.img.toString()),
+                  ref.watch(userRiverPod).userModel!.img.toString()),
             ),
             const SizedBox(
               height: 15,
             ),
             CustomTextRaleway(
-              text: Provider.of<UserProvider>(context).userModel!.fullName,
+              text: ref.watch(userRiverPod).userModel!.fullName,
               fontSize: 20,
               fontColor: AppColors.kButtonGray,
               fontWeight: FontWeight.w400,
@@ -62,8 +61,7 @@ class _MenuScreenState extends State<MenuScreen> {
               buttonText: 'Profile',
               iconImage: AssetConstants.profile,
               ontap: () {
-                NavigationFunction.navigateTo(
-                    BuildContext, context, Widget, const Profile());
+                CustomNavigator.navigateTo(context, const Profile());
               },
             ),
             const SizedBox(
@@ -73,11 +71,8 @@ class _MenuScreenState extends State<MenuScreen> {
               buttonText: 'My Cart',
               iconImage: AssetConstants.bagLarge,
               ontap: () {
-                Provider.of<CartProvider>(context, listen: false)
-                        .cartItems
-                        .isNotEmpty
-                    ? NavigationFunction.navigateTo(
-                        BuildContext, context, Widget, const MyCart())
+                ref.read(cartRiverPod).cartItems.isNotEmpty
+                    ? CustomNavigator.navigateTo(context, const MyCart())
                     : AlertHelper.showSanckBar(
                         context,
                         'Your Cart Is Currently Empty!',
@@ -134,9 +129,8 @@ class _MenuScreenState extends State<MenuScreen> {
               buttonText: 'Sign Out',
               iconImage: AssetConstants.signOutIcon,
               ontap: () {
-                AuthController().logOut(context).whenComplete(() =>
-                    NavigationFunction.navigateTo(
-                        BuildContext, context, Widget, const SignIn()));
+                AuthController().logOut(context).whenComplete(
+                    () => CustomNavigator.navigateTo(context, const SignIn()));
               },
             ),
           ],

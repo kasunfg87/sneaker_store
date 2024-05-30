@@ -1,27 +1,26 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sneaker_store/provider/order_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/custom_text_popins.dart';
 import 'package:sneaker_store/widgets/order_tile.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 
-class Orders extends StatefulWidget {
+class Orders extends ConsumerStatefulWidget {
   static String routeName = "/orders";
 
   const Orders({super.key});
 
   @override
-  State<Orders> createState() => _OrdersState();
+  ConsumerState<Orders> createState() => _OrdersState();
 }
 
-class _OrdersState extends State<Orders> {
+class _OrdersState extends ConsumerState<Orders> {
   @override
   void initState() {
-    Provider.of<OrderPrvider>(context, listen: false)
-        .fetchOrders(FirebaseAuth.instance.currentUser!.uid);
+    ref.read(orderRiverPod).fetchOrders(FirebaseAuth.instance.currentUser!.uid);
     super.initState();
   }
 
@@ -43,10 +42,8 @@ class _OrdersState extends State<Orders> {
                 onTapLeft: () {},
                 onTapRight: () {},
                 rightTextButton: true,
-                rightButtonText: Provider.of<OrderPrvider>(context)
-                    .allOrders
-                    .length
-                    .toString(),
+                rightButtonText:
+                    ref.read(orderRiverPod).allOrders.length.toString(),
               ),
               const SizedBox(
                 height: 20,
@@ -54,20 +51,17 @@ class _OrdersState extends State<Orders> {
               SizedBox(
                 height: SizeConfig.h(context) * 0.75,
                 width: SizeConfig.w(context),
-                child: Consumer<OrderPrvider>(
-                  builder: (context, value, child) {
-                    return value.allOrders.isNotEmpty
-                        ? ListView.builder(
-                            itemCount: value.allOrders.length,
-                            itemBuilder: (context, index) {
-                              return OrderTile(
-                                  orderModel: value.allOrders[index]);
-                            },
-                          )
-                        : const Center(
-                            child: CustomTextPopins(text: 'No Orders yet'));
-                  },
-                ),
+                child: ref.watch(orderRiverPod).allOrders.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: ref.watch(orderRiverPod).allOrders.length,
+                        itemBuilder: (context, index) {
+                          return OrderTile(
+                              orderModel:
+                                  ref.watch(orderRiverPod).allOrders[index]);
+                        },
+                      )
+                    : const Center(
+                        child: CustomTextPopins(text: 'No Orders yet')),
               )
             ],
           ),

@@ -4,12 +4,10 @@ import 'dart:io';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 import 'package:sneaker_store/controller/auth_controller.dart';
-import 'package:sneaker_store/provider/favourite_provider.dart';
-import 'package:sneaker_store/provider/product_provider.dart';
 import 'package:sneaker_store/screens/drawer_screen/drawer_screen.dart';
 import 'package:sneaker_store/screens/sign_in/sign_in.dart';
 import 'package:sneaker_store/utilities/alert_helper.dart';
@@ -19,287 +17,199 @@ import 'package:sneaker_store/utilities/navigation_function.dart';
 import '../models/objects.dart';
 
 class UserProvider extends ChangeNotifier {
-  //---------------- controllers
-
+  // Controllers for various user inputs
   final AuthController _authController = AuthController();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _mobileController = TextEditingController();
 
-  // ----- store firebase user
-
+  // Firebase user and user model
   User? _firebaseUser;
-
-  // ----- getter for firebase user
-
-  User? get firebaseUser => _firebaseUser;
-
-  //----- user model
-
   UserModel? _userModel;
 
-  //-------get user model
-
-  UserModel? get userModel => _userModel;
-
-  // ----- first name controller
-
-  final _fullNameController = TextEditingController();
-
-  // ----- get full name controller
-
-  TextEditingController get fullNameController => _fullNameController;
-
-  // ----- email controller
-
-  final _emailController = TextEditingController();
-
-  // ----- get email controller
-
-  TextEditingController get emailController => _emailController;
-
-  // ----- password controller
-
-  final _passwordController = TextEditingController();
-
-  // ----- get password controller
-
-  TextEditingController get passwordController => _passwordController;
-
-  // ----- confirm password controller
-
-  final _confirmPasswordController = TextEditingController();
-
-  // ----- get confirm password controller
-
-  TextEditingController get confirmPasswordController =>
-      _confirmPasswordController;
-
-// ----- location controller
-
-  final _locationController = TextEditingController();
-
-  // ----- get location controller
-
-  TextEditingController get locationController => _locationController;
-
-  // ------ mobile number controller
-
-  final _mobileController = TextEditingController();
-
-  // ----- get location controller
-
-  TextEditingController get mobileController => _mobileController;
-
-  //---- loading state
-
+  // Loading state
   bool _isLoading = false;
 
-  // ----- get loading state
+  // Image picker instance and file
+  final ImagePicker _picker = ImagePicker();
+  File _image = File("");
 
+  // Getters
+  User? get firebaseUser => _firebaseUser;
+  UserModel? get userModel => _userModel;
+  TextEditingController get fullNameController => _fullNameController;
+  TextEditingController get emailController => _emailController;
+  TextEditingController get passwordController => _passwordController;
+  TextEditingController get confirmPasswordController =>
+      _confirmPasswordController;
+  TextEditingController get locationController => _locationController;
+  TextEditingController get mobileController => _mobileController;
   bool get isLoading => _isLoading;
+  File get getImage => _image;
 
-  // -----chage loading state
-
+  // Set loading state and notify listeners
   void setLoading(bool val) {
     _isLoading = val;
-
     notifyListeners();
   }
 
+  // Clear text controllers
   void clearTextController() {
     _fullNameController.clear();
-
     _emailController.clear();
-
     _passwordController.clear();
-
-    _confirmPasswordController.clear;
-
+    _confirmPasswordController.clear();
     notifyListeners();
   }
 
-  // --- signup details validation
-
+  // Validate signup fields
   bool signUpFieldsValidate(BuildContext context) {
     if (_fullNameController.text.isEmpty ||
         _emailController.text.isEmpty ||
         _passwordController.text.isEmpty) {
-      AlertHelper.showSanckBar(context, 'Empty fields are not allowed !',
-          AnimatedSnackBarType.error);
-
+      AlertHelper.showSanckBar(
+          context, 'Empty fields are not allowed!', AnimatedSnackBarType.error);
       return false;
     } else if (!_emailController.text.contains('@')) {
       AlertHelper.showSanckBar(
-          context, 'Plese enter valid email !', AnimatedSnackBarType.error);
-
+          context, 'Please enter a valid email!', AnimatedSnackBarType.error);
       return false;
     } else if (_passwordController.text.length < 6) {
       AlertHelper.showSanckBar(
           context,
-          'Password must have more then 6 digits !',
+          'Password must have more than 6 characters!',
           AnimatedSnackBarType.error);
-
       return false;
     } else {
       return true;
     }
   }
 
-  // --- login details validation
-
+  // Validate login fields
   bool signInFieldsValidate(BuildContext context) {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      AlertHelper.showSanckBar(context, 'Empty fields are not allowed !',
-          AnimatedSnackBarType.error);
-
+      AlertHelper.showSanckBar(
+          context, 'Empty fields are not allowed!', AnimatedSnackBarType.error);
       return false;
     } else if (!_emailController.text.contains('@')) {
       AlertHelper.showSanckBar(
-          context, 'Plese enter valid email !', AnimatedSnackBarType.error);
-
+          context, 'Please enter a valid email!', AnimatedSnackBarType.error);
       return false;
     } else if (_passwordController.text.length < 6) {
       AlertHelper.showSanckBar(
           context,
-          'Password must have more then 6 digits !',
+          'Password must have more than 6 characters!',
           AnimatedSnackBarType.error);
-
       return false;
     } else {
       return true;
     }
   }
 
-  // --- forgot password details validation
-
+  // Validate forgot password fields
   bool forgotPasswordFieldsValidate(BuildContext context) {
     if (_emailController.text.isEmpty) {
-      AlertHelper.showSanckBar(context, 'Empty fields are not allowed !',
-          AnimatedSnackBarType.error);
-
+      AlertHelper.showSanckBar(
+          context, 'Empty fields are not allowed!', AnimatedSnackBarType.error);
       return false;
     } else if (!_emailController.text.contains('@')) {
       AlertHelper.showSanckBar(
-          context, 'Plese enter valid email !', AnimatedSnackBarType.error);
-
+          context, 'Please enter a valid email!', AnimatedSnackBarType.error);
       return false;
     } else {
       return true;
     }
   }
 
-  // ----- start signup process
-
+  // Start signup process
   Future<void> startSignUp(BuildContext context) async {
     try {
       setLoading(true);
-
-      await AuthController().registerUser(
+      await _authController.registerUser(
         context,
         _emailController.text,
         _passwordController.text,
         _fullNameController.text,
       );
-
       clearTextController();
-
       setLoading(false);
     } catch (e) {
       setLoading(false);
-
       AlertHelper.showSanckBar(
-          context, e.toString(), AnimatedSnackBarType.success);
+          context, e.toString(), AnimatedSnackBarType.error);
     }
   }
 
-  // ----- start sign in process
-
+  // Start login process
   Future<void> startLogin(BuildContext context) async {
     try {
       if (signInFieldsValidate(context)) {
         showDialog(
-            context: context,
-            builder: (contex) {
-              return const Center(
-                  child: CircularProgressIndicator(
+          context: context,
+          builder: (context) {
+            return const Center(
+              child: CircularProgressIndicator(
                 backgroundColor: Colors.transparent,
                 color: AppColors.kDarkBlue,
-              ));
-            });
-
+              ),
+            );
+          },
+        );
         setLoading(true);
-
-        await AuthController().signInUser(
+        await _authController.signInUser(
             context, _emailController.text, _passwordController.text);
-
         clearTextController();
-
         setLoading(false);
-      } else {}
+      }
     } catch (e) {
       setLoading(false);
-
       AlertHelper.showSanckBar(
-          context, e.toString(), AnimatedSnackBarType.success);
+          context, e.toString(), AnimatedSnackBarType.error);
     }
   }
 
-  // ----- fetch user data process
-
+  // Fetch user data
   Future<void> fetchUser(String id) async {
     try {
-      //--start the loader
-
       setLoading(true);
-
-      await AuthController().fetchUserData(id).then((value) {
+      await _authController.fetchUserData(id).then((value) {
         if (value != null) {
           Logger().w(value.fullName);
-
           _userModel = value;
-
-          //---callling this to notify that usermodel has been set
-
           notifyListeners();
-
-          //--start the loader
-
           setLoading(false);
         }
       });
     } catch (e) {
       Logger().e(e);
+      setLoading(false);
     }
   }
 
-  //------initialize and check whether the user is signed in or not
-
-  Future<void> initializeUser(BuildContext context) async {
+  // Initialize user and check sign-in status
+  Future<void> initializeUser(BuildContext context, WidgetRef ref) async {
     FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user == null) {
         Logger().i('User is currently signed out!');
       } else {
         Logger().i('User is signed in!');
-
         Logger().i(user.uid);
-
         await fetchUser(user.uid).then((value) {
-          // updating
-
           updateUserOnline(true);
 
-          //----- fetch products and sizes
-          Provider.of<ProductProvider>(context, listen: false).fetchProducts();
-          Provider.of<ProductProvider>(context, listen: false)
-              .fetchSizedAndColors();
-
-          // ------ fetch fevourite products
-
-          Provider.of<FavouriteProvider>(context, listen: false)
-              .fetchFavouriteProducts()
-              .whenComplete(() =>
-                  Provider.of<ProductProvider>(context, listen: false)
-                      .filterProdutsWithID(context));
-
-          //
+          // Provider.of<ProductProvider>(context, listen: false).fetchProducts();
+          // Provider.of<ProductProvider>(context, listen: false)
+          //     .fetchSizedAndColors();
+          // Provider.of<FavouriteProvider>(context, listen: false)
+          //     .fetchFavouriteProducts()
+          //     .whenComplete(() {
+          //   Provider.of<ProductProvider>(context, listen: false)
+          //       .filterProdutsWithID(context);
+          // });
 
           Navigator.pushNamed(context, DrawerScreen.routeName);
         });
@@ -307,63 +217,28 @@ class UserProvider extends ChangeNotifier {
     });
   }
 
-  //----- send password rest link
-
+  // Send password reset link
   Future<void> sendPasswordResetLink(BuildContext context) async {
     if (forgotPasswordFieldsValidate(context)) {
       setLoading(true);
-
-      await AuthController()
+      await _authController
           .sendPassResetEmail(context, _emailController.text)
-          .whenComplete(
-            () => NavigationFunction.navigateTo(
-                BuildContext, context, Widget, const SignIn()),
-          );
-
+          .whenComplete(() {
+        CustomNavigator.navigateTo(context, const SignIn());
+      });
       clearTextController();
-
       setLoading(false);
     }
   }
 
-  //------------------pick, upload and update user profile image
-
-  //---------pick an image
-
-  //image picker instance
-
-  final ImagePicker _picker = ImagePicker();
-
-  //-----file object
-
-  File _image = File("");
-
-  //-----getter for image file
-
-  File get getImage => _image;
-
-  //---a function to pick a file from gallery
-
+  // Select image and upload
   Future<void> selectImageAndUpload() async {
     try {
-      // Pick an image
-
       final XFile? pickedFile =
           await _picker.pickImage(source: ImageSource.gallery);
-
-      //---check if the user has picked a file or not
-
       if (pickedFile != null) {
-        // Logger().i(pickedFile.path);
-
-        //--assigning to the file object
-
         _image = File(pickedFile.path);
-
-        //start uploading the image after picking
-
         updateProfileImage(_image);
-
         notifyListeners();
       } else {
         Logger().e("No image selected");
@@ -373,39 +248,24 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  //upload and update profile image
-
+  // Update profile image
   Future<void> updateProfileImage(File image) async {
     try {
-      //--start the loader
-
       setLoading(true);
-
-      //--start uploading the image
-
-      String imgUrl = await AuthController()
-          .uploadAndUpdateProfileImage(_userModel!.uid, image);
-
-      if (imgUrl != "") {
-        //---update the usermodel img filed with returned download url
-
+      String imgUrl = await _authController.uploadAndUpdateProfileImage(
+          _userModel!.uid, image);
+      if (imgUrl.isNotEmpty) {
         _userModel!.img = imgUrl;
-
         notifyListeners();
-
-        //--stop the loader
-
         setLoading(false);
       }
     } catch (e) {
       Logger().e(e);
-
-      //--stop the loader
-
       setLoading(false);
     }
   }
 
+  // Update user online status
   void updateUserOnline(bool val) {
     try {
       _authController.updateOnlineStatus(
@@ -415,15 +275,11 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  // Update user details
   Future<void> updateUserDetails() async {
     try {
-      //--start the loader
-
       setLoading(true);
-
-      //--start uploading user mobile number and location
-
-      AuthController()
+      _authController
           .updateUserInfo(userModel!.uid, locationController.text,
               int.parse(mobileController.text))
           .whenComplete(() {
@@ -431,17 +287,10 @@ class UserProvider extends ChangeNotifier {
         mobileController.clear();
         fetchUser(userModel!.uid);
       });
-
       notifyListeners();
-
-      //--stop the loader
-
       setLoading(false);
     } catch (e) {
       Logger().e(e);
-
-      //--stop the loader
-
       setLoading(false);
     }
   }

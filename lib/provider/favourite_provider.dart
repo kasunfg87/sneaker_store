@@ -1,89 +1,77 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 import 'package:sneaker_store/controller/product_controller.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/product_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/utilities/alert_helper.dart';
 
 class FavouriteProvider extends ChangeNotifier {
-  // ----- a list to store the favourites list
-
+  // List to store the favourite products
   List<FavouriteModel> _favCourses = [];
 
-  // ----- getter for favourites  list
-
+  // Getter for the favourite products list
   List<FavouriteModel> get favCourses => _favCourses;
 
   bool _isLoading = false;
 
-  // ----- get loading state
-
+  // Getter for loading state
   bool get isLoading => _isLoading;
 
-  // -----chage loading state
-
+  // Change loading state
   void setLoading(bool val) {
     _isLoading = val;
+    notifyListeners();
   }
 
   final ProductController _productController = ProductController();
 
-  // ----- fetch products function
-
+  // Fetch favourite products from Firestore
   Future<void> fetchFavouriteProducts() async {
     try {
-      // ----- start the loader
-
+      // Start the loader
       setLoading(true);
 
-      // ----- start fetching products
-
+      // Fetch favourite products
       _favCourses = await _productController.getFavoriteProducts();
       notifyListeners();
 
       Logger().e(favCourses[0].productId);
 
-      // ----- stop the loader
-
+      // Stop the loader
       setLoading(false);
     } catch (e) {
-      print(e);
-
-      // ----- stop the loader
-
+      // Log the error and stop the loader
+      Logger().e(e);
       setLoading(false);
     }
   }
+  // ignore: prefer_function_declarations_over_variables
 
-  // ----- adding clicked fav courses to the firebase
-
-  void initAddToFav(FavouriteModel model, BuildContext context) {
+  // Add or remove product from favourites
+  void initAddToFav(FavouriteModel model, BuildContext context, WidgetRef ref) {
+    final productRiver = ref.read(productRiverPod);
     if (_favCourses.map((e) => e.productId).contains(model.productId)) {
+      // Remove from favourites if already present
       _productController
           .removeFromFavourite(model)
           .whenComplete(() => fetchFavouriteProducts())
-          .whenComplete(() =>
-              Provider.of<ProductProvider>(context, listen: false)
-                  .filterProdutsWithID(context));
+          .whenComplete(() => productRiver.filterProdutsWithID(context, ref));
 
       AlertHelper.showSanckBar(
-          context, 'Removed from Favourite !', AnimatedSnackBarType.error);
-
-      notifyListeners();
+          context, 'Removed from Favourite!', AnimatedSnackBarType.error);
     } else {
+      // Add to favourites if not already present
       _productController
           .addToFavourite(model)
           .whenComplete(() => fetchFavouriteProducts())
-          .whenComplete(() =>
-              Provider.of<ProductProvider>(context, listen: false)
-                  .filterProdutsWithID(context));
+          .whenComplete(() => productRiver.filterProdutsWithID(context, ref));
 
       AlertHelper.showSanckBar(
-          context, 'Added to Favourite !', AnimatedSnackBarType.success);
-
-      notifyListeners();
+          context, 'Added to Favourite!', AnimatedSnackBarType.success);
     }
+
+    notifyListeners();
   }
 }
