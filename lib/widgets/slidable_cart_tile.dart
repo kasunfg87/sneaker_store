@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/cart_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
@@ -11,7 +11,7 @@ import 'package:sneaker_store/widgets/custom_text_popins.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/releted_item_tile.dart';
 
-class SlidableCartTile extends StatelessWidget {
+class SlidableCartTile extends ConsumerWidget {
   const SlidableCartTile({
     required this.cartItemModel,
     super.key,
@@ -20,7 +20,7 @@ class SlidableCartTile extends StatelessWidget {
   final CartItemModel cartItemModel;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Slidable(
       closeOnScroll: true,
       key: const ValueKey(0),
@@ -30,7 +30,8 @@ class SlidableCartTile extends StatelessWidget {
         motion: const ScrollMotion(),
         children: [
           InkWell(
-            onTap: () => Provider.of<CartProvider>(context, listen: false)
+            onTap: () => ref
+                .read(cartRiverPod)
                 .removeCartItem(cartItemModel.productModel.productId, context),
             child: Container(
               padding: const EdgeInsets.all(20),
@@ -101,9 +102,9 @@ class SlidableCartTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () =>
-                        Provider.of<CartProvider>(context, listen: false)
-                            .increaseCartItemQty(cartItemModel.productModel),
+                    onTap: () => ref
+                        .read(cartRiverPod)
+                        .increaseCartItemQty(cartItemModel.productModel),
                     child: Container(
                       height: 25,
                       width: 40,
@@ -141,10 +142,8 @@ class SlidableCartTile extends StatelessWidget {
                     )),
                   ),
                   GestureDetector(
-                    onTap: () =>
-                        Provider.of<CartProvider>(context, listen: false)
-                            .decreaseCartItemQty(
-                                cartItemModel.productModel, context),
+                    onTap: () => ref.read(cartRiverPod).decreaseCartItemQty(
+                        cartItemModel.productModel, context),
                     child: Container(
                       height: 25,
                       width: 40,

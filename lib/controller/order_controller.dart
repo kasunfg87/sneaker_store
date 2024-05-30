@@ -3,50 +3,39 @@ import 'package:logger/logger.dart';
 import 'package:sneaker_store/models/objects.dart';
 
 class OrderController {
-  //--- Creates ther orders Collection reference in firestore
-  CollectionReference orders = FirebaseFirestore.instance.collection('orders');
+  // Firestore collection reference for orders
+  final CollectionReference orders =
+      FirebaseFirestore.instance.collection('orders');
 
-  //--- Order Creation Function
-
+  // Save order data in Firestore
   Future<void> saveOrderData(OrderModel model) {
     return orders
-        .doc()
-        .set(
-          model.toJson(),
-          SetOptions(merge: true),
-        )
+        .doc() // Create a new document with a generated ID
+        .set(model.toJson(), SetOptions(merge: true))
         .then((value) => Logger().i("Order data saved"))
-        .catchError((error) => Logger().e('Failed to save Order data'));
+        .catchError((error) => Logger().e('Failed to save order data: $error'));
   }
 
-  //--- Fetch all Orders
-
+  // Fetch all orders for a specific user
   Future<List<OrderModel>> getOrders(String uid) async {
     try {
-      // ----- Query for fetching all the orders list
-      QuerySnapshot snapshot = await orders.where(uid).get();
+      // Query to fetch orders for a specific user
+      QuerySnapshot snapshot = await orders.where('uid', isEqualTo: uid).get();
 
-      // ----- List to store the orders
+      // List to store the fetched orders
       List<OrderModel> list = [];
 
-      // ----- Mapping fetched data to OrderModel and storing them in the orders list
-
+      // Map fetched data to OrderModel and store in the list
       for (var element in snapshot.docs) {
-        // ----- Mapping to a single OrderModel
-
         OrderModel model =
             OrderModel.fromJson(element.data() as Map<String, dynamic>);
-
-        // ----- Adding to the list
-
         list.add(model);
       }
 
-      // ----- Return the orders list
-      Logger().i(list.length);
+      Logger().i("Fetched ${list.length} orders");
       return list;
     } catch (e) {
-      Logger().e(e);
+      Logger().e("Failed to fetch orders: $e");
       return [];
     }
   }

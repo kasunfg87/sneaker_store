@@ -1,33 +1,30 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'dart:io';
-// ignore: depend_on_referenced_packages
+import 'package:logger/logger.dart';
 import 'package:path/path.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class FileUploadController {
-  // ----- upload picked image file to the firebase storeage bucket and return the download link
-
-  static UploadTask? uplaodFile(File file, String folderName) {
+  // Uploads a picked image file to Firebase Storage and returns the upload task
+  static UploadTask? uploadFile(File file, String folderName) {
     try {
-      // ----- getting the filename from the file path
-
+      // Get the filename from the file path
       final String fileName = basename(file.path);
 
-      // ----- defining the file storage distination in the firebase storeage
-
+      // Define the file storage destination in Firebase Storage
       final String destination = '$folderName/$fileName';
 
-      // ----- creating the firebase storage instance with destination file location
-
+      // Create a Firebase Storage reference with the destination file location
       final ref = FirebaseStorage.instance.ref(destination);
 
-      // -----
-
+      // Upload the file to the specified location
       final task = ref.putFile(file);
 
       return task;
     } catch (e) {
-      // ignore: avoid_print
-
+      // Log the error and return null if upload fails
+      Logger().e(e);
       return null;
     }
   }

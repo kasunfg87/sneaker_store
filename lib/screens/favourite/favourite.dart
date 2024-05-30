@@ -1,32 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-// ignore: unused_import
-import 'package:sneaker_store/provider/favourite_provider.dart';
-import 'package:sneaker_store/provider/product_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/product_tile.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 
-class Favourite extends StatefulWidget {
+class Favourite extends ConsumerStatefulWidget {
   static String routeName = "/favourite";
 
   const Favourite({super.key});
 
   @override
-  State<Favourite> createState() => _FavouriteState();
+  ConsumerState<Favourite> createState() => _FavouriteState();
 }
 
-class _FavouriteState extends State<Favourite> {
+class _FavouriteState extends ConsumerState<Favourite> {
   @override
   void initState() {
     super.initState();
 
-    Provider.of<FavouriteProvider>(context, listen: false)
-        .fetchFavouriteProducts();
-    
-    
+    ref.read(favouriteRiverPod).fetchFavouriteProducts();
   }
 
   @override
@@ -53,34 +48,26 @@ class _FavouriteState extends State<Favourite> {
               height: 20,
             ),
             SizedBox(
-              width: SizeConfig.w(context),
-              height: SizeConfig.h(context) * 0.76,
-              child:
-                  Consumer<ProductProvider>(builder: (context, value, child) {
-                    
-                    //---- filter favourite product 
-                    value.filterProdutsWithID(context);
-
-
-                if (value.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  return GridView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: value.favouriteProduct.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 9,
-                              crossAxisSpacing: 19,
-                              childAspectRatio: 0.70),
-                      itemBuilder: (context, index) {
-                        return ProductTile(
-                            model: value.favouriteProduct[index]);
-                      });
-                }
-              }),
-            )
+                width: SizeConfig.w(context),
+                height: SizeConfig.h(context) * 0.76,
+                child: ref.watch(productRiverPod).isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : GridView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount:
+                            ref.watch(productRiverPod).favouriteProduct.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 9,
+                                crossAxisSpacing: 19,
+                                childAspectRatio: 0.70),
+                        itemBuilder: (context, index) {
+                          return ProductTile(
+                              model: ref
+                                  .watch(productRiverPod)
+                                  .favouriteProduct[index]);
+                        }))
           ],
         )),
       ),

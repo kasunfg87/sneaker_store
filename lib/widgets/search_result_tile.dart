@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/product_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/details/details.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/navigation_function.dart';
@@ -9,7 +9,7 @@ import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/custom_text_popins.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 
-class SearchResultTile extends StatefulWidget {
+class SearchResultTile extends ConsumerStatefulWidget {
   const SearchResultTile(
       {required this.model,
       this.addButton = true,
@@ -21,10 +21,10 @@ class SearchResultTile extends StatefulWidget {
   final bool isFavourite;
 
   @override
-  State<SearchResultTile> createState() => _SearchResultTileState();
+  ConsumerState<SearchResultTile> createState() => _SearchResultTileState();
 }
 
-class _SearchResultTileState extends State<SearchResultTile> {
+class _SearchResultTileState extends ConsumerState<SearchResultTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,10 +35,9 @@ class _SearchResultTileState extends State<SearchResultTile> {
         shadowColor: AppColors.kBlack.withOpacity(0.1),
         child: InkWell(
           onTap: () {
-            Provider.of<ProductProvider>(context, listen: false)
-                .setProductModel(widget.model);
-            NavigationFunction.navigateTo(BuildContext, context, Widget,
-                Details(productModel: widget.model));
+            ref.read(productRiverPod).setProductModel(widget.model);
+            CustomNavigator.navigateTo(
+                context, Details(productModel: widget.model));
           },
           child: Container(
             height: 100,

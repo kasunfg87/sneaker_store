@@ -3,64 +3,56 @@ import 'package:logger/logger.dart';
 import 'package:sneaker_store/controller/order_controller.dart';
 import 'package:sneaker_store/models/objects.dart';
 
-class OrderPrvider extends ChangeNotifier {
-// ----- a list to store the all orders list
+class OrderProvider extends ChangeNotifier {
+  // List to store all orders
   List<OrderModel> _allOrders = [];
 
-  // ----- getter for porduct list
-
+  // Getter for the orders list
   List<OrderModel> get allOrders => _allOrders;
 
-  // ----- loading state
-
+  // Loading state
   bool _isLoading = false;
 
-  // ----- get loading state
-
+  // Getter for loading state
   bool get isLoading => _isLoading;
 
-  // -----setter for loading state
-
+  // Setter for loading state
   void setLoading(bool val) {
     _isLoading = val;
     notifyListeners();
   }
 
-  // ---- Order Saving to firestore db
-
+  // Save order data to Firestore
   Future<void> saveOrderData(OrderModel model) async {
     try {
-      //--start the loader
+      // Start the loader
       setLoading(true);
 
-      //--- start uploading order data
+      // Start uploading order data
+      await OrderController().saveOrderData(model);
 
-      OrderController().saveOrderData(model);
-
-      //--stop the loader
+      // Stop the loader
       setLoading(false);
     } catch (e) {
-      //--stop the loader
+      // Stop the loader and log the error
       setLoading(false);
       Logger().e(e);
     }
   }
 
-  //---- fetch all orders from firestore db
-
+  // Fetch all orders from Firestore
   Future<void> fetchOrders(String uid) async {
     try {
-      //--start the loader
+      // Start the loader
       setLoading(true);
 
-      //---- start fetching data
-
+      // Start fetching data
       _allOrders = await OrderController().getOrders(uid);
 
-      //--stop the loader
+      // Stop the loader
       setLoading(false);
     } catch (e) {
-      //--stop the loader
+      // Stop the loader and log the error
       setLoading(false);
       Logger().e(e);
     }

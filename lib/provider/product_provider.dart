@@ -1,195 +1,140 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 import 'package:sneaker_store/controller/product_controller.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/favourite_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 
 class ProductProvider extends ChangeNotifier {
-  // ----- a list to store the all products list
-
+  // List to store all products
   List<ProductModel> _allProduct = [];
 
-  // ----- getter for porduct list
-
+  // Getter for the product list
   List<ProductModel> get allProduct => _allProduct;
 
-  // ----- a list to store the search products list
-
+  // List to store the search results
   List<ProductModel> _searchProduct = [];
 
-  // ----- getter for search porduct list
-
+  // Getter for the search product list
   List<ProductModel> get searchProduct => _searchProduct;
 
-  // ------ setter for search product list
-
+  // Setter for the search product list
   set searchProduct(List<ProductModel> value) {
     _searchProduct = value;
     notifyListeners();
   }
 
-  // ----- a list to store the filtered products list
-
+  // List to store the filtered products
   List<ProductModel> _filteredProduct = [];
 
-  // ----- getter for filtered porduct list
-
+  // Getter for the filtered product list
   List<ProductModel> get filteredProduct => _filteredProduct;
 
-  // ----- a list to store the favourite products list
-
+  // List to store the favourite products
   List<ProductModel> _favouriteProduct = [];
 
-  // ----- getter for favourite porduct list
-
+  // Getter for the favourite product list
   List<ProductModel> get favouriteProduct => _favouriteProduct;
 
-  // ----- shoe sizes and colors
-
+  // List to store shoe sizes and colors
   List<SizeModel> _shoeSize = [];
 
-  // ----- getter for porduct list
-
+  // Getter for the shoe size list
   List<SizeModel> get shoeSize => _shoeSize;
 
-  // ----- category
-
+  // Category selection
   String? _category;
 
-  // ----- getter for category
-
+  // Getter for the category
   String? get category => _category;
 
-  // ----- setter for category
-
+  // Setter for the category
   set category(String? selectedCategory) {
     _category = selectedCategory;
     notifyListeners();
   }
 
-  //----------------Text Editing  Controllers -------------------
-
-  // ----- product name controller
-
+  // Text Editing Controllers
   final _productNameController = TextEditingController();
-
-  // ----- getter for  product name controller
-
-  TextEditingController get productNameController => _productNameController;
-
-  // ----- product description controller
-
   final _descriptionController = TextEditingController();
-
-  // ----- getter for product description controller
-
-  TextEditingController get descriptionController => _descriptionController;
-
-  // ----- product price controller
-
   final _priceController = TextEditingController();
-
-  // ----- getter for product price controller
-
-  TextEditingController get priceController => _priceController;
-
-  // -----search product  controller
-
   final _searchController = TextEditingController();
 
-  // ----- getter for search product controller
-
+  // Getters for the text controllers
+  TextEditingController get productNameController => _productNameController;
+  TextEditingController get descriptionController => _descriptionController;
+  TextEditingController get priceController => _priceController;
   TextEditingController get searchController => _searchController;
 
-  // ----- loading state
-
+  // Loading state
   bool _isLoading = false;
 
-  // ----- get loading state
-
+  // Getter for the loading state
   bool get isLoading => _isLoading;
 
-  // -----setter for loading state
-
+  // Setter for the loading state
   void setLoading(bool val) {
     _isLoading = val;
     notifyListeners();
   }
 
-  // ----- product model for to store selected product data
-
+  // Product model to store selected product data
   late ProductModel _productModel;
 
-  // ----- getter for product model
-
+  // Getter for the product model
   ProductModel get productModel => _productModel;
 
-  // -----setter for porduct model
-
+  // Setter for the product model
   void setProductModel(ProductModel model) {
     _productModel = model;
     notifyListeners();
   }
 
-  // ------- variable to store current index
-
+  // Variable to store the current index
   int _selectedIndex = 0;
 
-  // ----- getter for selected index
-
+  // Getter for the selected index
   int get selectedIndex => _selectedIndex;
 
-  // ------ setter for selected index
-
+  // Setter for the selected index
   void setSelectedIndex(int index) {
     _selectedIndex = index;
     notifyListeners();
   }
 
-  // ------- variable to store size index
-
+  // Variable to store the size index
   int _sizeIndex = 0;
 
-  // ----- getter for selected index
-
+  // Getter for the size index
   int get sizeIndex => _sizeIndex;
 
-  // ------ setter for selected index
-
+  // Setter for the size index
   void setSizeIndex(int index) {
     _sizeIndex = index;
     notifyListeners();
   }
 
-  //------------------pick, upload and update user profile image
-  //---------pick an image
-
-  //image picker instance
+  // Image picker instance
   final ImagePicker _picker = ImagePicker();
 
-  //-----file object
+  // File object to store selected image
   File _image = File("");
 
-  //-----getter for image file
+  // Getter for the image file
   File get getImage => _image;
 
-  //---a function to pick a file from gallery
+  // Function to pick an image from the gallery and upload it
   Future<File> selectImageAndUpload() async {
     try {
       // Pick an image
       final XFile? pickedFile =
           await _picker.pickImage(source: ImageSource.gallery);
 
-      //---check if the user has picked a file or not
+      // Check if the user has picked a file
       if (pickedFile != null) {
-        // Logger().i(pickedFile.path);
-        //--assigning to the file object
         _image = File(pickedFile.path);
-
-        //start uploading the image after picking
         notifyListeners();
         return _image;
       } else {
@@ -202,16 +147,16 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-  //----- insert product data to firesotre db
-
+  // Insert product data to Firestore
   Future<void> insertToProductDB() async {
     try {
       setLoading(true);
-      //--start uploading the image
+      // Upload the product image
       String imgUrl = await ProductController().uploadProductImage(getImage);
 
       if (imgUrl != "") {
-        ProductController().saveProdctData(ProductModel(
+        // Save the product data
+        await ProductController().saveProductData(ProductModel(
           category: category.toString(),
           productId: allProduct.length + 1,
           description: descriptionController.text,
@@ -224,20 +169,15 @@ class ProductProvider extends ChangeNotifier {
     } catch (e) {
       setLoading(false);
       Logger().e(e);
-      //--stop the loader
     }
   }
 
-  // ---- fetch all product and store in all product list
-
+  // Fetch all products and store in the allProduct list
   Future<void> fetchProducts() async {
     try {
       setLoading(true);
-      // ----- start fetching product
       _allProduct = await ProductController().getProducts();
-
       setLoading(false);
-
       notifyListeners();
     } catch (e) {
       setLoading(false);
@@ -245,64 +185,40 @@ class ProductProvider extends ChangeNotifier {
     }
   }
 
-  // ---- fetch all product and store in all product list
-
+  // Fetch all shoe sizes and colors and store in the shoeSize list
   Future<void> fetchSizedAndColors() async {
     try {
-      // ----- start fetching products
-
       _shoeSize = await ProductController().getSizeAndColor();
-
       Logger().e(_shoeSize.length);
-
       notifyListeners();
     } catch (e) {
       Logger().e(e);
     }
   }
 
-  // ----- get releted products
-
+  // Get related products excluding the selected product
   List<ProductModel> get relatedProducts {
-    List<ProductModel> temp = [];
-    // ----- filtering the porduct list
-    // ----- removing the already selceted porduct
-    for (var i = 0; i < _allProduct.length; i++) {
-      if (_allProduct[i].productId != _productModel.productId) {
-        temp.add(_allProduct[i]);
-      }
-    }
-    return temp;
+    return _allProduct
+        .where((product) => product.productId != _productModel.productId)
+        .toList();
   }
 
-  // ----- get shoe size and color using product id
-
+  // Get shoe size and color for the selected product
   List<SizeModel> get shoeSizeAndColor {
-    List<SizeModel> temp = [];
-    // ----- filtering the porduct list
-    // ----- removing the already selceted porduct
-    for (var i = 0; i < _shoeSize.length; i++) {
-      if (_shoeSize[i].productId == _productModel.productId) {
-        temp.add(_shoeSize[i]);
-      }
-    }
-    return temp;
+    return _shoeSize
+        .where((size) => size.productId == _productModel.productId)
+        .toList();
   }
 
+  // Get only the shoe sizes for the selected product
   List<String> get shoeSizeOnly {
-    List<String> temp = [];
-
-    for (var i = 0; i < _shoeSize.length; i++) {
-      if (_shoeSize[i].productId == _productModel.productId) {
-        temp.addAll(_shoeSize[i].size);
-      }
-    }
-
-    return temp;
+    return _shoeSize
+        .where((size) => size.productId == _productModel.productId)
+        .expand((size) => size.size)
+        .toList();
   }
 
-  //  ------- clear product master
-
+  // Clear product master data
   void clearProductMaster() {
     _productNameController.clear();
     _descriptionController.clear();
@@ -312,78 +228,43 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ----- search products with title
-
+  // Update search results based on the search text
   void updateSearchResults(String searchText) {
-    searchProduct.clear();
-
     searchProduct = allProduct
-        .where((element) =>
-            element.title.toLowerCase().contains(searchText.toLowerCase()))
+        .where((product) =>
+            product.title.toLowerCase().contains(searchText.toLowerCase()))
         .toList();
   }
 
-  // ----- filter product with category
-
+  // Filter products based on the selected category
   Future<void> filterProdutsWithCategory(String category) async {
-    // create an empty list to store filtered courses
-    List<ProductModel> filteredList = [];
-
-    // if search text is empty or equal to 0, show all courses
-    // ignore: unrelated_type_equality_checks
-    if (allProduct.isEmpty || allProduct == '0') {
-      filteredList = _allProduct;
-    } else {
-      // loop through each course and check if its title contains the search text
-      for (var item in _allProduct) {
-        if (item.category.toLowerCase().contains(category.toLowerCase())) {
-          // if the course title contains the search text, add it to the filtered list
-          filteredList.add(item);
-        }
-      }
-    }
-    Logger().e(filteredList.length);
-    // update the state of the filtered courses list
-    _filteredProduct = filteredList;
-    notifyListeners();
-  }
-
-  Future<void> filterFavouriteProducts(int productid) async {
-    // create an empty list to store filtered courses
-    List<ProductModel> filteredList = [];
-
-    // if search text is empty or equal to 0, show all courses
-    // ignore: unrelated_type_equality_checks
-    if (allProduct.isEmpty || allProduct == '0') {
-      filteredList = _allProduct;
-    } else {
-      // loop through each course and check if its title contains the search text
-      for (var item in _allProduct) {
-        if (item.productId == productid) {
-          // if the course title contains the search text, add it to the filtered list
-          filteredList.add(item);
-        }
-      }
-    }
-    Logger().e(filteredList.length);
-    // update the state of the filtered courses list
-    _filteredProduct = filteredList;
-    notifyListeners();
-  }
-
-  // ----- filter product with category
-
-  Future<void> filterProdutsWithID(BuildContext context) async {
-    setLoading(true);
-    // create an empty list to store filtered courses
     List<ProductModel> filteredList = _allProduct
         .where((product) =>
-            Provider.of<FavouriteProvider>(context, listen: false)
-                .favCourses
-                .any((favProduct) => favProduct.productId == product.productId))
+            product.category.toLowerCase().contains(category.toLowerCase()))
         .toList();
     Logger().e(filteredList.length);
-    // update the state of the filtered courses list
+    _filteredProduct = filteredList;
+    notifyListeners();
+  }
+
+  // Filter favourite products based on product ID
+  Future<void> filterFavouriteProducts(int productId) async {
+    List<ProductModel> filteredList =
+        _allProduct.where((product) => product.productId == productId).toList();
+    Logger().e(filteredList.length);
+    _filteredProduct = filteredList;
+    notifyListeners();
+  }
+
+  // Filter products with favourite IDs
+  Future<void> filterProdutsWithID(BuildContext context, WidgetRef ref) async {
+    final favoRiver = ref.read(favouriteRiverPod);
+    setLoading(true);
+    List<ProductModel> filteredList = _allProduct
+        .where((product) => favoRiver.favCourses
+            .any((favProduct) => favProduct.productId == product.productId))
+        .toList();
+    Logger().e(filteredList.length);
     _favouriteProduct = filteredList;
     setLoading(false);
     notifyListeners();

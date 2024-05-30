@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/product_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/details/details.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
@@ -12,7 +12,7 @@ import 'package:sneaker_store/widgets/custom_text_popins.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/small_fav_icon_widget.dart';
 
-class ProductTile extends StatefulWidget {
+class ProductTile extends ConsumerStatefulWidget {
   const ProductTile(
       {required this.model,
       this.addButton = true,
@@ -24,10 +24,10 @@ class ProductTile extends StatefulWidget {
   final bool isFavourite;
 
   @override
-  State<ProductTile> createState() => _ProductTileState();
+  ConsumerState<ProductTile> createState() => _ProductTileState();
 }
 
-class _ProductTileState extends State<ProductTile> {
+class _ProductTileState extends ConsumerState<ProductTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -38,10 +38,9 @@ class _ProductTileState extends State<ProductTile> {
         shadowColor: AppColors.kBlack.withOpacity(0.1),
         child: InkWell(
           onTap: () {
-            Provider.of<ProductProvider>(context, listen: false)
-                .setProductModel(widget.model);
-            NavigationFunction.navigateTo(BuildContext, context, Widget,
-                Details(productModel: widget.model));
+            ref.read(productRiverPod).setProductModel(widget.model);
+            CustomNavigator.navigateTo(
+                context, Details(productModel: widget.model));
           },
           child: Container(
             width: SizeConfig.w(context) / 2 - 32,

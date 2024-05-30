@@ -1,9 +1,8 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/cart_provider.dart';
-import 'package:sneaker_store/provider/product_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/my_cart/my_cart.dart';
 import 'package:sneaker_store/utilities/alert_helper.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
@@ -19,7 +18,7 @@ import 'package:sneaker_store/widgets/releted_item_tile.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 import 'package:sneaker_store/widgets/shoe_size_widget.dart';
 
-class Details extends StatefulWidget {
+class Details extends ConsumerStatefulWidget {
   static String routeName = "/details";
 
   const Details({
@@ -30,16 +29,15 @@ class Details extends StatefulWidget {
   final ProductModel productModel;
 
   @override
-  State<Details> createState() => _DetailsState();
+  ConsumerState<Details> createState() => _DetailsState();
 }
 
-class _DetailsState extends State<Details> {
+class _DetailsState extends ConsumerState<Details> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.kButtonGray,
-      body: Consumer<ProductProvider>(builder: (context, value, child) {
-        return Builder(builder: (context) {
+        backgroundColor: AppColors.kButtonGray,
+        body: Builder(builder: (context) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -52,24 +50,17 @@ class _DetailsState extends State<Details> {
                   iconImage: AssetConstants.bag,
                   onTapLeft: () => Navigator.pop(context),
                   onTapRight: () {
-                    Provider.of<CartProvider>(context, listen: false)
-                            .cartItems
-                            .isNotEmpty
-                        ? NavigationFunction.navigateTo(
-                            BuildContext, context, Widget, const MyCart())
+                    ref.read(cartRiverPod).cartItems.isNotEmpty
+                        ? CustomNavigator.navigateTo(context, const MyCart())
                         : AlertHelper.showSanckBar(
                             context,
                             'Your Cart Is Currently Empty!',
                             AnimatedSnackBarType.info);
                   },
-                  showBadge:
-                      Provider.of<CartProvider>(context).cartItems.isNotEmpty
-                          ? true
-                          : false,
-                  badgeText: Provider.of<CartProvider>(context)
-                      .cartItems
-                      .length
-                      .toString(),
+                  showBadge: ref.read(cartRiverPod).cartItems.isNotEmpty
+                      ? true
+                      : false,
+                  badgeText: ref.read(cartRiverPod).cartItems.length.toString(),
                 ),
                 Flexible(
                   child: SingleChildScrollView(
@@ -82,7 +73,7 @@ class _DetailsState extends State<Details> {
                         SizedBox(
                           width: SizeConfig.w(context) * 0.50,
                           child: CustomTextRaleway(
-                            text: value.productModel.title,
+                            text: ref.watch(productRiverPod).productModel.title,
                             fontSize: 26,
                           ),
                         ),
@@ -90,7 +81,8 @@ class _DetailsState extends State<Details> {
                           height: 10,
                         ),
                         CustomTextRaleway(
-                          text: value.productModel.category,
+                          text:
+                              ref.watch(productRiverPod).productModel.category,
                           fontSize: 16,
                           fontColor: AppColors.kLiteBlack,
                           fontWeight: FontWeight.w600,
@@ -99,14 +91,16 @@ class _DetailsState extends State<Details> {
                           height: 10,
                         ),
                         CustomTextPopins(
-                          text: '\$${value.productModel.price}',
+                          text:
+                              '\$${ref.watch(productRiverPod).productModel.price}',
                           fontColor: AppColors.kBlack,
                           fontSize: 24,
                           fontWeight: FontWeight.w600,
                         ),
                         Transform.rotate(
                           angle: 50.0,
-                          child: Image.network(value.productModel.img),
+                          child: Image.network(
+                              ref.watch(productRiverPod).productModel.img),
                         ),
                         const SizedBox(
                           height: 50,
@@ -115,27 +109,32 @@ class _DetailsState extends State<Details> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             // width: SizeConfig.w(context),
                             height: 90,
-                            child: Consumer<ProductProvider>(
-                                builder: (context, value, child) {
-                              return ListView.separated(
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return ReletedItemTile(
-                                      model: value.relatedProducts[index],
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                  itemCount: value.relatedProducts.length);
-                            })),
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  return ReletedItemTile(
+                                    model: ref
+                                        .read(productRiverPod)
+                                        .relatedProducts[index],
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                itemCount: ref
+                                    .watch(productRiverPod)
+                                    .relatedProducts
+                                    .length)),
                         const SizedBox(
                           height: 5,
                         ),
                         const ShoeSizeWidget(),
                         CustomParaReadMore(
-                          inputData: value.productModel.description,
+                          inputData: ref
+                              .watch(productRiverPod)
+                              .productModel
+                              .description,
                         ),
                         const SizedBox(
                           height: 60,
@@ -147,16 +146,14 @@ class _DetailsState extends State<Details> {
               ],
             ),
           );
-        });
-      }),
-      bottomNavigationBar:
-          Consumer<ProductProvider>(builder: (context, value, child) {
-        return Padding(
+        }),
+        bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(right: 20, bottom: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              FavouriteIconWidget(model: value.productModel),
+              FavouriteIconWidget(
+                  model: ref.watch(productRiverPod).productModel),
               const SizedBox(
                 width: 40,
               ),
@@ -164,16 +161,16 @@ class _DetailsState extends State<Details> {
                 buttonText: 'Add To Cart',
                 buttonIcon: AssetConstants.bag,
                 onTap: () {
-                  Provider.of<CartProvider>(context, listen: false).addToCart(
-                      value.productModel,
+                  ref.watch(cartRiverPod).addToCart(
+                      ref.watch(productRiverPod).productModel,
                       context,
-                      value.shoeSizeOnly[value.sizeIndex]);
+                      ref
+                          .watch(productRiverPod)
+                          .shoeSizeOnly[ref.watch(productRiverPod).sizeIndex]);
                 },
               ),
             ],
           ),
-        );
-      }),
-    );
+        ));
   }
 }

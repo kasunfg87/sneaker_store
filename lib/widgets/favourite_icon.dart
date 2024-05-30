@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:provider/provider.dart';
 import 'package:sneaker_store/models/objects.dart';
-import 'package:sneaker_store/provider/favourite_provider.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
 import 'package:sneaker_store/utilities/firebase_helper.dart';
 
-class FavouiriteIcon extends StatelessWidget {
+class FavouiriteIcon extends ConsumerWidget {
   const FavouiriteIcon({
     this.isfavourite = false,
     required this.model,
@@ -18,7 +18,7 @@ class FavouiriteIcon extends StatelessWidget {
   final ProductModel model;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Material(
       borderRadius: BorderRadius.circular(30),
       elevation: 2,
@@ -30,12 +30,13 @@ class FavouiriteIcon extends StatelessWidget {
         splashFactory: InkSparkle.splashFactory,
         splashColor: AppColors.kLiteBlue,
         onTap: () {
-          Provider.of<FavouriteProvider>(context, listen: false).initAddToFav(
+          ref.read(favouriteRiverPod).initAddToFav(
               FavouriteModel(
                   category: model.category,
                   productId: model.productId,
                   uid: FirebaseHelper.auth.currentUser!.uid),
-              context);
+              context,
+              ref);
         },
         child: Container(
             height: 48,
