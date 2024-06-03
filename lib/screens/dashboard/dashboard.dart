@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -94,7 +95,7 @@ class _DashboardState extends ConsumerState<Dashboard> {
                 alignment: Alignment.centerLeft,
                 child: CustomTextRaleway(
                   text: 'Select Category',
-                  fontSize: 16,
+                  fontSize: 17,
                 ),
               ),
               const SizedBox(
@@ -144,12 +145,12 @@ class _DashboardState extends ConsumerState<Dashboard> {
                 children: [
                   CustomTextRaleway(
                     text: 'Popular Shoes',
-                    fontSize: 16,
+                    fontSize: 17,
                   ),
                   CustomTextPopins(
                     text: 'See All',
                     fontColor: AppColors.kLiteBlue,
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
                 ],
@@ -158,12 +159,14 @@ class _DashboardState extends ConsumerState<Dashboard> {
                 height: 20,
               ),
               SizedBox(
-                  width: SizeConfig.w(context),
-                  height: SizeConfig.h(context) * 0.30,
-                  child: ListView.separated(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
+                width: SizeConfig.w(context),
+                height: SizeConfig.h(context) * 0.30,
+                child: CarouselSlider.builder(
+                    itemCount:
+                        ref.watch(productRiverPod).filteredProduct.isEmpty
+                            ? ref.watch(productRiverPod).allProduct.length
+                            : ref.watch(productRiverPod).filteredProduct.length,
+                    itemBuilder: (context, index, realIndex) {
                       return ref.watch(productRiverPod).isLoading
                           ? const ProductTilePlaceHolder()
                           : InkWell(
@@ -210,14 +213,16 @@ class _DashboardState extends ConsumerState<Dashboard> {
                               ),
                             );
                     },
-                    separatorBuilder: (context, index) => const SizedBox(
-                      width: 22,
-                    ),
-                    itemCount:
-                        ref.watch(productRiverPod).filteredProduct.isEmpty
-                            ? ref.watch(productRiverPod).allProduct.length
-                            : ref.watch(productRiverPod).filteredProduct.length,
-                  )),
+                    options: CarouselOptions(
+                      height: 300,
+                      autoPlay: true,
+                      autoPlayCurve: Curves.linear,
+                      viewportFraction: 0.52,
+                      enlargeCenterPage: false,
+                      pageSnapping: true,
+                      enableInfiniteScroll: true,
+                    )),
+              ),
               const SizedBox(
                 height: 24,
               ),
@@ -226,12 +231,12 @@ class _DashboardState extends ConsumerState<Dashboard> {
                 children: [
                   CustomTextRaleway(
                     text: 'New Arrivals',
-                    fontSize: 16,
+                    fontSize: 17,
                   ),
                   CustomTextPopins(
                     text: 'See All',
                     fontColor: AppColors.kLiteBlue,
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700,
                   ),
                 ],

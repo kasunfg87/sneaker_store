@@ -13,11 +13,12 @@ import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/small_fav_icon_widget.dart';
 
 class ProductTile extends ConsumerStatefulWidget {
-  const ProductTile(
-      {required this.model,
-      this.addButton = true,
-      this.isFavourite = false,
-      super.key});
+  const ProductTile({
+    required this.model,
+    this.addButton = true,
+    this.isFavourite = false,
+    super.key,
+  });
 
   final ProductModel model;
   final bool addButton;
@@ -40,7 +41,9 @@ class _ProductTileState extends ConsumerState<ProductTile> {
           onTap: () {
             ref.read(productRiverPod).setProductModel(widget.model);
             CustomNavigator.navigateTo(
-                context, Details(productModel: widget.model));
+              context,
+              Details(productModel: widget.model),
+            );
           },
           child: Container(
             width: SizeConfig.w(context) / 2 - 32,
@@ -57,33 +60,33 @@ class _ProductTileState extends ConsumerState<ProductTile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        child: SmallFavouriteIconWidget(
-                          model: widget.model,
-                        ),
-                      ),
+                      SmallFavouriteIconWidget(model: widget.model),
                       Transform.rotate(
                         angle: 50.0,
-                        child: Image.network(widget.model.img, frameBuilder:
-                            (context, child, frame, wasSynchronouslyLoaded) {
-                          return child;
-                        }, loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
+                        child: Image.network(
+                          widget.model.img,
+                          frameBuilder:
+                              (context, child, frame, wasSynchronouslyLoaded) {
                             return child;
-                          } else {
-                            return Transform.rotate(
-                              angle: 50.0,
-                              child: Shimmer.fromColors(
-                                baseColor:
-                                    const Color.fromARGB(192, 224, 223, 223),
-                                highlightColor:
-                                    AppColors.kWhite.withOpacity(0.5),
-                                child:
-                                    Image.asset(AssetConstants.shoePlaceHolder),
-                              ),
-                            );
-                          }
-                        }),
+                          },
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            } else {
+                              return Transform.rotate(
+                                angle: 50.0,
+                                child: Shimmer.fromColors(
+                                  baseColor:
+                                      const Color.fromARGB(192, 224, 223, 223),
+                                  highlightColor:
+                                      AppColors.kWhite.withOpacity(0.5),
+                                  child: Image.asset(
+                                      AssetConstants.shoePlaceHolder),
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -100,20 +103,17 @@ class _ProductTileState extends ConsumerState<ProductTile> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(
-                      height: 4,
-                    ),
+                    const SizedBox(height: 4),
                     Padding(
                       padding: const EdgeInsets.only(left: 15),
                       child: CustomTextRaleway(
                         text: widget.model.title,
                         fontSize: 14.5,
-                        fontColor: AppColors.kLiteBlack,
+                        fontColor: AppColors.kBlack,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,34 +124,30 @@ class _ProductTileState extends ConsumerState<ProductTile> {
                             text: "\$ ${widget.model.price}",
                             fontSize: 14,
                             fontColor: AppColors.kBlack,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                        widget.addButton
-                            ? Container(
-                                height: 35,
-                                width: 35,
-                                decoration: const BoxDecoration(
-                                    color: AppColors.kLiteBlue,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(16),
-                                      bottomRight: Radius.circular(16),
-                                    )),
-                                child: const Icon(
-                                  Icons.add,
-                                  color: AppColors.kWhite,
-                                ),
-                              )
-                            : const SizedBox()
+                        if (widget.addButton)
+                          Container(
+                            height: 35,
+                            width: 35,
+                            decoration: const BoxDecoration(
+                              color: AppColors.kLiteBlue,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              color: AppColors.kWhite,
+                            ),
+                          ),
                       ],
                     ),
-                    widget.addButton
-                        ? const SizedBox()
-                        : const SizedBox(
-                            height: 10,
-                          )
+                    if (!widget.addButton) const SizedBox(height: 10),
                   ],
-                )
+                ),
               ],
             ),
           ),

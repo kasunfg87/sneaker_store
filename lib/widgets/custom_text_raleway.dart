@@ -11,7 +11,7 @@ class CustomTextRaleway extends StatelessWidget {
 
   const CustomTextRaleway({
     required this.text,
-    this.fontSize = 32,
+    this.fontSize = 33,
     this.fontColor = AppColors.kBlack,
     this.fontWeight = FontWeight.bold,
     this.textAlign = TextAlign.left,

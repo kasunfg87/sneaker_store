@@ -177,6 +177,7 @@ class ProductProvider extends ChangeNotifier {
     try {
       setLoading(true);
       _allProduct = await ProductController().getProducts();
+
       setLoading(false);
       notifyListeners();
     } catch (e) {
@@ -248,22 +249,32 @@ class ProductProvider extends ChangeNotifier {
   }
 
   // Filter favourite products based on product ID
-  Future<void> filterFavouriteProducts(int productId) async {
-    List<ProductModel> filteredList =
-        _allProduct.where((product) => product.productId == productId).toList();
-    Logger().e(filteredList.length);
-    _filteredProduct = filteredList;
-    notifyListeners();
-  }
+  // Future<void> filterFavouriteProducts(int productId) async {
+  //   List<ProductModel> filteredList =
+  //       _allProduct.where((product) => product.productId == productId).toList();
+  //   Logger().e(filteredList.length);
+  //   _filteredProduct = filteredList;
+  //   notifyListeners();
+  // }
 
   // Filter products with favourite IDs
-  Future<void> filterProdutsWithID(BuildContext context, WidgetRef ref) async {
-    final favoRiver = ref.read(favouriteRiverPod);
+  Future<void> filterProductsWithID(WidgetRef ref) async {
+    final favouriteProvider = ref.read(favouriteRiverPod);
     setLoading(true);
-    List<ProductModel> filteredList = _allProduct
-        .where((product) => favoRiver.favCourses
-            .any((favProduct) => favProduct.productId == product.productId))
-        .toList();
+
+    List<ProductModel> filteredList = [];
+
+    List<ProductModel> tempProduct = await ProductController().getProducts();
+
+    Logger().e(tempProduct.length);
+
+    for (var product in tempProduct) {
+      if (favouriteProvider.favProducts
+          .any((favProduct) => favProduct.productId == product.productId)) {
+        filteredList.add(product);
+      }
+    }
+
     Logger().e(filteredList.length);
     _favouriteProduct = filteredList;
     setLoading(false);

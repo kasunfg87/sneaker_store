@@ -22,8 +22,8 @@ class ScreenHeader extends StatelessWidget {
 
   final String title;
   final String iconImage;
-  final Function() onTapRight;
-  final Function() onTapLeft;
+  final VoidCallback onTapRight;
+  final VoidCallback onTapLeft;
   final bool rightIconButton;
   final bool showBadge;
   final String badgeText;
@@ -36,77 +36,78 @@ class ScreenHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        backButton
-            ? InkWell(
-                onTap: onTapLeft,
-                child: Material(
-                  borderRadius: BorderRadius.circular(25),
-                  elevation: 3,
-                  shadowColor: AppColors.kLiteBlack.withOpacity(0.4),
+        if (backButton)
+          InkWell(
+            onTap: onTapLeft,
+            child: Material(
+              borderRadius: BorderRadius.circular(25),
+              elevation: 3,
+              shadowColor: AppColors.kLiteBlack.withOpacity(0.4),
+              child: Container(
+                height: 44,
+                width: 44,
+                padding: const EdgeInsets.all(10.0),
+                decoration: const BoxDecoration(
+                  color: AppColors.kButtonGray,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
+        CustomTextRaleway(
+          text: title,
+          fontSize: 18,
+          fontColor: AppColors.kBlack,
+          fontWeight: FontWeight.w600,
+        ),
+        if (rightIconButton)
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(25),
+              onTap: onTapRight,
+              child: Material(
+                borderRadius: BorderRadius.circular(25),
+                elevation: 3,
+                shadowColor: AppColors.kLiteBlack.withOpacity(0.4),
+                child: badges.Badge(
+                  badgeStyle: const badges.BadgeStyle(
+                    badgeColor: AppColors.kLiteBlue,
+                    padding: EdgeInsets.all(6),
+                  ),
+                  showBadge: showBadge,
+                  badgeContent: CustomTextPopins(
+                    fontSize: 13,
+                    text: badgeText,
+                    fontColor: AppColors.kWhite,
+                  ),
                   child: Container(
                     height: 44,
                     width: 44,
                     padding: const EdgeInsets.all(10.0),
                     decoration: const BoxDecoration(
-                      color: AppColors.kButtonGray,
+                      color: AppColors.kWhite,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
-                      Icons.arrow_back_ios_new,
-                      size: 24,
-                    ),
+                    child: rightTextButton
+                        ? Center(
+                            child: CustomTextPopins(
+                              text: rightButtonText,
+                              fontColor: AppColors.kBlack,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )
+                        : SvgPicture.asset(iconImage),
                   ),
                 ),
-              )
-            : const SizedBox(),
-        CustomTextRaleway(
-          text: title,
-          fontSize: 16,
-          fontColor: AppColors.kBlack,
-          fontWeight: FontWeight.w600,
-        ),
-        rightIconButton
-            ? Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(25),
-                  onTap: onTapRight,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(25),
-                    elevation: 3,
-                    shadowColor: AppColors.kLiteBlack.withOpacity(0.4),
-                    child: badges.Badge(
-                      badgeStyle: const badges.BadgeStyle(
-                          badgeColor: AppColors.kLiteBlue,
-                          padding: EdgeInsets.all(6)),
-                      showBadge: showBadge,
-                      badgeContent: CustomTextPopins(
-                        fontSize: 13,
-                        text: badgeText,
-                        fontColor: AppColors.kWhite,
-                      ),
-                      child: Container(
-                          height: 44,
-                          width: 44,
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: const BoxDecoration(
-                            color: AppColors.kWhite,
-                            shape: BoxShape.circle,
-                          ),
-                          child: rightTextButton
-                              ? Center(
-                                  child: CustomTextPopins(
-                                  text: rightButtonText,
-                                  fontColor: AppColors.kBlack,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ))
-                              : SvgPicture.asset(iconImage)),
-                    ),
-                  ),
-                ),
-              )
-            : const SizedBox(),
+              ),
+            ),
+          ),
       ],
     );
   }

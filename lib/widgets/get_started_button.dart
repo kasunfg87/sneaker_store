@@ -34,8 +34,8 @@ class GetStartedButton extends StatelessWidget {
                 'Get Started >',
                 style: GoogleFonts.raleway(
                     color: AppColors.kBlack,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700),
               ))),
         ));
   }

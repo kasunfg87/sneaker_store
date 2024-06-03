@@ -12,30 +12,34 @@ class CustomCategoryButton extends StatelessWidget {
   });
 
   final String buttonText;
-  final Function() onTap;
+  final VoidCallback onTap;
   final Color buttonColor;
   final Color fontColor;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        borderRadius: BorderRadius.circular(8),
-        splashFactory: InkRipple.splashFactory,
-        splashColor: AppColors.kBlack,
-        onTap: onTap,
-        child: Container(
-            // height: 20,
-            width: 108,
-            // width: SizeConfig.w(context) * 0.7,
-            decoration: BoxDecoration(
-              color: buttonColor,
-              borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(8),
+      splashFactory: InkRipple.splashFactory,
+      splashColor: AppColors.kBlack,
+      onTap: onTap,
+      child: Container(
+        width: 108,
+        decoration: BoxDecoration(
+          color: buttonColor,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Text(
+            buttonText,
+            style: GoogleFonts.poppins(
+              color: fontColor,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
             ),
-            child: Center(
-                child: Text(
-              buttonText,
-              style: GoogleFonts.poppins(
-                  color: fontColor, fontSize: 14, fontWeight: FontWeight.w300),
-            ))));
+          ),
+        ),
+      ),
+    );
   }
 }

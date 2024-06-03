@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/provider/riverpod.dart';
@@ -18,12 +17,6 @@ class Orders extends ConsumerStatefulWidget {
 }
 
 class _OrdersState extends ConsumerState<Orders> {
-  @override
-  void initState() {
-    ref.read(orderRiverPod).fetchOrders(FirebaseAuth.instance.currentUser!.uid);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

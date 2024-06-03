@@ -18,13 +18,6 @@ class Favourite extends ConsumerStatefulWidget {
 
 class _FavouriteState extends ConsumerState<Favourite> {
   @override
-  void initState() {
-    super.initState();
-
-    ref.read(favouriteRiverPod).fetchFavouriteProducts();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kButtonGray,
@@ -44,12 +37,9 @@ class _FavouriteState extends ConsumerState<Favourite> {
               onTapLeft: () {},
               onTapRight: () {},
             ),
-            const SizedBox(
-              height: 20,
-            ),
             SizedBox(
                 width: SizeConfig.w(context),
-                height: SizeConfig.h(context) * 0.76,
+                height: SizeConfig.h(context) * 0.90,
                 child: ref.watch(productRiverPod).isLoading
                     ? const Center(child: CircularProgressIndicator())
                     : GridView.builder(

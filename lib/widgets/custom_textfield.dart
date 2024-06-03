@@ -34,7 +34,7 @@ class CustomTextfield extends StatelessWidget {
           padding: const EdgeInsets.only(left: 10),
           child: CustomTextRaleway(
             text: headerText,
-            fontSize: 16,
+            fontSize: 17,
             fontColor: AppColors.kLiteBlack,
           ),
         ),
@@ -54,7 +54,7 @@ class CustomTextfield extends StatelessWidget {
             filled: true,
             hintText: hintText,
             hintStyle:
-                GoogleFonts.poppins(fontSize: 14, color: AppColors.kLiteBlack),
+                GoogleFonts.poppins(fontSize: 16, color: AppColors.kLiteBlack),
             // floatingLabelBehavior: FloatingLabelBehavior.always,
             contentPadding:
                 const EdgeInsets.only(left: 18, top: 12, bottom: 12),

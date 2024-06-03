@@ -9,10 +9,10 @@ import 'package:sneaker_store/utilities/alert_helper.dart';
 
 class FavouriteProvider extends ChangeNotifier {
   // List to store the favourite products
-  List<FavouriteModel> _favCourses = [];
+  List<FavouriteModel> _favProducts = [];
 
   // Getter for the favourite products list
-  List<FavouriteModel> get favCourses => _favCourses;
+  List<FavouriteModel> get favProducts => _favProducts;
 
   bool _isLoading = false;
 
@@ -34,10 +34,10 @@ class FavouriteProvider extends ChangeNotifier {
       setLoading(true);
 
       // Fetch favourite products
-      _favCourses = await _productController.getFavoriteProducts();
+      _favProducts = await _productController.getFavoriteProducts();
       notifyListeners();
 
-      Logger().e(favCourses[0].productId);
+      Logger().e(favProducts[0].productId);
 
       // Stop the loader
       setLoading(false);
@@ -52,12 +52,12 @@ class FavouriteProvider extends ChangeNotifier {
   // Add or remove product from favourites
   void initAddToFav(FavouriteModel model, BuildContext context, WidgetRef ref) {
     final productRiver = ref.read(productRiverPod);
-    if (_favCourses.map((e) => e.productId).contains(model.productId)) {
+    if (_favProducts.map((e) => e.productId).contains(model.productId)) {
       // Remove from favourites if already present
       _productController
           .removeFromFavourite(model)
           .whenComplete(() => fetchFavouriteProducts())
-          .whenComplete(() => productRiver.filterProdutsWithID(context, ref));
+          .whenComplete(() => productRiver.filterProductsWithID(ref));
 
       AlertHelper.showSanckBar(
           context, 'Removed from Favourite!', AnimatedSnackBarType.error);
@@ -66,7 +66,7 @@ class FavouriteProvider extends ChangeNotifier {
       _productController
           .addToFavourite(model)
           .whenComplete(() => fetchFavouriteProducts())
-          .whenComplete(() => productRiver.filterProdutsWithID(context, ref));
+          .whenComplete(() => productRiver.filterProductsWithID(ref));
 
       AlertHelper.showSanckBar(
           context, 'Added to Favourite!', AnimatedSnackBarType.success);

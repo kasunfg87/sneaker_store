@@ -95,7 +95,7 @@ class _SignInState extends ConsumerState<SignIn> {
                       },
                       child: const CustomTextPopins(
                         text: 'Recovery Password',
-                        fontSize: 12,
+                        fontSize: 14,
                         fontColor: AppColors.kLiteBlack,
                         textAlign: TextAlign.right,
                       ),
@@ -132,7 +132,7 @@ class _SignInState extends ConsumerState<SignIn> {
                   children: [
                     const CustomTextRaleway(
                       text: 'New User?',
-                      fontSize: 16,
+                      fontSize: 17,
                       fontColor: AppColors.kLiteBlack,
                       fontWeight: FontWeight.normal,
                     ),
@@ -145,7 +145,7 @@ class _SignInState extends ConsumerState<SignIn> {
                       },
                       child: const CustomTextRaleway(
                         text: 'Create Account',
-                        fontSize: 16,
+                        fontSize: 17,
                         fontColor: AppColors.kBlack,
                         fontWeight: FontWeight.w600,
                       ),

@@ -20,7 +20,8 @@ class OrderController {
   Future<List<OrderModel>> getOrders(String uid) async {
     try {
       // Query to fetch orders for a specific user
-      QuerySnapshot snapshot = await orders.where('uid', isEqualTo: uid).get();
+      QuerySnapshot snapshot =
+          await orders.where('createdBy', isEqualTo: uid).get();
 
       // List to store the fetched orders
       List<OrderModel> list = [];
