@@ -173,17 +173,32 @@ class ProductProvider extends ChangeNotifier {
   }
 
   // Fetch all products and store in the allProduct list
+  // Future<void> fetchProducts() async {
+  //   try {
+  //     setLoading(true);
+  //     _allProduct = await ProductController().getProducts();
+  //     Logger().e(_allProduct.length);
+  //     Logger().d(allProduct.length);
+
+  //     setLoading(false);
+  //     notifyListeners();
+  //   } catch (e) {
+  //     setLoading(false);
+  //     Logger().e(e);
+  //   }
+
+  // }
+
   Future<void> fetchProducts() async {
     try {
       setLoading(true);
       _allProduct = await ProductController().getProducts();
-
       setLoading(false);
-      notifyListeners();
     } catch (e) {
       setLoading(false);
       Logger().e(e);
     }
+    notifyListeners();
   }
 
   // Fetch all shoe sizes and colors and store in the shoeSize list
