@@ -74,6 +74,7 @@ class OrderTile extends StatelessWidget {
           children: List.generate(orderModel.cartItems.length, (index) {
             return Container(
               decoration: BoxDecoration(
+                  color: AppColors.kWhite,
                   border: Border.all(
                       width: 1, color: AppColors.kLiteGray.withOpacity(0.3)),
                   borderRadius: BorderRadius.circular(20)),

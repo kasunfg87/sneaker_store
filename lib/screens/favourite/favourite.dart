@@ -4,7 +4,8 @@ import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
-import 'package:sneaker_store/widgets/product_tile.dart';
+import 'package:sneaker_store/widgets/custom_text_popins.dart';
+import 'package:sneaker_store/widgets/favourite_tile.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 
 class Favourite extends ConsumerStatefulWidget {
@@ -32,32 +33,27 @@ class _FavouriteState extends ConsumerState<Favourite> {
                 onTapLeft: () {},
                 onTapRight: () {},
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               SizedBox(
-                width: SizeConfig.w(context),
                 height: SizeConfig.h(context) * 0.77,
-                child: ref.watch(productRiverPod).isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : GridView.builder(
-                        physics: const BouncingScrollPhysics(),
+                width: SizeConfig.w(context),
+                child: ref.watch(productRiverPod).favouriteProduct.isNotEmpty
+                    ? ListView.builder(
                         itemCount:
                             ref.watch(productRiverPod).favouriteProduct.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 2,
-                          crossAxisSpacing: 18,
-                          childAspectRatio: 0.75,
-                        ),
                         itemBuilder: (context, index) {
-                          return ProductTile(
-                            model: ref
-                                .watch(productRiverPod)
-                                .favouriteProduct[index],
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: FavouriteTile(
+                                model: ref
+                                    .watch(productRiverPod)
+                                    .favouriteProduct[index]),
                           );
                         },
-                      ),
-              ),
+                      )
+                    : const Center(
+                        child: CustomTextPopins(text: 'No Favourite Item yet')),
+              )
             ],
           ),
         ),

@@ -62,6 +62,7 @@ dependencies:
   ndialog: ^4.3.1
   short_uuids: ^2.0.0
   flutter_riverpod: ^2.5.1
+  flutter_blurhash: ^0.8.2
  
   
  
