@@ -13,6 +13,7 @@ class ShoeSizeWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final productProvider = ref.watch(productRiverPod);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,21 +30,21 @@ class ShoeSizeWidget extends ConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return CustomSizeButton(
-                      fontColor: ref.read(productRiverPod).sizeIndex == index
+                      fontColor: productProvider.sizeIndex == index
                           ? AppColors.kWhite
                           : AppColors.kBlack,
-                      buttonColor: ref.read(productRiverPod).sizeIndex == index
+                      buttonColor: productProvider.sizeIndex == index
                           ? AppColors.kLiteBlack
                           : AppColors.kWhite,
-                      buttonText: ref.read(productRiverPod).shoeSizeOnly[index],
+                      buttonText: productProvider.shoeSizeOnly[index],
                       onTap: () {
-                        ref.read(productRiverPod).setSizeIndex(index);
+                        productProvider.setSizeIndex(index);
                       });
                 },
                 separatorBuilder: (context, index) => const SizedBox(
                       width: 10,
                     ),
-                itemCount: ref.read(productRiverPod).shoeSizeOnly.length)),
+                itemCount: productProvider.shoeSizeOnly.length)),
       ],
     );
   }

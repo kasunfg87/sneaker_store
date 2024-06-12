@@ -66,6 +66,7 @@ class PopularShoesSection extends ConsumerWidget {
                         ),
                       );
               }
+              return null;
             },
             separatorBuilder: (context, index) => const SizedBox(width: 22),
             itemCount: productProvider.filteredProduct.isEmpty

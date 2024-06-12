@@ -32,56 +32,51 @@ class _MyCartState extends ConsumerState<MyCart> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.kButtonGray,
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          width: SizeConfig.w(context),
-          height: SizeConfig.h(context) * 0.70,
+        body: SafeArea(
           child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 40,
-              ),
-              ScreenHeader(
-                title: 'My Cart',
-                iconImage: AssetConstants.bag,
-                onTapLeft: () => Navigator.pop(context),
-                onTapRight: () {},
-                rightIconButton: false,
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              CustomTextPopins(
-                text: '${ref.watch(cartRiverPod).cartItems.length} Item',
-                fontSize: 16,
-                fontColor: AppColors.kBlack,
-                fontWeight: FontWeight.w500,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SizedBox(
-                width: SizeConfig.w(context),
-                height: SizeConfig.h(context) * .52,
-                child: ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      // return CartTile(
-                      //     model: Provider.of<CartProvider>(context)
-                      //         .cartItems[index]);
-                      return SlidableCartTile(
-                          cartItemModel:
-                              ref.watch(cartRiverPod).cartItems[index]);
-                    },
-                    separatorBuilder: (context, index) => const SizedBox(
-                          height: 14,
-                        ),
-                    itemCount: ref.watch(cartRiverPod).cartItems.length),
-              )
-            ],
-          )),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ScreenHeader(
+                    title: 'My Cart',
+                    iconImage: AssetConstants.bag,
+                    onTapLeft: () => Navigator.pop(context),
+                    onTapRight: () {},
+                    rightIconButton: false,
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                  CustomTextPopins(
+                    text: '${ref.watch(cartRiverPod).cartItems.length} Item',
+                    fontSize: 16,
+                    fontColor: AppColors.kBlack,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: SizeConfig.w(context),
+                    height: SizeConfig.h(context) * .52,
+                    child: ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          // return CartTile(
+                          //     model: Provider.of<CartProvider>(context)
+                          //         .cartItems[index]);
+                          return SlidableCartTile(
+                              cartItemModel:
+                                  ref.watch(cartRiverPod).cartItems[index]);
+                        },
+                        separatorBuilder: (context, index) => const SizedBox(
+                              height: 14,
+                            ),
+                        itemCount: ref.watch(cartRiverPod).cartItems.length),
+                  )
+                ],
+              )),
         ),
         //-------- Bottom Pannel
         bottomNavigationBar: Container(

@@ -38,6 +38,8 @@ class ScreenHeader extends StatelessWidget {
       children: [
         if (backButton)
           InkWell(
+            borderRadius: BorderRadius.circular(15),
+            splashFactory: InkRipple.splashFactory,
             onTap: onTapLeft,
             child: Material(
               borderRadius: BorderRadius.circular(25),
@@ -60,9 +62,9 @@ class ScreenHeader extends StatelessWidget {
           ),
         CustomTextRaleway(
           text: title,
-          fontSize: 18,
+          fontSize: 20,
           fontColor: AppColors.kBlack,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
         ),
         if (rightIconButton)
           Padding(

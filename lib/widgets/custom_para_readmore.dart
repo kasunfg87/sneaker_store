@@ -22,7 +22,7 @@ class CustomParaReadMore extends StatelessWidget {
             inputData,
             textAlign: TextAlign.justify,
             trimMode: TrimMode.line,
-            trimLines: 4,
+            trimLines: 7,
             delimiter: '........ ',
             delimiterStyle: GoogleFonts.poppins(
               fontSize: 15,
@@ -30,7 +30,7 @@ class CustomParaReadMore extends StatelessWidget {
             ),
             style: GoogleFonts.poppins(
                 fontSize: 15,
-                color: AppColors.kLiteBlack.withOpacity(0.8),
+                color: AppColors.kLiteBlack,
                 textStyle: const TextStyle(wordSpacing: 1)),
             trimCollapsedText: 'Read More',
             trimExpandedText: 'Read Less',

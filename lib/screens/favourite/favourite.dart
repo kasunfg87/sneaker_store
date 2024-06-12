@@ -21,25 +21,21 @@ class _FavouriteState extends ConsumerState<Favourite> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kButtonGray,
-      body: Container(
-        width: SizeConfig.w(context),
-        height: SizeConfig.h(context),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: SingleChildScrollView(
-            child: Column(
-          children: [
-            const SizedBox(
-              height: 40,
-            ),
-            ScreenHeader(
-              title: 'Favourite',
-              iconImage: AssetConstants.heartEmpty,
-              onTapLeft: () {},
-              onTapRight: () {},
-            ),
-            SizedBox(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              ScreenHeader(
+                title: 'Favourite',
+                iconImage: AssetConstants.heartEmpty,
+                onTapLeft: () {},
+                onTapRight: () {},
+              ),
+              const SizedBox(height: 15),
+              SizedBox(
                 width: SizeConfig.w(context),
-                height: SizeConfig.h(context) * 0.90,
+                height: SizeConfig.h(context) * 0.77,
                 child: ref.watch(productRiverPod).isLoading
                     ? const Center(child: CircularProgressIndicator())
                     : GridView.builder(
@@ -48,18 +44,23 @@ class _FavouriteState extends ConsumerState<Favourite> {
                             ref.watch(productRiverPod).favouriteProduct.length,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 9,
-                                crossAxisSpacing: 19,
-                                childAspectRatio: 0.70),
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 2,
+                          crossAxisSpacing: 18,
+                          childAspectRatio: 0.75,
+                        ),
                         itemBuilder: (context, index) {
                           return ProductTile(
-                              model: ref
-                                  .watch(productRiverPod)
-                                  .favouriteProduct[index]);
-                        }))
-          ],
-        )),
+                            model: ref
+                                .watch(productRiverPod)
+                                .favouriteProduct[index],
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

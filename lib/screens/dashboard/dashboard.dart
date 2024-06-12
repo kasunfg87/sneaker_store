@@ -31,96 +31,96 @@ class _DashboardState extends ConsumerState<Dashboard> {
     final productProvider = ref.watch(productRiverPod);
     return Scaffold(
       backgroundColor: AppColors.kButtonGray,
-      body: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 60,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const CustomMenuButton(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(AssetConstants.highlight),
-                      const CustomTextRaleway(text: 'Explore'),
-                    ],
-                  ),
-                  const CustomCartButton(),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: SizeConfig.w(context) - 100,
-                    child: CustomSearch(
-                      controller: productProvider.searchController,
-                      hintText: 'Looking for shoes',
-                      textOnTap: () {
-                        CustomNavigator.navigateTo(
-                            context, const SearchScreen());
-                      },
-                      txtOnChange: (text) {
-                        CustomNavigator.navigateTo(
-                            context, const SearchScreen());
-                      },
+      body: SafeArea(
+        child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const CustomMenuButton(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset(AssetConstants.highlight),
+                        const CustomTextRaleway(text: 'Explore'),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Container(
-                      height: 48,
-                      width: 48,
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: const BoxDecoration(
-                        color: AppColors.kDarkBlue,
-                        shape: BoxShape.circle,
+                    const CustomCartButton(),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: SizeConfig.w(context) - 100,
+                      child: CustomSearch(
+                        controller: productProvider.searchController,
+                        hintText: 'Looking for shoes',
+                        textOnTap: () {
+                          CustomNavigator.navigateTo(
+                              context, const SearchScreen());
+                        },
+                        txtOnChange: (text) {
+                          CustomNavigator.navigateTo(
+                              context, const SearchScreen());
+                        },
                       ),
-                      child: SvgPicture.asset(AssetConstants.slider)),
-                ],
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: CustomTextRaleway(text: 'Select Category', fontSize: 16),
-              ),
-              const SizedBox(height: 16),
-              CategoryList(productProvider: productProvider),
-              const SizedBox(
-                height: 24,
-              ),
-              // const PopularShoesSection(),
-              const SizedBox(height: 24),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomTextRaleway(
-                    text: 'New Arrivals',
-                    fontSize: 16,
-                  ),
-                  CustomTextPopins(
-                    text: 'See All',
-                    fontColor: AppColors.kLiteBlue,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 24,
-              ),
-              const NewArrivalBanner()
-            ],
-          )),
+                    ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Container(
+                        height: 48,
+                        width: 48,
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: const BoxDecoration(
+                          color: AppColors.kDarkBlue,
+                          shape: BoxShape.circle,
+                        ),
+                        child: SvgPicture.asset(AssetConstants.slider)),
+                  ],
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child:
+                      CustomTextRaleway(text: 'Select Category', fontSize: 16),
+                ),
+                const SizedBox(height: 16),
+                CategoryList(productProvider: productProvider),
+                const SizedBox(
+                  height: 24,
+                ),
+                const PopularShoesSection(),
+                const SizedBox(height: 24),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomTextRaleway(
+                      text: 'New Arrivals',
+                      fontSize: 16,
+                    ),
+                    CustomTextPopins(
+                      text: 'See All',
+                      fontColor: AppColors.kLiteBlue,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                const NewArrivalBanner()
+              ],
+            )),
+      ),
     );
   }
 }
