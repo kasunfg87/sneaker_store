@@ -139,6 +139,7 @@ class _HomeState extends ConsumerState<Home> {
       icon: SvgPicture.asset(
         iconPath,
         height: iconHeight,
+        // ignore: deprecated_member_use
         color: currentIndex == index
             ? AppColors.kLiteBlue
             : AppColors.kLiteBlack.withOpacity(0.5),

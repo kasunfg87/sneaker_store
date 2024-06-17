@@ -34,8 +34,8 @@ class ShoeSizeWidget extends ConsumerWidget {
                           ? AppColors.kWhite
                           : AppColors.kBlack,
                       buttonColor: productProvider.sizeIndex == index
-                          ? AppColors.kLiteBlack
-                          : AppColors.kWhite,
+                          ? AppColors.kLiteBlue
+                          : AppColors.kButtonGray,
                       buttonText: productProvider.shoeSizeOnly[index],
                       onTap: () {
                         productProvider.setSizeIndex(index);

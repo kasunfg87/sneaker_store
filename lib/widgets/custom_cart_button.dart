@@ -43,7 +43,7 @@ class CustomCartButton extends ConsumerWidget {
               width: 44,
               padding: const EdgeInsets.all(10.0),
               decoration: const BoxDecoration(
-                color: AppColors.kWhite,
+                color: AppColors.kButtonGray,
                 shape: BoxShape.circle,
               ),
               child: SvgPicture.asset(AssetConstants.bag)),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:parsed_readmore/parsed_readmore.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
+import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 
 class CustomParaReadMore extends StatelessWidget {
   const CustomParaReadMore({
@@ -17,12 +18,18 @@ class CustomParaReadMore extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          //Package widget using custom values
+          const CustomTextRaleway(
+            text: 'Product Details',
+            fontSize: 16,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           ParsedReadMore(
             inputData,
             textAlign: TextAlign.justify,
             trimMode: TrimMode.line,
-            trimLines: 7,
+            trimLines: 5,
             delimiter: '........ ',
             delimiterStyle: GoogleFonts.poppins(
               fontSize: 15,

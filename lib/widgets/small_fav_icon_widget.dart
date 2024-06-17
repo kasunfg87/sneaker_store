@@ -27,6 +27,7 @@ class SmallFavouriteIconWidget extends ConsumerWidget {
           ),
           child: SvgPicture.asset(
             AssetConstants.hertfill,
+            // ignore: deprecated_member_use
             color: isFavourite
                 ? Colors.red
                 : AppColors.kLiteBlack.withOpacity(0.3),

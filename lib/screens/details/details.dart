@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,7 @@ import 'package:sneaker_store/widgets/fav_icon_widget.dart';
 import 'package:sneaker_store/widgets/releted_item_tile.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 import 'package:sneaker_store/widgets/shoe_size_widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Details extends ConsumerStatefulWidget {
   static String routeName = "/details";
@@ -35,7 +37,7 @@ class Details extends ConsumerStatefulWidget {
 class _DetailsState extends ConsumerState<Details> {
   @override
   Widget build(BuildContext context) {
-    // Memoize the watched values
+    // Watched values
     final productModel = ref.watch(productRiverPod).productModel;
     final relatedProducts = ref.watch(productRiverPod).relatedProducts;
     final shoeSizes = ref.watch(productRiverPod).shoeSizeOnly;
@@ -99,19 +101,27 @@ class _DetailsState extends ConsumerState<Details> {
                         child: Image.network(productModel.img),
                       ),
                       const SizedBox(height: 50),
+                      const CustomTextRaleway(
+                        text: 'Similar Products',
+                        fontSize: 16,
+                      ),
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 10),
                         height: 90,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            return ReletedItemTile(
-                              model: relatedProducts[index],
-                            );
-                          },
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(width: 10),
+                        child: CarouselSlider.builder(
                           itemCount: relatedProducts.length,
+                          itemBuilder: (context, index, realIndex) {
+                            return FadeInRight(
+                                child: ReletedItemTile(
+                                    model: relatedProducts[index]));
+                          },
+                          options: CarouselOptions(
+                              height: 90,
+                              autoPlay: true,
+                              autoPlayCurve: Curves.linear,
+                              viewportFraction: 0.20,
+                              pageSnapping: true,
+                              scrollPhysics: const BouncingScrollPhysics()),
                         ),
                       ),
                       const SizedBox(height: 5),

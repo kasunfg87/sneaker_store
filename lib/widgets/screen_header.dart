@@ -70,7 +70,8 @@ class ScreenHeader extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: InkWell(
-              borderRadius: BorderRadius.circular(25),
+              borderRadius: BorderRadius.circular(15),
+              splashFactory: InkRipple.splashFactory,
               onTap: onTapRight,
               child: Material(
                 borderRadius: BorderRadius.circular(25),
@@ -92,7 +93,7 @@ class ScreenHeader extends StatelessWidget {
                     width: 44,
                     padding: const EdgeInsets.all(10.0),
                     decoration: const BoxDecoration(
-                      color: AppColors.kWhite,
+                      color: AppColors.kButtonGray,
                       shape: BoxShape.circle,
                     ),
                     child: rightTextButton
