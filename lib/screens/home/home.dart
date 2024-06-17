@@ -25,16 +25,9 @@ class Home extends ConsumerStatefulWidget {
 }
 
 class _HomeState extends ConsumerState<Home> {
-  @override
-  void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-
-    super.initState();
-  }
-
   int currentIndex = 0;
 
-  setBottomBarIndex(index) {
+  void setBottomBarIndex(int index) {
     setState(() {
       currentIndex = index;
     });
@@ -48,6 +41,12 @@ class _HomeState extends ConsumerState<Home> {
   ];
 
   @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
@@ -57,96 +56,97 @@ class _HomeState extends ConsumerState<Home> {
         child: Scaffold(
           backgroundColor: AppColors.kButtonGray,
           body: screens[currentIndex],
-          bottomNavigationBar: SizedBox(
-            width: SizeConfig.w(context),
-            height: 80,
-            child: Stack(
-              children: [
-                CustomPaint(
-                  size: Size(SizeConfig.w(context), 80),
-                  painter: BNBCustomPainter(),
-                ),
-                Center(
-                    heightFactor: 0.6,
-                    child: FloatingActionButton(
-                        shape: const CircleBorder(),
-                        backgroundColor: AppColors.kLiteBlue,
-                        elevation: 2,
-                        child: SvgPicture.asset(AssetConstants.bagLarge),
-                        onPressed: () {
-                          ref.read(cartRiverPod).cartItems.isNotEmpty
-                              ? CustomNavigator.navigateTo(
-                                  context, const MyCart())
-                              : AlertHelper.showSanckBar(
-                                  context,
-                                  'Your Cart Is Currently Empty!',
-                                  AnimatedSnackBarType.info);
-                        })),
-                SizedBox(
-                  width: SizeConfig.w(context),
-                  height: 80,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                        icon: SvgPicture.asset(
-                          AssetConstants.home,
-                          // ignore: deprecated_member_use
-                          color: currentIndex == 0
-                              ? AppColors.kLiteBlue
-                              : AppColors.kLiteBlack.withOpacity(0.5),
-                        ),
-                        onPressed: () {
-                          setBottomBarIndex(0);
-                        },
-                        splashColor: Colors.white,
-                      ),
-                      IconButton(
-                          icon: SvgPicture.asset(
-                            height: 29,
-                            AssetConstants.heartLarge,
-                            // ignore: deprecated_member_use
-                            color: currentIndex == 1
-                                ? AppColors.kLiteBlue
-                                : AppColors.kLiteBlack.withOpacity(0.5),
-                          ),
-                          onPressed: () {
-                            setBottomBarIndex(1);
-                          }),
-                      Container(
-                        width: SizeConfig.w(context) * 0.20,
-                      ),
-                      IconButton(
-                          icon: SvgPicture.asset(
-                            AssetConstants.order,
-                            height: 27,
-                            // ignore: deprecated_member_use
-                            color: currentIndex == 2
-                                ? AppColors.kLiteBlue
-                                : AppColors.kLiteBlack.withOpacity(0.5),
-                          ),
-                          onPressed: () {
-                            setBottomBarIndex(2);
-                          }),
-                      IconButton(
-                          icon: SvgPicture.asset(
-                            AssetConstants.profile,
-                            // ignore: deprecated_member_use
-                            color: currentIndex == 3
-                                ? AppColors.kLiteBlue
-                                : AppColors.kLiteBlack.withOpacity(0.5),
-                          ),
-                          onPressed: () {
-                            setBottomBarIndex(3);
-                          }),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+          bottomNavigationBar: buildBottomNavigationBar(context),
         ),
       ),
+    );
+  }
+
+  Widget buildBottomNavigationBar(BuildContext context) {
+    return SizedBox(
+      width: SizeConfig.w(context),
+      height: 80,
+      child: Stack(
+        children: [
+          CustomPaint(
+            size: Size(SizeConfig.w(context), 80),
+            painter: BNBCustomPainter(),
+          ),
+          Center(
+            heightFactor: 0.6,
+            child: FloatingActionButton(
+              shape: const CircleBorder(),
+              backgroundColor: AppColors.kLiteBlue,
+              elevation: 2,
+              child: SvgPicture.asset(AssetConstants.bagLarge),
+              onPressed: () {
+                final cartItems = ref.read(cartRiverPod).cartItems;
+                if (cartItems.isNotEmpty) {
+                  CustomNavigator.navigateTo(context, const MyCart());
+                } else {
+                  AlertHelper.showSanckBar(
+                    context,
+                    'Your Cart Is Currently Empty!',
+                    AnimatedSnackBarType.info,
+                  );
+                }
+              },
+            ),
+          ),
+          buildIconButtons(context),
+        ],
+      ),
+    );
+  }
+
+  Widget buildIconButtons(BuildContext context) {
+    return SizedBox(
+      width: SizeConfig.w(context),
+      height: 80,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          buildIconButton(
+            iconPath: AssetConstants.home,
+            index: 0,
+          ),
+          buildIconButton(
+            iconPath: AssetConstants.heartLarge,
+            index: 1,
+            iconHeight: 29,
+          ),
+          const SizedBox(width: 20), // Spacer for the FAB
+          buildIconButton(
+            iconPath: AssetConstants.order,
+            index: 2,
+            iconHeight: 27,
+          ),
+          buildIconButton(
+            iconPath: AssetConstants.profile,
+            index: 3,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildIconButton({
+    required String iconPath,
+    required int index,
+    double iconHeight = 24,
+  }) {
+    return IconButton(
+      icon: SvgPicture.asset(
+        iconPath,
+        height: iconHeight,
+        color: currentIndex == index
+            ? AppColors.kLiteBlue
+            : AppColors.kLiteBlack.withOpacity(0.5),
+      ),
+      onPressed: () {
+        setBottomBarIndex(index);
+      },
+      splashColor: Colors.white,
     );
   }
 }

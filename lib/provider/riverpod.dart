@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sneaker_store/controller/product_controller.dart';
 import 'package:sneaker_store/provider/cart_provider.dart';
 import 'package:sneaker_store/provider/favourite_provider.dart';
 import 'package:sneaker_store/provider/order_provider.dart';
@@ -10,3 +12,8 @@ final favouriteRiverPod = ChangeNotifierProvider((ref) => FavouriteProvider());
 final orderRiverPod = ChangeNotifierProvider((ref) => OrderProvider());
 final productRiverPod = ChangeNotifierProvider((ref) => ProductProvider());
 final userRiverPod = ChangeNotifierProvider((ref) => UserProvider());
+
+final favouriteProductStreamProvider =
+    StreamProvider.family<QuerySnapshot, int>((ref, productId) {
+  return ProductController().getFavouriteProductStream(productId);
+});
