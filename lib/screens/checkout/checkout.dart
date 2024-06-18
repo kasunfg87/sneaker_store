@@ -33,22 +33,19 @@ class _CheckoutState extends ConsumerState<Checkout> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.kButtonGray,
-        body: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          width: SizeConfig.w(context),
-          height: SizeConfig.h(context),
-          child: Expanded(
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            width: SizeConfig.w(context),
+            height: SizeConfig.h(context),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 40,
-                ),
                 ScreenHeader(
                   title: 'Checkout',
                   iconImage: AssetConstants.bag,
                   onTapRight: () {},
                   onTapLeft: () => Navigator.pop(context),
-                  rightIconButton: false,
+                  rightIconButton: true,
                 ),
                 Expanded(
                   child: SingleChildScrollView(

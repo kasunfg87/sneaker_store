@@ -21,9 +21,9 @@ class SmallFavouriteIconWidget extends ConsumerWidget {
 
         return Container(
           padding: const EdgeInsets.all(3),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.kButtonGray,
+            color: AppColors.kDarkGray.withOpacity(0.3),
           ),
           child: SvgPicture.asset(
             AssetConstants.hertfill,

@@ -33,7 +33,7 @@ class PopularShoesSection extends ConsumerWidget {
         const SizedBox(height: 20),
         SizedBox(
           width: SizeConfig.w(context),
-          height: SizeConfig.h(context) * 0.30,
+          height: SizeConfig.h(context) * 0.28,
           child: ListView.separated(
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,

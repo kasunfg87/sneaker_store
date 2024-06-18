@@ -36,8 +36,8 @@ class _ProfileState extends ConsumerState<Profile> {
                 ),
                 ScreenHeader(
                     title: 'Profile',
-                    rightIconButton: false,
-                    iconImage: '',
+                    rightIconButton: true,
+                    iconImage: AssetConstants.profile,
                     onTapLeft: () => Navigator.pop(context),
                     onTapRight: () {}),
                 const SizedBox(

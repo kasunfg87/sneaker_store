@@ -73,7 +73,7 @@ class CustomSearch extends StatelessWidget {
             borderRadius: BorderRadius.all(
               Radius.circular(14),
             ),
-            borderSide: BorderSide(color: AppColors.kButtonGray),
+            borderSide: BorderSide(color: AppColors.kButtonGray, width: 1),
           ),
         ),
       ),

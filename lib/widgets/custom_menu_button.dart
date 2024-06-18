@@ -25,7 +25,7 @@ class _CustomMenuButtonState extends State<CustomMenuButton> {
       child: Material(
         borderRadius: BorderRadius.circular(25),
         elevation: 3,
-        shadowColor: AppColors.kLiteBlack.withOpacity(0.4),
+        shadowColor: AppColors.kLiteBlack.withOpacity(0.3),
         child: Container(
             height: 44,
             width: 44,

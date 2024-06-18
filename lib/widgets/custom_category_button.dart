@@ -28,6 +28,10 @@ class CustomCategoryButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: buttonColor,
           borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+              style: BorderStyle.solid,
+              color: AppColors.kLiteBlack.withOpacity(0.4),
+              width: 0.8),
         ),
         child: Center(
           child: Text(
