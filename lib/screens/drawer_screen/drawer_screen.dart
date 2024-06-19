@@ -1,22 +1,19 @@
+// lib/screens/drawer_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/home/home.dart';
 import 'package:sneaker_store/screens/menu/menu.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 
-class DrawerScreen extends StatefulWidget {
+class DrawerScreen extends ConsumerWidget {
   static String routeName = "/drawerscreen";
   const DrawerScreen({super.key});
 
   @override
-  State<DrawerScreen> createState() => _DrawerScreenState();
-}
-
-class _DrawerScreenState extends State<DrawerScreen> {
-  final zoomDrawerController = ZoomDrawerController();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final zoomDrawerController = ref.read(zoomDrawerControllerProvider);
     return ZoomDrawer(
       controller: zoomDrawerController,
       menuScreen: const MenuScreen(),

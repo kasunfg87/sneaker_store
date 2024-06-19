@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/provider/riverpod.dart';
+import 'package:sneaker_store/screens/drawer_screen/drawer_screen.dart';
 import 'package:sneaker_store/screens/home/home.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
@@ -81,8 +82,7 @@ class AlertHelper {
                         .read(orderRiverPod)
                         .fetchOrders(FirebaseAuth.instance.currentUser!.uid);
 
-                    // Navigator.of(context).pop();
-                    CustomNavigator.navigateTo(context, const Home());
+                    Navigator.pushNamed(context, DrawerScreen.routeName);
                   })
             ],
           ),
