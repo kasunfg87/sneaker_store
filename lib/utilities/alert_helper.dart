@@ -7,10 +7,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/drawer_screen/drawer_screen.dart';
-import 'package:sneaker_store/screens/home/home.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
-import 'package:sneaker_store/utilities/navigation_function.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/custom_button.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
@@ -41,6 +39,7 @@ class AlertHelper {
   static Future openDialog(
           BuildContext context, OrderModel orderModel, WidgetRef ref) =>
       showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) => ZoomIn(
           child: AlertDialog(
