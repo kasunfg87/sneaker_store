@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:logger/logger.dart';
-import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/models/payment_button_model.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/services/payment_services.dart';
 import 'package:sneaker_store/utilities/alert_helper.dart';
 
@@ -12,9 +12,9 @@ class PaymentProvider extends ChangeNotifier {
   final PaymentServices _paymentService = PaymentServices();
 
   // --- strat creating the payment
-  Future<void> makePayment(BuildContext context, String amount,
-      OrderModel orderModel, WidgetRef ref) async {
+  Future<void> makePayment(BuildContext context, WidgetRef ref) async {
     try {
+      final String amount = ref.watch(cartRiverPod).getGrandTotal.toString();
       //-- send payment intent request
       dynamic paymentIntent =
           await _paymentService.createPaymentIntent(amount, 'USD');
@@ -30,7 +30,7 @@ class PaymentProvider extends ChangeNotifier {
         ));
         //-- disply payment sheet
         // ignore: use_build_context_synchronously
-        displayPaymentSheet(context, orderModel, ref);
+        displayPaymentSheet(context, ref);
       }
     } catch (e) {
       Logger().e(e);
@@ -38,11 +38,10 @@ class PaymentProvider extends ChangeNotifier {
   }
 
   //-- disply payment sheet
-  void displayPaymentSheet(
-      BuildContext context, OrderModel orderModel, WidgetRef ref) async {
+  void displayPaymentSheet(BuildContext context, WidgetRef ref) async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) {
-        AlertHelper.openDialog(context, orderModel, ref);
+        AlertHelper.openDialog(context, ref);
       });
     } on StripeException catch (e) {
       Logger().e(e);

@@ -1,19 +1,16 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:short_uuids/short_uuids.dart';
-import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/checkout/checkout.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
 import 'package:sneaker_store/utilities/navigation_function.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
+import 'package:sneaker_store/widgets/bottom_balance_widget.dart';
 import 'package:sneaker_store/widgets/custom_button.dart';
-import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 import 'package:sneaker_store/widgets/slidable_cart_tile.dart';
-import 'package:styled_divider/styled_divider.dart';
 import '../../widgets/custom_text_popins.dart';
 
 class MyCart extends ConsumerStatefulWidget {
@@ -86,85 +83,14 @@ class _MyCartState extends ConsumerState<MyCart> {
             decoration: const BoxDecoration(color: AppColors.kWhite),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomTextRaleway(
-                      text: 'Subtotal',
-                      fontSize: 16,
-                      fontColor: AppColors.kLiteBlack.withOpacity(0.5),
-                      fontWeight: FontWeight.w600,
-                    ),
-                    CustomTextPopins(
-                      text:
-                          '\$${ref.watch(cartRiverPod).getCartTotal.toString()}',
-                      fontSize: 16,
-                      fontColor: AppColors.kBlack,
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomTextRaleway(
-                      text: 'Delivery',
-                      fontSize: 16,
-                      fontColor: AppColors.kLiteBlack.withOpacity(0.5),
-                      fontWeight: FontWeight.w600,
-                    ),
-                    CustomTextPopins(
-                      text: '\$${ref.watch(cartRiverPod).getCartTotal * 0.05}',
-                      fontSize: 16,
-                      fontColor: AppColors.kBlack,
-                    )
-                  ],
-                ),
-                StyledDivider(
-                  color: AppColors.kLiteBlack.withOpacity(0.5),
-                  height: 50,
-                  thickness: 2,
-                  lineStyle: DividerLineStyle.dashed,
-                  indent: 0,
-                  endIndent: 0,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const CustomTextRaleway(
-                      text: 'Total Cost',
-                      fontSize: 16,
-                      fontColor: AppColors.kBlack,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    CustomTextPopins(
-                      text:
-                          '\$${ref.watch(cartRiverPod).getCartTotal + (ref.watch(cartRiverPod).getCartTotal * 0.05)}',
-                      fontSize: 16,
-                      fontColor: AppColors.kBlack,
-                    )
-                  ],
-                ),
+                const BottomBalanceWidget(),
                 const SizedBox(
                   height: 30,
                 ),
                 CustomButton(
                   buttonText: 'Checkout',
-                  onTap: () => CustomNavigator.navigateTo(
-                      context,
-                      Checkout(
-                        orderModel: OrderModel(
-                          orderId: short.generate(),
-                          cartTotal: ref.watch(cartRiverPod).getCartTotal,
-                          delivery: ref.watch(cartRiverPod).getCartTotal * 0.05,
-                          grandTotal: ref.watch(cartRiverPod).getCartTotal +
-                              ref.watch(cartRiverPod).getCartTotal * 0.05,
-                          cartItems: ref.watch(cartRiverPod).cartItems,
-                          createdBy: FirebaseAuth.instance.currentUser!.uid,
-                        ),
-                      )),
+                  onTap: () =>
+                      CustomNavigator.navigateTo(context, const Checkout()),
                 )
               ],
             )));

@@ -1,5 +1,6 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/utilities/alert_helper.dart';
@@ -121,6 +122,24 @@ class CartProvider extends ChangeNotifier {
     return total;
   }
 
+  // Get the total delivery cost of items in the cart
+  double get getDeliveryCharge {
+    double delivery = 0;
+    for (var item in _cartItems) {
+      delivery += item.subTotal * 0.05;
+    }
+    return delivery;
+  }
+
+  // Get the cart total incude delivery cost of items in the cart
+  double get getGrandTotal {
+    double grandTotal = 0;
+    for (var item in _cartItems) {
+      grandTotal += item.subTotal * 0.05 + item.subTotal;
+    }
+    return grandTotal;
+  }
+
   // Get the total count of items in the cart
   int get getCartTotalItemCount {
     int totalCount = 0;
@@ -134,5 +153,28 @@ class CartProvider extends ChangeNotifier {
   void clearCart() {
     _cartItems.clear();
     notifyListeners();
+  }
+
+  // generate bill no for order
+  String generateBillNumber() {
+    DateTime now = DateTime.now();
+
+    // Extract the components of the current date and time
+    String year = DateFormat('yy').format(now); // Last two digits of the year
+    String month = DateFormat('MM').format(now); // Two digits of the month
+    String day = DateFormat('dd').format(now); // Two digits of the day
+    String hour = DateFormat('HH').format(now); // Two digits of the hour
+    String minute = DateFormat('mm').format(now); // Two digits of the minute
+    String second = DateFormat('ss').format(now); // Two digits of the second
+
+    // Combine the components to form a unique 10-digit bill number
+    String billNumber = '$year$month$day$hour$minute$second';
+
+    // Truncate to 10 digits if necessary
+    if (billNumber.length > 10) {
+      billNumber = billNumber.substring(0, 10);
+    }
+
+    return billNumber;
   }
 }

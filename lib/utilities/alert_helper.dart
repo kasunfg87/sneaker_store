@@ -36,9 +36,7 @@ class AlertHelper {
     ).show(context);
   }
 
-  static Future openDialog(
-          BuildContext context, OrderModel orderModel, WidgetRef ref) =>
-      showDialog(
+  static Future openDialog(BuildContext context, WidgetRef ref) => showDialog(
         barrierDismissible: false,
         context: context,
         builder: (context) => ZoomIn(
@@ -72,7 +70,17 @@ class AlertHelper {
                   buttonText: 'Back To Shopping',
                   onTap: () {
                     //---- Save orders to firestore DB
-                    ref.read(orderRiverPod).saveOrderData(orderModel);
+                    ref.read(orderRiverPod).saveOrderData(
+                          OrderModel(
+                            orderId:
+                                ref.watch(cartRiverPod).generateBillNumber(),
+                            cartTotal: ref.watch(cartRiverPod).getCartTotal,
+                            delivery: ref.watch(cartRiverPod).getDeliveryCharge,
+                            grandTotal: ref.watch(cartRiverPod).getGrandTotal,
+                            cartItems: ref.watch(cartRiverPod).cartItems,
+                            createdBy: FirebaseAuth.instance.currentUser!.uid,
+                          ),
+                        );
 
                     //---- Clear cart after save orders
                     ref.read(cartRiverPod).cartItems.clear();
