@@ -60,11 +60,15 @@ class ScreenHeader extends StatelessWidget {
               ),
             ),
           ),
-        CustomTextRaleway(
-          text: title,
-          fontSize: 20,
-          fontColor: AppColors.kBlack,
-          fontWeight: FontWeight.w500,
+        Expanded(
+          child: Center(
+            child: CustomTextRaleway(
+              text: title,
+              fontSize: 20,
+              fontColor: AppColors.kBlack,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
         if (rightIconButton)
           Padding(
@@ -110,7 +114,11 @@ class ScreenHeader extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          )
+        else
+          SizedBox(
+              width:
+                  54), // Placeholder for the right icon button to keep the title centered
       ],
     );
   }

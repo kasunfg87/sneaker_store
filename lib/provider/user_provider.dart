@@ -52,6 +52,14 @@ class UserProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   File get getImage => _image;
 
+// Function to initialize and set values
+  void setTextControllers() {
+    _fullNameController.text = userModel!.fullName;
+    _emailController.text = userModel!.email;
+    _locationController.text = userModel!.location;
+    _mobileController.text = userModel!.mobileNo;
+  }
+
   // Set loading state and notify listeners
   void setLoading(bool val) {
     _isLoading = val;
@@ -210,6 +218,7 @@ class UserProvider extends ChangeNotifier {
           favouriteProvider.fetchFavouriteProducts();
           productProvider.filterProductsWithID(ref);
           orderProvider.fetchOrders(user.uid);
+          setTextControllers();
 
           Navigator.pushNamed(context, DrawerScreen.routeName);
         });

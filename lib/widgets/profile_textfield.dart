@@ -1,29 +1,47 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
 import '../utilities/app_colors.dart';
 
-class CustomTextfield extends StatelessWidget {
-  const CustomTextfield({
+class ProfileTextfield extends StatefulWidget {
+  const ProfileTextfield({
     this.controller,
     this.textInputType = TextInputType.name,
     required this.headerText,
-    required this.hintText,
-    this.isObscure = false,
     this.suffixIcon,
-    this.readOnly = false,
+    this.readOnly = true,
     this.textOnTap,
     super.key,
   });
-  final TextEditingController? controller;
 
+  final TextEditingController? controller;
   final String headerText;
-  final String hintText;
-  final bool isObscure;
+
   final Widget? suffixIcon;
   final TextInputType textInputType;
   final bool readOnly;
   final Function()? textOnTap;
+
+  @override
+  _ProfileTextfieldState createState() => _ProfileTextfieldState();
+}
+
+class _ProfileTextfieldState extends State<ProfileTextfield> {
+  late bool isReadOnly;
+
+  @override
+  void initState() {
+    super.initState();
+    isReadOnly = widget.readOnly;
+  }
+
+  void toggleReadOnly() {
+    setState(() {
+      isReadOnly = !isReadOnly;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +51,7 @@ class CustomTextfield extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 10),
           child: CustomTextRaleway(
-            text: headerText,
+            text: widget.headerText,
             fontSize: 17,
             fontColor: AppColors.kLiteBlack,
           ),
@@ -42,24 +60,33 @@ class CustomTextfield extends StatelessWidget {
           height: 12,
         ),
         TextField(
-          onTap: textOnTap,
-          readOnly: readOnly,
-          keyboardType: textInputType,
+          onTap: widget.textOnTap,
+          readOnly: isReadOnly,
+          keyboardType: widget.textInputType,
           style: GoogleFonts.poppins(fontSize: 16),
-          obscureText: isObscure,
-          controller: controller,
+          controller: widget.controller,
           decoration: InputDecoration(
             fillColor: AppColors.kButtonGray,
             focusColor: AppColors.kButtonGray,
             filled: true,
-            // hintText: hintText,
+            // hintText: widget.hintText,
             hintStyle:
                 GoogleFonts.poppins(fontSize: 16, color: AppColors.kLiteBlack),
-            // floatingLabelBehavior: FloatingLabelBehavior.always,
             contentPadding:
                 const EdgeInsets.only(left: 18, top: 12, bottom: 12),
-            suffixIcon: suffixIcon,
-
+            suffixIcon: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (widget.suffixIcon != null) widget.suffixIcon!,
+                IconButton(
+                  icon: Icon(
+                    isReadOnly ? Icons.edit : Icons.check,
+                    color: AppColors.kLiteBlack,
+                  ),
+                  onPressed: toggleReadOnly,
+                ),
+              ],
+            ),
             focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(14),

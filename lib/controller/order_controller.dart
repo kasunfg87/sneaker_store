@@ -32,6 +32,8 @@ class OrderController {
             OrderModel.fromJson(element.data() as Map<String, dynamic>);
         list.add(model);
       }
+      // Sort the list by order ID in decending order
+      list.sort((b, a) => a.orderId.compareTo(b.orderId));
 
       Logger().i("Fetched ${list.length} orders");
       return list;

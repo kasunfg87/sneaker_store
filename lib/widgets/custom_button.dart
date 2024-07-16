@@ -17,9 +17,11 @@ class CustomButton extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(14),
       splashFactory: InkRipple.splashFactory,
-      splashColor: Colors.blue.shade100,
+      splashColor: AppColors.kButtonGray,
       onTap: onTap,
-      child: Container(
+      child: AnimatedContainer(
+        curve: Curves.linearToEaseOut,
+        duration: const Duration(milliseconds: 500),
         height: 50,
         decoration: BoxDecoration(
           color: AppColors.kLiteBlue,

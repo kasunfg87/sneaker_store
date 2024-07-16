@@ -23,7 +23,9 @@ class CustomCategoryButton extends StatelessWidget {
       splashFactory: InkRipple.splashFactory,
       splashColor: AppColors.kBlack,
       onTap: onTap,
-      child: Container(
+      child: AnimatedContainer(
+        curve: Curves.linearToEaseOut,
+        duration: const Duration(milliseconds: 500),
         width: 108,
         decoration: BoxDecoration(
           color: buttonColor,

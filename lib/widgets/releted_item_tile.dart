@@ -27,7 +27,9 @@ class ReletedItemTile extends ConsumerWidget {
       },
       child: Padding(
         padding: const EdgeInsets.all(2.0),
-        child: Container(
+        child: AnimatedContainer(
+          curve: Curves.linearToEaseOut,
+          duration: const Duration(milliseconds: 500),
           padding: const EdgeInsets.all(5),
           width: tilewidth,
           height: tileHeight,

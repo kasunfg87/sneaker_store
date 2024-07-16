@@ -43,3 +43,9 @@ app.*.map.json
 /android/app/release
 # dot env file
 .env
+
+# Firebase related
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+macos/Runner/GoogleService-Info.plist
+lib/firebase_options.dart

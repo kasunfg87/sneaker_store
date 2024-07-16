@@ -40,7 +40,7 @@ class _MyCartState extends ConsumerState<MyCart> {
                     iconImage: AssetConstants.bag,
                     onTapLeft: () => Navigator.pop(context),
                     onTapRight: () {},
-                    rightIconButton: true,
+                    rightIconButton: false,
                   ),
                   const SizedBox(
                     height: 16,

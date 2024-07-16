@@ -35,7 +35,7 @@ class _CheckoutState extends ConsumerState<Checkout> {
                 iconImage: AssetConstants.bag,
                 onTapRight: () {},
                 onTapLeft: () => Navigator.pop(context),
-                rightIconButton: true,
+                rightIconButton: false,
               ),
             ),
             Expanded(
