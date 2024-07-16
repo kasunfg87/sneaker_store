@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:sneaker_store/controller/auth_controller.dart';
+import 'package:sneaker_store/provider/riverpod.dart';
 import 'package:sneaker_store/screens/drawer_screen/drawer_screen.dart';
 import 'package:sneaker_store/screens/sign_in/sign_in.dart';
 import 'package:sneaker_store/utilities/alert_helper.dart';
@@ -50,6 +51,14 @@ class UserProvider extends ChangeNotifier {
   TextEditingController get mobileController => _mobileController;
   bool get isLoading => _isLoading;
   File get getImage => _image;
+
+// Function to initialize and set values
+  void setTextControllers() {
+    _fullNameController.text = userModel!.fullName;
+    _emailController.text = userModel!.email;
+    _locationController.text = userModel!.location;
+    _mobileController.text = userModel!.mobileNo;
+  }
 
   // Set loading state and notify listeners
   void setLoading(bool val) {
@@ -192,6 +201,9 @@ class UserProvider extends ChangeNotifier {
 
   // Initialize user and check sign-in status
   Future<void> initializeUser(BuildContext context, WidgetRef ref) async {
+    final productProvider = ref.read(productRiverPod);
+    final favouriteProvider = ref.read(favouriteRiverPod);
+    final orderProvider = ref.read(orderRiverPod);
     FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       if (user == null) {
         Logger().i('User is currently signed out!');
@@ -201,15 +213,12 @@ class UserProvider extends ChangeNotifier {
         await fetchUser(user.uid).then((value) {
           updateUserOnline(true);
 
-          // Provider.of<ProductProvider>(context, listen: false).fetchProducts();
-          // Provider.of<ProductProvider>(context, listen: false)
-          //     .fetchSizedAndColors();
-          // Provider.of<FavouriteProvider>(context, listen: false)
-          //     .fetchFavouriteProducts()
-          //     .whenComplete(() {
-          //   Provider.of<ProductProvider>(context, listen: false)
-          //       .filterProdutsWithID(context);
-          // });
+          productProvider.fetchProducts();
+          productProvider.fetchSizedAndColors();
+          favouriteProvider.fetchFavouriteProducts();
+          productProvider.filterProductsWithID(ref);
+          orderProvider.fetchOrders(user.uid);
+          setTextControllers();
 
           Navigator.pushNamed(context, DrawerScreen.routeName);
         });

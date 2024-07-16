@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/provider/riverpod.dart';
@@ -19,23 +18,15 @@ class Orders extends ConsumerStatefulWidget {
 
 class _OrdersState extends ConsumerState<Orders> {
   @override
-  void initState() {
-    ref.read(orderRiverPod).fetchOrders(FirebaseAuth.instance.currentUser!.uid);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.kButtonGray,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+      body: SafeArea(
         child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 40,
-              ),
               ScreenHeader(
                 title: 'Orders',
                 iconImage: '',
@@ -46,10 +37,10 @@ class _OrdersState extends ConsumerState<Orders> {
                     ref.read(orderRiverPod).allOrders.length.toString(),
               ),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
               SizedBox(
-                height: SizeConfig.h(context) * 0.75,
+                height: SizeConfig.h(context) * 0.77,
                 width: SizeConfig.w(context),
                 child: ref.watch(orderRiverPod).allOrders.isNotEmpty
                     ? ListView.builder(

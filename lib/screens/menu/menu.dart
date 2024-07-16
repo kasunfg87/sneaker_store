@@ -1,3 +1,4 @@
+// lib/screens/menu/menu.dart
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,6 +24,14 @@ class MenuScreen extends ConsumerStatefulWidget {
 }
 
 class _MenuScreenState extends ConsumerState<MenuScreen> {
+  int _selectedIndex = -1;
+
+  void _onTabSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +69,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             MenuTabs(
               buttonText: 'Profile',
               iconImage: AssetConstants.profile,
+              isSelected: _selectedIndex == 0,
               ontap: () {
+                _onTabSelected(0);
                 CustomNavigator.navigateTo(context, const Profile());
               },
             ),
@@ -70,7 +81,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             MenuTabs(
               buttonText: 'My Cart',
               iconImage: AssetConstants.bagLarge,
+              isSelected: _selectedIndex == 1,
               ontap: () {
+                _onTabSelected(1);
                 ref.read(cartRiverPod).cartItems.isNotEmpty
                     ? CustomNavigator.navigateTo(context, const MyCart())
                     : AlertHelper.showSanckBar(
@@ -85,7 +98,10 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             MenuTabs(
               buttonText: 'Favourite',
               iconImage: AssetConstants.heartLarge,
-              ontap: () {},
+              isSelected: _selectedIndex == 2,
+              ontap: () {
+                _onTabSelected(2);
+              },
             ),
             const SizedBox(
               height: 32,
@@ -93,7 +109,10 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             MenuTabs(
               buttonText: 'Orders',
               iconImage: AssetConstants.order,
-              ontap: () {},
+              isSelected: _selectedIndex == 3,
+              ontap: () {
+                _onTabSelected(3);
+              },
             ),
             const SizedBox(
               height: 32,
@@ -101,7 +120,10 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             MenuTabs(
               buttonText: 'Notifications',
               iconImage: AssetConstants.bellIcon,
-              ontap: () {},
+              isSelected: _selectedIndex == 4,
+              ontap: () {
+                _onTabSelected(4);
+              },
             ),
             const SizedBox(
               height: 32,
@@ -109,7 +131,10 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             MenuTabs(
               buttonText: 'Settings',
               iconImage: AssetConstants.settingIcon,
-              ontap: () {},
+              isSelected: _selectedIndex == 5,
+              ontap: () {
+                _onTabSelected(5);
+              },
             ),
             const SizedBox(
               height: 32,
@@ -128,7 +153,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
             MenuTabs(
               buttonText: 'Sign Out',
               iconImage: AssetConstants.signOutIcon,
+              isSelected: _selectedIndex == 6,
               ontap: () {
+                _onTabSelected(6);
                 AuthController().logOut(context).whenComplete(
                     () => CustomNavigator.navigateTo(context, const SignIn()));
               },

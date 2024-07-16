@@ -18,107 +18,89 @@ class WalkThrough extends StatefulWidget {
 }
 
 class _WalkThroughState extends State<WalkThrough> {
+  final PageController _controller = PageController();
+
   @override
   void initState() {
-    // ------ to remove top icon bar from splash screen
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
-
-  // --- page controller
-  final PageController controller = PageController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView.builder(
-        controller: controller,
+        controller: _controller,
         itemCount: AssetConstants.imageList.length,
         itemBuilder: (context, index) {
           return Container(
-            width: double.maxFinite,
-            height: double.maxFinite,
+            width: double.infinity,
+            height: double.infinity,
             decoration: BoxDecoration(
-                image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage(AssetConstants.imageList[index]),
-            )),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage(AssetConstants.imageList[index]),
+              ),
+            ),
             child: Stack(
               children: [
-                index == 0
-                    ? const Positioned(
-                        top: 130,
-                        left: 90,
-                        child: CustomTextRaleway(
-                          text: 'WELLCOME TO \n NIKE',
-                          fontColor: AppColors.kWhite,
-                          fontSize: 31,
-                          textAlign: TextAlign.center,
-                          fontWeight: FontWeight.w900,
-                        ))
-                    : const SizedBox(),
+                if (index == 0)
+                  const Positioned(
+                    top: 130,
+                    left: 90,
+                    child: CustomTextRaleway(
+                      text: 'WELCOME TO \n NIKE',
+                      fontColor: AppColors.kWhite,
+                      fontSize: 31,
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      index == 0
-                          ? const SizedBox()
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(3, (indexDots) {
-                                return SlideInLeft(
-                                  duration: const Duration(milliseconds: 400),
-                                  child: Container(
-                                    margin: const EdgeInsets.only(left: 6),
-                                    width: index == indexDots ? 25 : 8,
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: index == indexDots
-                                            ? AppColors.kWhite
-                                            : AppColors.kWhite
-                                                .withOpacity(0.3)),
-                                  ),
-                                );
-                              })),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      if (index != 0)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(3, (indexDots) {
+                            return SlideInLeft(
+                              duration: const Duration(milliseconds: 400),
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 6),
+                                width: index == indexDots ? 25 : 8,
+                                height: 8,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: index == indexDots
+                                      ? AppColors.kWhite
+                                      : AppColors.kWhite.withOpacity(0.3),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      const SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // FloatingActionButton(
-                            //   isExtended: true,
-                            //   onPressed: () {
-                            //     index == 0
-                            //         ? NavigationFunction.navigateTo(
-                            //             BuildContext,
-                            //             context,
-                            //             Widget,
-                            //             const SignIn())
-                            //         : controller.animateToPage(index + 1,
-                            //             duration:
-                            //                 const Duration(milliseconds: 300),
-                            //             curve: Curves.easeInOut);
-                            //   },
-                            //   backgroundColor: AppColors.kWhite,
-                            //   child: SizedBox(
-                            //       width: SizeConfig.w(context) * 0.4,
-                            //       child: const Icon(Icons.arrow_forward_ios)),
-                            // ),
-                            GetStartedButton(onTap: () {
-                              index == 0
-                                  ? Navigator.pushNamed(
-                                      context, SignIn.routeName)
-                                  : controller.animateToPage(index + 1,
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      curve: Curves.easeInOut);
-                            })
+                            GetStartedButton(
+                              onTap: () {
+                                if (index == 0) {
+                                  Navigator.pushNamed(
+                                      context, SignIn.routeName);
+                                } else {
+                                  _controller.animateToPage(
+                                    index + 1,
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  );
+                                }
+                              },
+                            ),
                           ],
                         ),
                       ),

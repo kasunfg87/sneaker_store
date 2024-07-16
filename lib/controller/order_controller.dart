@@ -20,7 +20,8 @@ class OrderController {
   Future<List<OrderModel>> getOrders(String uid) async {
     try {
       // Query to fetch orders for a specific user
-      QuerySnapshot snapshot = await orders.where('uid', isEqualTo: uid).get();
+      QuerySnapshot snapshot =
+          await orders.where('createdBy', isEqualTo: uid).get();
 
       // List to store the fetched orders
       List<OrderModel> list = [];
@@ -31,6 +32,8 @@ class OrderController {
             OrderModel.fromJson(element.data() as Map<String, dynamic>);
         list.add(model);
       }
+      // Sort the list by order ID in decending order
+      list.sort((b, a) => a.orderId.compareTo(b.orderId));
 
       Logger().i("Fetched ${list.length} orders");
       return list;

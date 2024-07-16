@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sneaker_store/provider/riverpod.dart';
+import 'package:sneaker_store/screens/drawer_screen/drawer_screen.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/custom_button.dart';
 import 'package:sneaker_store/widgets/custom_textfield.dart';
+import 'package:sneaker_store/widgets/profile_textfield.dart';
 import 'package:sneaker_store/widgets/screen_header.dart';
 
 class Profile extends ConsumerStatefulWidget {
@@ -37,8 +39,9 @@ class _ProfileState extends ConsumerState<Profile> {
                 ScreenHeader(
                     title: 'Profile',
                     rightIconButton: false,
-                    iconImage: '',
-                    onTapLeft: () => Navigator.pop(context),
+                    iconImage: AssetConstants.profile,
+                    onTapLeft: () =>
+                        Navigator.pushNamed(context, DrawerScreen.routeName),
                     onTapRight: () {}),
                 const SizedBox(
                   height: 40,
@@ -89,36 +92,30 @@ class _ProfileState extends ConsumerState<Profile> {
                 const SizedBox(
                   height: 30,
                 ),
-                CustomTextfield(
+                ProfileTextfield(
                   readOnly: true,
                   headerText: 'Your Name',
-                  hintText: ref.read(userRiverPod).userModel!.fullName,
                   controller: ref.read(userRiverPod).fullNameController,
                 ),
                 const SizedBox(
                   height: 30,
                 ),
-                CustomTextfield(
+                ProfileTextfield(
                   headerText: 'Email Address',
-                  hintText: ref.read(userRiverPod).userModel!.email,
                   controller: ref.read(userRiverPod).emailController,
                 ),
                 const SizedBox(
                   height: 30,
                 ),
-                CustomTextfield(
+                ProfileTextfield(
                   headerText: 'Location',
-                  hintText:
-                      ref.read(userRiverPod).userModel!.location.toString(),
                   controller: ref.read(userRiverPod).locationController,
                 ),
                 const SizedBox(
                   height: 30,
                 ),
-                CustomTextfield(
+                ProfileTextfield(
                   headerText: 'Mobile Number',
-                  hintText:
-                      ref.read(userRiverPod).userModel!.mobileNo.toString(),
                   controller: ref.read(userRiverPod).mobileController,
                 ),
                 const SizedBox(

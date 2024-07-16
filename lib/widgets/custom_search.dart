@@ -48,7 +48,7 @@ class CustomSearch extends StatelessWidget {
           filled: true,
           hintText: hintText,
           hintStyle:
-              GoogleFonts.poppins(fontSize: 14, color: AppColors.kLiteBlack),
+              GoogleFonts.poppins(fontSize: 16, color: AppColors.kLiteBlack),
           // floatingLabelBehavior: FloatingLabelBehavior.always,
           contentPadding: const EdgeInsets.only(left: 18, top: 12, bottom: 12),
 
@@ -73,7 +73,7 @@ class CustomSearch extends StatelessWidget {
             borderRadius: BorderRadius.all(
               Radius.circular(14),
             ),
-            borderSide: BorderSide(color: AppColors.kButtonGray),
+            borderSide: BorderSide(color: AppColors.kButtonGray, width: 1),
           ),
         ),
       ),

@@ -7,7 +7,7 @@ import 'package:sneaker_store/utilities/app_colors.dart';
 class ReletedItemTile extends ConsumerWidget {
   const ReletedItemTile({
     required this.model,
-    this.backColor = AppColors.kWhite,
+    this.backColor = AppColors.kButtonGray,
     this.tileHeight = 70,
     this.tilewidth = 70,
     super.key,
@@ -21,28 +21,29 @@ class ReletedItemTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(20),
       onTap: () {
         ref.read(productRiverPod).setProductModel(model);
       },
       child: Padding(
         padding: const EdgeInsets.all(2.0),
-        child: Material(
-          type: MaterialType.card,
-          elevation: 2,
-          shadowColor: AppColors.kLiteBlack.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            padding: const EdgeInsets.all(5),
-            width: tilewidth,
-            height: tileHeight,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16), color: backColor),
-            child: Transform.rotate(
-              angle: 50.0,
-              child: Image.network(
-                model.img,
-              ),
+        child: AnimatedContainer(
+          curve: Curves.linearToEaseOut,
+          duration: const Duration(milliseconds: 500),
+          padding: const EdgeInsets.all(5),
+          width: tilewidth,
+          height: tileHeight,
+          decoration: BoxDecoration(
+              border: Border.all(
+                  style: BorderStyle.solid,
+                  color: AppColors.kLiteBlack.withOpacity(0.4),
+                  width: 0.8),
+              borderRadius: BorderRadius.circular(16),
+              color: backColor),
+          child: Transform.rotate(
+            angle: 50.0,
+            child: Image.network(
+              model.img,
             ),
           ),
         ),

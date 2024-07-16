@@ -8,7 +8,7 @@ part of 'objects.dart';
 
 ProductModel _$ProductModelFromJson(Map<String, dynamic> json) => ProductModel(
       category: json['category'] as String,
-      productId: json['productId'] as int,
+      productId: (json['productId'] as num).toInt(),
       description: json['description'] as String,
       img: json['img'] as String,
       title: json['title'] as String,
@@ -52,7 +52,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
 FavouriteModel _$FavouriteModelFromJson(Map<String, dynamic> json) =>
     FavouriteModel(
       category: json['category'] as String,
-      productId: json['productId'] as int,
+      productId: (json['productId'] as num).toInt(),
       uid: json['uid'] as String,
     );
 
@@ -77,8 +77,8 @@ Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
 
 CartItemModel _$CartItemModelFromJson(Map<String, dynamic> json) =>
     CartItemModel(
-      id: json['id'] as int,
-      amount: json['amount'] as int,
+      id: (json['id'] as num).toInt(),
+      amount: (json['amount'] as num).toInt(),
       subTotal: (json['subTotal'] as num).toDouble(),
       productModel:
           ProductModel.fromJson(json['productModel'] as Map<String, dynamic>),
@@ -95,7 +95,7 @@ Map<String, dynamic> _$CartItemModelToJson(CartItemModel instance) =>
     };
 
 SizeModel _$SizeModelFromJson(Map<String, dynamic> json) => SizeModel(
-      productId: json['productId'] as int,
+      productId: (json['productId'] as num).toInt(),
       colors:
           (json['colors'] as List<dynamic>).map((e) => e as String).toList(),
       size: (json['size'] as List<dynamic>).map((e) => e as String).toList(),

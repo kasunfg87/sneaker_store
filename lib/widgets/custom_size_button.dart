@@ -28,6 +28,10 @@ class CustomSizeButton extends StatelessWidget {
             width: 108,
             // width: SizeConfig.w(context) * 0.7,
             decoration: BoxDecoration(
+              border: Border.all(
+                  style: BorderStyle.solid,
+                  color: AppColors.kLiteBlack.withOpacity(0.4),
+                  width: 0.8),
               color: buttonColor,
               borderRadius: BorderRadius.circular(10),
             ),
@@ -35,7 +39,7 @@ class CustomSizeButton extends StatelessWidget {
                 child: Text(
               buttonText,
               style: GoogleFonts.poppins(
-                  color: fontColor, fontSize: 14, fontWeight: FontWeight.w300),
+                  color: fontColor, fontSize: 14, fontWeight: FontWeight.w400),
             ))));
   }
 }

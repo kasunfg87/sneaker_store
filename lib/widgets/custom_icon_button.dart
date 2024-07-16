@@ -24,7 +24,9 @@ class CustomIconButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           elevation: 3,
           shadowColor: AppColors.kLiteBlack.withOpacity(0.4),
-          child: Container(
+          child: AnimatedContainer(
+              curve: Curves.linear,
+              duration: const Duration(milliseconds: 100),
               height: 50,
               width: 208,
               // width: SizeConfig.w(context) * 0.7,

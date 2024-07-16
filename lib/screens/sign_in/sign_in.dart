@@ -23,6 +23,7 @@ class SignIn extends ConsumerStatefulWidget {
 class _SignInState extends ConsumerState<SignIn> {
   @override
   Widget build(BuildContext context) {
+    final userProvider = ref.read(userRiverPod);
     return Scaffold(
       backgroundColor: AppColors.kWhite,
       body: SingleChildScrollView(
@@ -67,7 +68,7 @@ class _SignInState extends ConsumerState<SignIn> {
                 CustomTextfield(
                   headerText: 'Email Address',
                   hintText: 'xyz@gmail.com',
-                  controller: ref.read(userRiverPod).emailController,
+                  controller: userProvider.emailController,
                 ),
                 const SizedBox(
                   height: 30,
@@ -76,7 +77,7 @@ class _SignInState extends ConsumerState<SignIn> {
                   headerText: 'Password',
                   hintText: '********',
                   isObscure: true,
-                  controller: ref.read(userRiverPod).passwordController,
+                  controller: userProvider.passwordController,
                   suffixIcon: const Icon(
                     Icons.remove_red_eye_outlined,
                     color: AppColors.kLiteBlack,
@@ -95,7 +96,7 @@ class _SignInState extends ConsumerState<SignIn> {
                       },
                       child: const CustomTextPopins(
                         text: 'Recovery Password',
-                        fontSize: 12,
+                        fontSize: 14,
                         fontColor: AppColors.kLiteBlack,
                         textAlign: TextAlign.right,
                       ),
@@ -108,15 +109,11 @@ class _SignInState extends ConsumerState<SignIn> {
                 CustomButton(
                     buttonText: 'Sign In',
                     onTap: () {
-                      if (ref
-                          .read(userRiverPod)
-                          .signInFieldsValidate(context)) {
-                        ref.read(userRiverPod).startLogin(context).whenComplete(
-                            () => ref
-                                .read(userRiverPod)
-                                .initializeUser(context, ref));
+                      if (userProvider.signInFieldsValidate(context)) {
+                        userProvider.startLogin(context).whenComplete(
+                            () => userProvider.initializeUser(context, ref));
                       }
-                      ref.read(userRiverPod).isLoading
+                      userProvider.isLoading
                           ? const Center(child: CircularProgressIndicator())
                           : const SizedBox();
                     }),
@@ -132,7 +129,7 @@ class _SignInState extends ConsumerState<SignIn> {
                   children: [
                     const CustomTextRaleway(
                       text: 'New User?',
-                      fontSize: 16,
+                      fontSize: 17,
                       fontColor: AppColors.kLiteBlack,
                       fontWeight: FontWeight.normal,
                     ),
@@ -145,7 +142,7 @@ class _SignInState extends ConsumerState<SignIn> {
                       },
                       child: const CustomTextRaleway(
                         text: 'Create Account',
-                        fontSize: 16,
+                        fontSize: 17,
                         fontColor: AppColors.kBlack,
                         fontWeight: FontWeight.w600,
                       ),

@@ -11,7 +11,7 @@ class CustomTextPopins extends StatelessWidget {
 
   const CustomTextPopins({
     required this.text,
-    this.fontSize = 16,
+    this.fontSize = 17,
     this.fontColor = AppColors.kLiteGray,
     this.fontWeight = FontWeight.normal,
     this.textAlign = TextAlign.left,

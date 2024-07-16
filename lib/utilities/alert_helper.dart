@@ -6,10 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sneaker_store/models/objects.dart';
 import 'package:sneaker_store/provider/riverpod.dart';
-import 'package:sneaker_store/screens/home/home.dart';
+import 'package:sneaker_store/screens/drawer_screen/drawer_screen.dart';
 import 'package:sneaker_store/utilities/app_colors.dart';
 import 'package:sneaker_store/utilities/assets_constants.dart';
-import 'package:sneaker_store/utilities/navigation_function.dart';
 import 'package:sneaker_store/utilities/size_config.dart';
 import 'package:sneaker_store/widgets/custom_button.dart';
 import 'package:sneaker_store/widgets/custom_text_raleway.dart';
@@ -37,9 +36,8 @@ class AlertHelper {
     ).show(context);
   }
 
-  static Future openDialog(
-          BuildContext context, OrderModel orderModel, WidgetRef ref) =>
-      showDialog(
+  static Future openDialog(BuildContext context, WidgetRef ref) => showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) => ZoomIn(
           child: AlertDialog(
@@ -72,7 +70,17 @@ class AlertHelper {
                   buttonText: 'Back To Shopping',
                   onTap: () {
                     //---- Save orders to firestore DB
-                    ref.read(orderRiverPod).saveOrderData(orderModel);
+                    ref.read(orderRiverPod).saveOrderData(
+                          OrderModel(
+                            orderId:
+                                ref.watch(cartRiverPod).generateBillNumber(),
+                            cartTotal: ref.watch(cartRiverPod).getCartTotal,
+                            delivery: ref.watch(cartRiverPod).getDeliveryCharge,
+                            grandTotal: ref.watch(cartRiverPod).getGrandTotal,
+                            cartItems: ref.watch(cartRiverPod).cartItems,
+                            createdBy: FirebaseAuth.instance.currentUser!.uid,
+                          ),
+                        );
 
                     //---- Clear cart after save orders
                     ref.read(cartRiverPod).cartItems.clear();
@@ -81,8 +89,7 @@ class AlertHelper {
                         .read(orderRiverPod)
                         .fetchOrders(FirebaseAuth.instance.currentUser!.uid);
 
-                    // Navigator.of(context).pop();
-                    CustomNavigator.navigateTo(context, const Home());
+                    Navigator.pushNamed(context, DrawerScreen.routeName);
                   })
             ],
           ),

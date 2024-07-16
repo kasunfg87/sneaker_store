@@ -36,7 +36,7 @@ class SocialButton extends StatelessWidget {
                   buttonText,
                   style: GoogleFonts.raleway(
                       color: AppColors.kBlack,
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600),
                 ),
               ],

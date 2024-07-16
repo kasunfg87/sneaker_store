@@ -18,36 +18,35 @@ class NewArrivalBanner extends StatelessWidget {
       alignment: Alignment.topRight,
       fit: StackFit.loose,
       children: [
-        Material(
-          elevation: 5,
-          shadowColor: AppColors.kLiteBlack.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            height: 130,
-            width: SizeConfig.w(context),
-            decoration: BoxDecoration(
-                color: AppColors.kWhite,
-                borderRadius: BorderRadius.circular(16)),
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomTextRaleway(
-                  text: 'Summer Sale',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                CustomTextLilita(
-                  text: '15% OFF',
-                  fontColor: AppColors.kPink,
-                  fontSize: 36,
-                )
-              ],
-            ),
+        Container(
+          padding: const EdgeInsets.all(20),
+          height: 130,
+          width: SizeConfig.w(context),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  style: BorderStyle.solid,
+                  color: AppColors.kLiteBlack.withOpacity(0.3),
+                  width: 1),
+              color: AppColors.kWhite,
+              borderRadius: BorderRadius.circular(16)),
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomTextRaleway(
+                text: 'Summer Sale',
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              CustomTextLilita(
+                text: '15% OFF',
+                fontColor: AppColors.kPink,
+                fontSize: 36,
+              )
+            ],
           ),
         ),
         Positioned(
