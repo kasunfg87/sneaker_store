@@ -13,7 +13,10 @@
   <img src="https://github.com/kasunfg87/sneaker_store/blob/main/assets/images/02.png?raw=true" alt="Home Screen" width="200" />
   <img src="https://github.com/kasunfg87/sneaker_store/blob/main/assets/images/03.png?raw=true" alt="Discover Screen" width="200" />
   <img src="https://github.com/kasunfg87/sneaker_store/blob/main/assets/images/04.png?raw=true" alt="Detail Screen" width="200" />
+   <img src="https://github.com/kasunfg87/sneaker_store/blob/main/assets/images/05.png?raw=true" alt=" Cast & Crew Biography Screen" width="200" />
   <img src="https://github.com/kasunfg87/sneaker_store/blob/main/assets/images/07.png?raw=true" alt=" Cast & Crew Biography Screen" width="200" />
+  <img src="https://github.com/kasunfg87/sneaker_store/blob/main/assets/images/08.png?raw=true" alt=" Cast & Crew Biography Screen" width="200" />
+  <img src="https://github.com/kasunfg87/sneaker_store/blob/main/assets/images/09.png?raw=true" alt=" Cast & Crew Biography Screen" width="200" />
 </div>
 <!-- About the Project -->
 
